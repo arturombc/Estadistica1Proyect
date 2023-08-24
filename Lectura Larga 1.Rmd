@@ -35,11 +35,21 @@ Conclusiones (2 mínimo):
 
 CAPÍTULO 4
 
-Responsable: 
+Responsable: Andrea Pérez Castro
 
 Conclusiones (2 mínimo):
--
--
+
+- Los resultados de las pruebas de inteligencia, expresados como Cociente Intelectual (C.I.), no capturan la totalidad de la inteligencia, dejando de lado factores como la capacidad de mando y la creatividad.
+
+- Toda medición lleva consigo un margen de error, representado por el "error probable" y la "desviación estándar", que refleja la variabilidad natural en los datos y la incertidumbre asociada.
+
+- La comparación de cifras individuales, como los C.I. de Pedro y Linda, deben hacerse considerando el margen de error, especialmente cuando las diferencias son pequeñas y carecen de significado real.
+
+- En lugar de centrarse en cifras precisas, es más valioso agrupar datos en clases que abarquen un rango de valores, ya que esto proporciona un contexto más sólido para la interpretación.
+
+- Los errores inherentes en los estudios por muestreo a menudo se pasan por alto, lo que puede llevar a decisiones basadas en diferencias estadísticas pequeñas pero no significativas.
+
+- El ejemplo de los fabricantes de cigarrillos Old Gold destaca cómo los resultados de un estudio pueden ser manipulados a través de la presentación selectiva de información, creando publicidad engañosa que explota diferencias pequeñas y poco relevantes.
 
 
 
