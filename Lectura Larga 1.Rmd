@@ -91,8 +91,11 @@ CAPÍTULO 8
 Responsable: Arturo Magno Barrantes Chuquimia
 
 Conclusiones (2 mínimo):
--
--
+- *“Post hoc ergo propter hoc”* es una falacia conocida que indica: Si B sigue a A; entonces, A es la causa de B. Atribuyendo una posible correlación de eventos a una causalidad.
+- Se menciona: “Cuando existen varias explicaciones razonables para un mismo hecho, nada le autoriza a escoger la que satisfaga su gusto”. Esto indica que si en algún momento no tienes las respuestas completas a una cuestión, no deberías asegurar con certeza un resultado basado en algo “lógico” ya que para probar que algo es consecuencia de otra cosa, necesitas datos que lo confirmen. Como algún antiguo proverbio menciona: “*scio me nihil scire* o *scio me nescire”,* traducido a “Solo sé que no sé nada”.
+- La razón de cambio de una variable con respecto a otra se llama covarianza, y es un factor que es necesario en los análisis estadísticos. Es importante conocer su existencia para no caer en errores de *post hoc.*
+- Es importante tener en cuenta que aunque exista una aparente correlación entre dos hechos, no puedes atribuirle a uno ser la causa del otro.
+- “Una correlación va más allá de los datos utilizados para demostrarla”. Esto se ejemplifica en que en tiempo de cosechas, la lluvia esta correlacionada con la cantidad de alimento producido, pero si llegara a haber demasiada lluvia entonces pasaría a estar correlacionada negativamente. En resumen, hay que tener en cuenta que la correlación puede no ser constante para todos los datos que se nos presentan.
 
 
 
