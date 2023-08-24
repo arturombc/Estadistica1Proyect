@@ -5,17 +5,17 @@ output: html_notebook
 
 CAPÍTULO 1
 
-Responsable: 
-
+Responsable: Sheyla Sanchez Arauco
 Conclusiones (2 mínimo):
--
--
+-Debemos concluir que las encuestas o estadísticas que leemos muchas veces no son del todo verídicas, para esto influyen mucho las muestras; cuando se realiza una encuesta de tal tema o tales personas muchas veces solo se considera a un grupo de encuestadores y se deja atrás a otro grupo que puede cambiar las cifras de los resultados de las encuestas, esto se debe a factores propios como la publicidad o intereses políticos, etc. Y también a otros factores, como por ejemplo si se quiere hacer una encuesta a un grupo de personas sobre de qué trabajan, y el entrevistador encuesta en la mañana obviara a las personas que se encuentren en la noche. Por eso es muy importante no creer en todas las encuestas o estadísticas presentadas porque siempre tendrá un margen de error.
+
+-Para ser más específicos las encuestas están basadas en muestras subjetivas, representativas, básica o también llamada aleatoria y escogidas al azar, todas estas muestran tienen un factor que puede ser desfavorable para la encuesta. 
 
 
 
 CAPÍTULO 2
 
-Responsable: 
+Responsable: Sheyla Sanchez Arauco
 
 Conclusiones (2 mínimo):
 -
