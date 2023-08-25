@@ -28,8 +28,10 @@ CAPÍTULO 3
 Responsable: Alejandro Rojas Alvarez
 
 Conclusiones (2 mínimo):
--
--
+-Durante la recolección de datos es importante tener en cuenta el tamaño del muestreo obtenido. Solo cuando se recolecta un número importante de muestras, las diferencias que se producen por azar son más pequeñas y el cálculo de probabilidades proporciona una predicción más útil.
+
+-Analizar y llegar a conclusiones sólo a partir del promedio de una muestra de datos puede ser muy perjudicial. En cambio, añadiendo datos como desviación o margen de error se evitan falsas interpretaciones.
+
 
 
 
@@ -70,8 +72,10 @@ CAPÍTULO 6
 Responsable: Alejandro Rojas Alvarez
 
 Conclusiones (2 mínimo):
--
--
+-Dentro de los gráficos descriptivos, el uso de objetos como referencia puede llegar a ser muy engañoso, especialmente en objetos tridimensionales que producen una mayor impresión visual que el valor real.  
+
+-Al variar el tamaño de los objetos en un gráfico, puede haber incoherencia entre la intención del autor y la impresión que recibe el lector.
+
 
 
 
