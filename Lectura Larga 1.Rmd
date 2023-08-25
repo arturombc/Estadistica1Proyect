@@ -6,9 +6,9 @@ output: html_notebook
 CAPÍTULO 1
 
 Responsable: Sheyla Sanchez Arauco
+
 Conclusiones (2 mínimo):
 -Debemos concluir que las encuestas o estadísticas que leemos muchas veces no son del todo verídicas, para esto influyen mucho las muestras; cuando se realiza una encuesta de tal tema o tales personas muchas veces solo se considera a un grupo de encuestadores y se deja atrás a otro grupo que puede cambiar las cifras de los resultados de las encuestas, esto se debe a factores propios como la publicidad o intereses políticos, etc. Y también a otros factores, como por ejemplo si se quiere hacer una encuesta a un grupo de personas sobre de qué trabajan, y el entrevistador encuesta en la mañana obviara a las personas que se encuentren en la noche. Por eso es muy importante no creer en todas las encuestas o estadísticas presentadas porque siempre tendrá un margen de error.
-
 -Para ser más específicos las encuestas están basadas en muestras subjetivas, representativas, básica o también llamada aleatoria y escogidas al azar, todas estas muestran tienen un factor que puede ser desfavorable para la encuesta. 
 
 
@@ -16,11 +16,10 @@ Conclusiones (2 mínimo):
 CAPÍTULO 2
 
 Responsable: Sheyla Sanchez Arauco
+
 Conclusiones (2 mínimo):
-
--Podemos concluir que en este segmento se aborda la noción de medidas de tendencia central, que engloban la mediana, la media y la moda. Aunque el cálculo del promedio puede realizarse mediante similitudes, emplear la media puede resultar en una representación limitada, a diferencia de la mediana, que ofrece información más precisa. En cuanto a la moda, esta refleja el valor más frecuente.
--Las medidas de tendencia central son obtenidas de manera legítima, pero pueden estar vinculadas a intereses particulares, como influir en la opinión pública o comercializar espacios publicitarios en ciertas ocasiones.
-
+-
+-
 
 
 
@@ -29,10 +28,8 @@ CAPÍTULO 3
 Responsable: Alejandro Rojas Alvarez
 
 Conclusiones (2 mínimo):
--Durante la recolección de datos es importante tener en cuenta el tamaño del muestreo obtenido. Solo cuando se recolecta un número importante de muestras, las diferencias que se producen por azar son más pequeñas y el cálculo de probabilidades proporciona una predicción más útil.
-
--Analizar y llegar a conclusiones sólo a partir del promedio de una muestra de datos puede ser muy perjudicial. En cambio, añadiendo datos como desviación o margen de error se evitan falsas interpretaciones.
-
+-
+-
 
 
 
@@ -43,15 +40,10 @@ Responsable: Andrea Pérez Castro
 Conclusiones (2 mínimo):
 
 - Los resultados de las pruebas de inteligencia, expresados como Cociente Intelectual (C.I.), no capturan la totalidad de la inteligencia, dejando de lado factores como la capacidad de mando y la creatividad.
-
 - Toda medición lleva consigo un margen de error, representado por el "error probable" y la "desviación estándar", que refleja la variabilidad natural en los datos y la incertidumbre asociada.
-
 - La comparación de cifras individuales, como los C.I. de Pedro y Linda, deben hacerse considerando el margen de error, especialmente cuando las diferencias son pequeñas y carecen de significado real.
-
 - En lugar de centrarse en cifras precisas, es más valioso agrupar datos en clases que abarquen un rango de valores, ya que esto proporciona un contexto más sólido para la interpretación.
-
 - Los errores inherentes en los estudios por muestreo a menudo se pasan por alto, lo que puede llevar a decisiones basadas en diferencias estadísticas pequeñas pero no significativas.
-
 - El ejemplo de los fabricantes de cigarrillos Old Gold destaca cómo los resultados de un estudio pueden ser manipulados a través de la presentación selectiva de información, creando publicidad engañosa que explota diferencias pequeñas y poco relevantes.
 
 
@@ -61,10 +53,8 @@ CAPÍTULO 5
 Responsable: 
 
 Conclusiones (2 mínimo):
--Los cuadros estadísticos son herramientas valiosas que facilitan la comprensión de conceptos matemáticos, sobre todo para quienes tienen dificultades con operaciones numéricas. Los gráficos simples, en particular, son ampliamente entendibles y se usan para ver tendencias y hacer predicciones. Sin embargo, estos gráficos también pueden ser manipulables, ya que tienen el poder de crear ilusiones visuales que pueden influir en la percepción de la información. Como por ejemplo, tener una curva más abierta de lo en verdad es.
-
--Se observó a algunas compañías usar estrategias engañosas al presentar gráficos. Un truco común implica representar divisiones en un gráfico de manera que cada parte parezca ser una décima parte de la cifra original. Este enfoque busca influir en la opinión pública de manera sesgada, presentando información de una manera que pueda llevar a conclusiones incorrectas o exageradas. Por lo tanto, la interpretación crítica y la comprensión sólida de los gráficos estadísticos son esenciales para evitar ser engañados por tales manipulaciones.
-
+-
+-
 
 
 
@@ -73,10 +63,8 @@ CAPÍTULO 6
 Responsable: Alejandro Rojas Alvarez
 
 Conclusiones (2 mínimo):
--Dentro de los gráficos descriptivos, el uso de objetos como referencia puede llegar a ser muy engañoso, especialmente en objetos tridimensionales que producen una mayor impresión visual que el valor real.  
-
--Al variar el tamaño de los objetos en un gráfico, puede haber incoherencia entre la intención del autor y la impresión que recibe el lector.
-
+-
+-
 
 
 
@@ -85,12 +73,9 @@ CAPÍTULO 7
 Responsable: Arturo Magno Barrantes Chuquimia
 
 Conclusiones (2 mínimo):
+-
+-
 
-- "Si no puede probar una cosa, pruebe otra y haga ver que es lo mismo".
-- Por ejemplo, si quiere convencer a las personas para que le compren un preparado que usted hace, puede decir: “Mi producto mata 31 108 gérmenes en once segundos”, esta información es engañosa porque no se mencionan el tipo de gérmenes, además que fue en un ambiente diferente al cotindiano, este tipo de afirmaciones pueden generar una falsa sensación de verdad, además se menciona que se pueden agregar nombres de laboratorios prestigiosos y demás cosas para así atraer más atención malversando los datos.
-- Tomar dos cosas que suenen igual pero que no lo sean.
-- El porcentaje de mortalidad es mejor medida para la frecuencia que las cifras registradas directamente, debido a que la calidad y la constancia de la información es mejor en los casos de mortalidad.
-- La foto del antes y después es una estrategia común al mostrar un “antes” y después de mencionar algunos datos no relacionados, mostrar un “depués”. Esto da la impreción que las acciones intermedias fueron causantes de ese cambio.
 
 
 CAPÍTULO 8
@@ -98,27 +83,29 @@ CAPÍTULO 8
 Responsable: Arturo Magno Barrantes Chuquimia
 
 Conclusiones (2 mínimo):
-- *“Post hoc ergo propter hoc”* es una falacia conocida que indica: Si B sigue a A; entonces, A es la causa de B. Atribuyendo una posible correlación de eventos a una causalidad.
-- Se menciona: “Cuando existen varias explicaciones razonables para un mismo hecho, nada le autoriza a escoger la que satisfaga su gusto”. Esto indica que si en algún momento no tienes las respuestas completas a una cuestión, no deberías asegurar con certeza un resultado basado en algo “lógico” ya que para probar que algo es consecuencia de otra cosa, necesitas datos que lo confirmen. Como algún antiguo proverbio menciona: “*scio me nihil scire* o *scio me nescire”,* traducido a “Solo sé que no sé nada”.
-- La razón de cambio de una variable con respecto a otra se llama covarianza, y es un factor que es necesario en los análisis estadísticos. Es importante conocer su existencia para no caer en errores de *post hoc.*
-- Es importante tener en cuenta que aunque exista una aparente correlación entre dos hechos, no puedes atribuirle a uno ser la causa del otro.
-- “Una correlación va más allá de los datos utilizados para demostrarla”. Esto se ejemplifica en que en tiempo de cosechas, la lluvia esta correlacionada con la cantidad de alimento producido, pero si llegara a haber demasiada lluvia entonces pasaría a estar correlacionada negativamente. En resumen, hay que tener en cuenta que la correlación puede no ser constante para todos los datos que se nos presentan.
+-
+-
 
 
 
 CAPÍTULO 9
 
-Responsable: 
+Responsable: Andrea Pérez Castro
 
 Conclusiones (2 mínimo):
--
--
+- Se puede referir a la manipulación de datos estadísticos como "manipulación estadística" o "estadisticulación", y se define como el uso incorrecto de material estadístico que puede llevar a engaños y tergiversaciones.
+- En muchos casos, la manipulación de datos no es necesariamente obra de profesionales incompetentes, sino que puede ser ejecutada por vendedores, expertos en relaciones públicas, periodistas o redactores publicitarios con intenciones maliciosas.
+- La elección selectiva de datos gráficos y mapas puede ser utilizada para distorsionar la realidad estadística.
+- El uso de decimales, porcentajes y puntos de porcentajes puede dar la ilusión de precisión y llevar a conclusiones erróneas.
+- Es importante seleccionar la medida adecuada para una interpretación precisa.
+- Se sugiere mirar más allá de las cifras superficiales y considerar cómo se presentan los datos para tener una comprensión más precisa de la información.
+- Además de métodos matemáticos, las estadísticas involucran elementos subjetivos en su interpretación y presentación. 
 
 
 
 CAPÍTULO 10
 
-Responsable: LuiS David Acedo Lopez
+Responsable: 
 
 Conclusiones (2 mínimo):
 -
