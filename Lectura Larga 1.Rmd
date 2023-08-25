@@ -58,8 +58,10 @@ CAPÍTULO 5
 Responsable: 
 
 Conclusiones (2 mínimo):
--
--
+-Los cuadros estadísticos son herramientas valiosas que facilitan la comprensión de conceptos matemáticos, sobre todo para quienes tienen dificultades con operaciones numéricas. Los gráficos simples, en particular, son ampliamente entendibles y se usan para ver tendencias y hacer predicciones. Sin embargo, estos gráficos también pueden ser manipulables, ya que tienen el poder de crear ilusiones visuales que pueden influir en la percepción de la información. Como por ejemplo, tener una curva más abierta de lo en verdad es.
+
+-Se observó a algunas compañías usar estrategias engañosas al presentar gráficos. Un truco común implica representar divisiones en un gráfico de manera que cada parte parezca ser una décima parte de la cifra original. Este enfoque busca influir en la opinión pública de manera sesgada, presentando información de una manera que pueda llevar a conclusiones incorrectas o exageradas. Por lo tanto, la interpretación crítica y la comprensión sólida de los gráficos estadísticos son esenciales para evitar ser engañados por tales manipulaciones.
+
 
 
 
