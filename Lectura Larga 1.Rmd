@@ -28,8 +28,10 @@ CAPÍTULO 3
 Responsable: Alejandro Rojas Alvarez
 
 Conclusiones (2 mínimo):
--
--
+-Durante la recolección de datos es importante tener en cuenta el tamaño del muestreo obtenido. Solo cuando se recolecta un número importante de muestras, las diferencias que se producen por azar son más pequeñas y el cálculo de probabilidades proporciona una predicción más útil.
+
+-Analizar y llegar a conclusiones sólo a partir del promedio de una muestra de datos puede ser muy perjudicial. En cambio, añadiendo datos como desviación o margen de error se evitan falsas interpretaciones.
+
 
 
 
