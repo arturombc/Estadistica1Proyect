@@ -1,4 +1,0 @@
-Hola
-Este es un archivo de prueba
-Esto no se enviara
-Ahora quiero esto en el local
