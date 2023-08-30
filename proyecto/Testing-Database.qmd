@@ -1,0 +1,72 @@
+---
+title: "Testing database"
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    toc-title: Contenido
+    anchor_sections: TRUE # Mostrar anclaje de la sección al pasar el mouse
+    code_download: TRUE # Permite a los lectores descargar el qmd
+    code_folding: TRUE # Permite a los lectores cambiar a none, hide or show
+    fig_caption: TRUE # Las imagenes se renderizan con caption
+    theme: superhero # cyborg, darkly, journal, vapor. Library "bslib"
+    runtime: shiny # sirve para que la librería shiny interactiva funcione. library("shiny")
+    number-sections: true
+    embed-resources: true
+    author-title: Autores
+author: 
+  - Arturo Barrantes Chuquimia
+  - .
+  - .
+  - .
+  - .
+editor: visual
+---
+
+
+
+```{r, setup, include=FALSE}
+# Se invocan las librerías, se setean los temas, etc.
+knitr::opts_chunk$set(
+  comment = '', fig.width = 6, fig.height = 6 # comment = "" hace que no se vean los comentarios
+)
+library(readr)
+library(dplyr)
+library(bslib)
+library(shiny)
+```
+
+```{r, eval=TRUE, echo=FALSE, include=FALSE} 
+# Colocar include=FALSE para que no se vea en la página
+
+ui <- fluidPage(
+  numericInput("n", "¿Cuántos carros?", 5),
+  tableOutput("car_table")
+)
+
+server <- function(input, output) {
+  output$car_table <- renderTable({
+    head(cars, input$n)
+  })
+}
+
+shinyApp(ui, server)
+```
+
+
+
+Ahora leeré los txt
+
+```{r, warning=FALSE, message=FALSE}
+DF1 <- read_delim("data/EQUIPOS.txt","|")
+DF2 <- read_delim("data/CONSULTAS_PORTA.txt","|")
+DF3 <- read_delim("data/FACTURACION.txt","|")
+DF4 <- read_delim("data/INDICADORES_RED.txt","|")
+DF5 <- read_delim("data/INTENTOS_PORTA.txt","|")
+DF6 <- read_delim("data/PLANTA.txt","|")
+DF7 <- read_delim("data/TARGET.txt","|")
+DF8 <- read_delim("data/TRAFICO_DATOS.txt","|")
+DF9 <- read_delim("data/TRAFICOVOZSMS.txt","|")
+```
+
+
