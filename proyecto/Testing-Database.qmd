@@ -10,7 +10,7 @@ format:
     code_folding: TRUE # Permite a los lectores cambiar a none, hide or show
     fig_caption: TRUE # Las imagenes se renderizan con caption
     theme: superhero # cyborg, darkly, journal, vapor. Library "bslib"
-    runtime: shiny # sirve para que la librería shiny interactiva funcione. library("shiny")
+    # runtime: shiny # sirve para que la librería shiny interactiva funcione. library("shiny")
     number-sections: true
     embed-resources: true
     author-title: Autores
@@ -23,8 +23,6 @@ author:
 editor: visual
 ---
 
-
-
 ```{r, setup, include=FALSE}
 # Se invocan las librerías, se setean los temas, etc.
 knitr::opts_chunk$set(
@@ -35,25 +33,6 @@ library(dplyr)
 library(bslib)
 library(shiny)
 ```
-
-```{r, eval=TRUE, echo=FALSE, include=FALSE} 
-# Colocar include=FALSE para que no se vea en la página
-
-ui <- fluidPage(
-  numericInput("n", "¿Cuántos carros?", 5),
-  tableOutput("car_table")
-)
-
-server <- function(input, output) {
-  output$car_table <- renderTable({
-    head(cars, input$n)
-  })
-}
-
-shinyApp(ui, server)
-```
-
-
 
 Ahora leeré los txt
 
@@ -68,5 +47,3 @@ DF7 <- read_delim("data/TARGET.txt","|")
 DF8 <- read_delim("data/TRAFICO_DATOS.txt","|")
 DF9 <- read_delim("data/TRAFICOVOZSMS.txt","|")
 ```
-
-
