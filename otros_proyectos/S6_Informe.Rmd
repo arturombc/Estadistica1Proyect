@@ -1,0 +1,1070 @@
+---
+title: <center> "Estudio sobre la calidad de educación universitaria de modelo híbrido de la Universidad de Ingeniería y Tecnología"</center>
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+
+<center>![](https://repositorio.utec.edu.pe/image/logo.png){width='200px'}</center>
+
+**P: ** Porcentaje de participación (%)
+
+------------------------------------------------------------------------------------------------------
+| <span style="color:#1FB0DB">**Integrantes**                                          |    <span style="color:#1FB0DB">**Código**   |   <span style="color:#1FB0DB">**Participación**   |
+|----------------------------------------------------------|:---------------:|:---------------------:|
+| Daniel Wilmer Santillán Mercado(líder)                   |    202020212    |          100%         |
+| Jesus Egusquiza Ore                                      |    202210503    |          100%         |
+| Eddie Josue Vivanco Bernuy                               |                 |          100%         |
+
+
+## <span style="color:#1FB0DB">**Introduccion**
+
+### <span style="color:#1FB0DB">Relevancia:
+
+#### Durante el periodo de confinamiento logramos observar un gran desafío en relación al óptimo desarrollo de las clases virtuales debido a los distintos problemas que conlleva adaptar a todos los estudiantes universitarios de entidades públicas y privadas en redes virtuales y actividades académicas síncronas por medio de aplicaciones de videochat. Durante este proceso, la transición a la presencialidad no se vio totalmente factible en todos los centros universitarios, por lo que se generó una gran duda en el ente de Supervisión de universidades sobre si la educación brindada por medios virtuales era funcional. Este estudio busca recolectar las opiniones que los estudiantes de la universidad en relación a la calidad de educación híbrida propuesta actualmente por la universidad para analizar si no se verán afectados sus desarrollos académicos hasta concluir con su carrera. 
+
+### <span style="color:#1FB0DB">Objetivos:
+            
+            
+* #### Conocer el impacto de la modalidad  virtual en la frecuencia de práctica y actividades académicas en                los estudiantes de la Universidad de Ingeniería y Tecnología.
+            
+* #### Determinar las causas que influyeron en el cambio del rendimiento académico durante la aplicación del               modelo híbrido en los estudiantes de la Universidad de Ingeniería y Tecnología.
+            
+* #### Describir nivel de desempeño del periodo híbrido y presencial de los estudiantes de la                          Universidad de Ingeniería y Tecnología.
+            
+* #### Pensamientos y opiniones de los estudiantes de la Universidad de Ingeniería y Tecnología en relación a la           calidad del modelo híbrido.
+
+            
+### Planificación:
+
+#### A continuación, se muestra como nos hemos organizado y cómo nos organizaremos para llevar a cabo cada entrega del proyecto:
+
+```{r, include=F}
+library(descr)
+library(kableExtra)
+library(stats)
+library(readr)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+library(ggpubr)
+library(magrittr)
+library(units)
+library(PASWR2)
+library(lubridate)
+library(anytime)
+library(summarytools)
+library(dlookr)
+library(ggmap)
+library(psych)
+library(fields)
+library(janitor)
+library(gridExtra)
+library(ggpmisc)
+```
+
+
+
+```{r, echo=F}
+data <- data.frame(Integrantes = c(' Todos',' Todos','  Dan','  Egus', ' Eddie','Todos','Todos','Todos','Todos'))
+inicio = c('09-01', '09-13', '09-22', '09-28', '09-28','10-17','10-31','11-16','11-24')
+fin = c('04-08', '09-18', '09-27', '09-29', '09-30','10-28','11-16','11-21','11-25')
+A= c('Planteamiento 
+     del Proyecto de Investigación', 
+'Creacion de los 
+formularios virtuales', 
+'Recoleccion de datos 
+por medio de las encuestas', 
+'Organizacion 
+de los resultados 
+de las encuestas', 
+'Redaccion del
+informe 
+de la 
+primera 
+entrega',
+'Realización del 
+análisis probabilístico',
+'Preparación de 
+la presentación',
+'Redacción del 
+informe Final',
+'Presentación final')
+ggplot(data, cex.data=300, aes(x=inicio, xend=fin, y=Integrantes, yend=Integrantes, color=A)) +
+  theme_bw()+
+  geom_segment(size=2) +
+  labs(title='Esquema de Trabajo', x='
+  Linea de tiempo Desarrollo del Proyecto 2022', y= 'Participantes') +
+  scale_colour_manual(values = c('pink', 'purple', 'blue','green','red', 'black', 'brown','gray','yellow')) +
+  theme_economist() + 
+  theme(axis.title = element_text(size=15))+
+  theme(axis.text.x = element_text(size=10))+
+  theme(legend.text = element_text(size=8))+
+  theme(legend.title = element_text(size=0))
+```
+
+## <span style="color:#1FB0DB">**Datos**
+
+### <span style="color:#1FB0DB">Proceso de Recoleccion de datos:
+
+- Para el proceso de recoleccion de datos nosotros recurrimos a utilizar encuestas virtuales. Esta encuesta se desarrollo con el uso de formularios de Google, los cuales fueron enviados a diversas grupos de redes sociales de estudiantes y tambien recolectados presencialmente a estudiantes por la universidad. 
+
+### <span style="color:#1FB0DB">Poblacion, muestra y muestreo:
+
+- Poblacion: La poblacion bajo estudio esta constituido por los alumnos de pregrado UTEC
+
+- Unidad muestral:Alumno de UTEC que se encuentre,al menos, en Segundo Ciclo, o que pudo experimentar la modalidad Hibrida
+
+- Tipo de muestreo: Muestreo Aleatorio Simple
+
+### <span style="color:#1FB0DB">Variables:
+
+[![plantilla1 - Made with DesignCap](https://i.im.ge/2022/09/30/1co6Xa.plantilla1-Made-with-DesignCap.jpg)](https://im.ge/i/1co6Xa)
+
+![](Variables.JPG){width=width height=height}
+
+### <span style="color:#1FB0DB">Limpieza de base de datos:
+
+```{r,include=F}
+#file.choose()
+```
+
+```{r,include=F}
+PY1 <- read.csv("Calidad de educación universitaria de modelo híbrido en UTEC.csv", header=T, sep=',')
+str(PY1)
+```
+
+- Para la limpieza de datos, nosotros tuvimos que:
+  1. **Eliminar columnas inservibles para esta investigación: **
+
+  2. **Corregir la falta ortográfica de las variables y designar un nombre específico para cada variable: **
+  
+  3. **Verificar y corregir observaciones que no cumplan con nuestra investigación: **
+
+  
+
+```{r,include=FALSE}
+# Eliminar las columnas: Marca temporal y Dirección de correo electrónico
+PY1$Marca.temporal<- NULL
+PY1$Nombre.de.usuario <- NULL
+```
+
+```{r,include=FALSE}
+# Cambiar el nombre a las variables:
+####  Ver el el nombre de las variables - encabezados
+names(PY1)
+str(PY1)
+```
+
+```{r,include=F}
+#### Corregir la falta ortográfica de las variables y designar un nombre específico para cada variable
+
+PY1 <- rename (PY1,Carrera=Carrera.que.pertenece)
+PY1 <- rename (PY1,Edad=Edad..Digite.un.número..sin.decimal.)
+PY1 <- rename (PY1,Ciclo=X.En.qué.ciclo.te.encuentras.actualmente.)
+PY1 <- rename (PY1,Metacognicion_Virtual=X.Te.fue.fácil.captar.y.concentrarte.en.los.cursos.tomados.de.manera.virtual.)
+PY1 <- rename (PY1,Nivel_de_Satisfacción=X.Cómo.calificas.el.nivel.de.satisfacción.en.cuanto.a.la.ejecución.de.estos.cursos.)
+PY1 <- rename (PY1,Horas_de_estudio_mod.virtual=Fuera.de.su.horario.de.clases....Cuántas.horas.de.estudio.diarias.promedio.dedicabas...Digite.un.número..sin.decimal.)
+PY1 <- rename (PY1,Horas_de_descanso_mod.virtual=X.Cuántas.horas.de.descanso.promedio.tomabas...Digite.un.número..sin.decimal.)
+PY1 <- rename (PY1,Horas_de_sueño_mod.virtual=X.Cuántas.horas.diarias.promedio.dormías...Digite.un.número..sin.decimal.)
+PY1 <- rename (PY1,Nivel_de_estrés_mod.hibrida=Nivel.de.estrés)
+PY1 <- rename (PY1,Metacognicion_mod.hibrida=Metacognicion_Virtual)
+PY1 <- rename (PY1,Nivel_de_Satisfacción_mod.hibrida=Nivel_de_Satisfacción)
+PY1 <- rename (PY1,Horas_de_estudio_mod.hibrida=Horas_de_estudio_mod.virtual)
+PY1 <- rename (PY1,Horas_de_descanso_mod.hibrida=Horas_de_descanso_mod.virtual)
+PY1 <- rename (PY1,Horas_de_sueño_mod.hibrida=Horas_de_sueño_mod.virtual)
+PY1 <- rename (PY1,Desempeño_mod.hibrida=X.Cómo.fue.tu.desempeño.académico.durante.la.modalidad.hibrida.)
+PY1 <- rename (PY1,Metacognicion_mod.presencial=X.Te.es.fácil.captar.y.concentrarte.en.los.cursos.tomados.de.manera.presencial.)
+PY1 <- rename (PY1,Nivel_de_Satisfacción_mod.presencial=X.Cómo.calificas.el.nivel.de.satisfacción.en.cuanto.a.la.ejecución.de.estos.cursos..1)
+PY1 <- rename (PY1,Minutos_de_trayecto_a_UTEC=X.En.cuánto.tiempo..minutos..llegas.a.la.Universidad...Digite.un.número..sin.decimal.)
+PY1 <- rename (PY1,Horas_de_estudio_mod.presencial=Fuera.de.su.horario.de.clases...Cuántas.horas.de.estudio.diarias.promedio.dedicas...Digite.un.número..sin.decimal.)
+PY1 <- rename (PY1,Horas_de_descanso_mod.presencial=X.Cuántas.horas.de.descanso.diarias.promedio.tomas...Digite.un.número..sin.decimal.)
+PY1 <- rename (PY1,Horas_de_sueño_mod.presencial=X.Cuántas.horas.diarias.promedio.duerme...Digite.un.número..sin.decimal.)
+PY1 <- rename (PY1,Nivel_de_estrés_mod.presencial=Nivel.de.estrés.1)
+PY1 <- rename (PY1,Desempeño_mod.presencial=X.Cómo.está.hasta.ahora.tu.desempeño.académico.en.esta.modalidad.presencial.)
+PY1 <- rename (PY1,Preferencias_de_modalidad=En.general....Qué.modalidad.se.acomoda.mejor.a.ti.)
+```
+```{r,include=F}
+names(PY1)
+```
+
+```{r,include=F}
+#Verificar y corregir observaciones que no cumplan con nuestra investigación
+PY1 %>% count(Ciclo)
+```
+
+```{r,include=F}
+#Ubicamos las posiciones de los estudiantes de primer ciclo
+which(PY1$Ciclo=="Primero")
+#ya una ves ubicado las posiciones a los valores puestos referentes a la modalidad HIBRIDA lo ponemos en NA
+PY1[-(which(PY1$Ciclo=="Primero")),] -> PY1
+```
+```{r,include=F}
+PY1
+```
+
+
+```{r,include=F}
+sum(is.na(PY1))
+sum(!complete.cases(PY1))
+```
+
+
+```{r,include=F}
+#### Verificando datos ingresados por el usuario
+PY1 %>% count(Horas_de_estudio_mod.hibrida)
+PY1 %>% count(Horas_de_descanso_mod.hibrida)
+PY1 %>% count(Horas_de_sueño_mod.hibrida)
+PY1 %>% count(Minutos_de_trayecto_a_UTEC)
+PY1 %>% count(Horas_de_estudio_mod.presencial)
+PY1 %>% count(Horas_de_descanso_mod.presencial)
+PY1 %>% count(Horas_de_sueño_mod.presencial)
+```
+
+
+
+
+## <span style="color:#1FB0DB">**Analisis descriptivo** 
+### <span style="color:#1FB0DB">*Descriptores Estadísticos-Numéricos*
+#### <span style="color:#1FB0DB">Modalidad Hibrida
+```{r,echo=FALSE}
+PY1 %>% select(Horas_de_estudio_mod.hibrida,Horas_de_descanso_mod.hibrida,Horas_de_sueño_mod.hibrida) %>%
+   descr(stats=c("mean", "sd", "min", "q1", "med", "q3", "max")) %>%
+   kable(caption="Descriptores estadísticos de cada variable") %>%
+   kable_paper("hover")
+```
+#### <span style="color:#1FB0DB">Modalidad Presencial
+```{r,echo=FALSE}
+PY1 %>% select(Horas_de_estudio_mod.presencial,Horas_de_descanso_mod.presencial,Horas_de_sueño_mod.presencial) %>%
+   descr(stats=c("mean", "sd", "min", "q1", "med", "q3", "max")) %>%
+   kable(caption="Descriptores estadísticos de cada variable") %>%
+   kable_paper("hover")
+```
+
+
+### <span style="color:#1FB0DB">*Descriptores Descriptivos-Gráficos*
+
+#### <span style="color:#1FB0DB">Genero
+```{r,echo=FALSE}
+barplot(table(PY1$Género),ylim=c(0,200),col='light blue',
+        border='black',
+        xlab='Carrera',
+        ylab='Frecuencias')
+```
+
+#### <span style="color:#1FB0DB">Carrera
+
+```{r,echo=FALSE}
+barplot(table(PY1$Carrera),xlim=c(0,40),
+        border='black',
+        xlab='Carrera',
+        col = c("light green", "light blue", "grey","green","brown","orange","yellow","dimgray","pink","turquoise","blue"),space = c(1,1,1,1,1,1,1,1,1,1,1),cex.names = 0.4,horiz=TRUE,las=2)
+```
+
+#### <span style="color:#1FB0DB">Edad
+
+```{r,echo=FALSE}
+barplot(table(PY1$Edad),ylim=c(0,80),xlim=c(0,30),col='dimgray',
+        border='black',
+        xlab='Edad',
+        ylab='Frecuencias',c(2,2,2,2,2,2,2,2,2,2,2,2,2))
+```
+
+#### <span style="color:#1FB0DB">Ciclo
+
+```{r,echo=FALSE}
+barplot(table(PY1$Ciclo),ylim=c(0,100),col='light yellow',
+        border='black',
+        xlab='Ciclo',
+        ylab='Frecuencias',space=c(2,2,2,2,2,2,2))
+```
+
+#### <span style="color:#1FB0DB">¿Fue facil llevar los cursos?
+
+```{r,echo=FALSE}
+barplot(table(PY1$Metacognicion_mod.hibrida),ylim=c(0,200),col='red',
+        border='black',
+        xlab = 'Metacognición-Modalidad hibrida',
+        ylab='Frecuencias')
+```
+
+#### <span style="color:#1FB0DB">Nivel de satisfaccion
+
+```{r,echo=FALSE}
+barplot(table(PY1$Nivel_de_Satisfacción_mod.hibrida),ylim=c(0,80),xlim=c(0,8),col='black',
+        border='black',
+        xlab = 'Nivel de satisfaccion del 1 al 8',
+        ylab='Frecuencias')
+```
+
+- Observamos que para esta variable se redujo el dominio de 1-10 a 2-8 y que la mayor cantidad de datos se agrupan en el intervalo 4-7.
+
+#### <span style="color:#1FB0DB">Horas de Estudio a la Semana en la modalidad Hibrida(Variable Cuantitativa)
+
+```{r,echo=FALSE}
+boxplot(PY1$Horas_de_estudio_mod.hibrida, col = "light blue",
+        main = "Horas de estudio en la Mod. Hibrida")
+```
+
+- La mayor cantidad de datos convergen entre 0 y 5 pero existen bastantes datos que se alejan del espacio entre el primer cuartil y el tercer cuartil que llegan como maximo hasta el valor 30.
+
+#### <span style="color:#1FB0DB">Horas de Descanso al dia en la modalidad Hibrida(Variable Cuantitativa)
+
+```{r,echo=FALSE}
+boxplot(PY1$Horas_de_descanso_mod.hibrida, col = "light green",
+        main = "Horas de descanso en la Mod. Hibrida")
+```
+
+- El grafico nos indica que las horas no exceden de 10 y que la mediana de horas es 2 
+
+#### <span style="color:#1FB0DB">Horas de Sueño al dia en la modalidad Hibrida(Variable Cuantitativa)
+
+```{r,echo=FALSE}
+boxplot(PY1$Horas_de_sueño_mod.hibrida, col = "light green",
+        main = "Horas de sueño en la Mod. Hibrida")
+```
+
+- El grafico nos indica que las horas no exceden de 10 y que la mediana coincide el cuartil superior o tercer cuartil,con un valor aproximado de 7 horas.
+
+#### <span style="color:#1FB0DB">Metacognición vs Desempeño en la Modalidad Híbrida(Variable cualitativa vs Variable cualitativa)
+```{r,echo=FALSE}
+Metacognición_vs_Desempeño_Mod.Hibrida<-PY1
+mosaicplot(~Metacognicion_mod.hibrida+Desempeño_mod.hibrida , # Las variables a cruzar 
+           data =Metacognición_vs_Desempeño_Mod.Hibrida, 
+           color = 2:20, # vector de colores, T = banco y negro. 
+           las = 2) # estilo de los ejes
+```
+
+- La intercepción más numerosa es el nivel de desempeño 6 con una efectiva Metacognición en la modalidad híbrida.
+
+- La intercepción menos numerosa es nivel de desempeño 2 con una efectiva Metacognición en la modalidad híbrida.
+
+- En el nivel de desempeño 5, la cantidad de los que tuvieron y no tuvieron metacognición en la modalidad hibrida es parecida.
+
+
+#### <span style="color:#1FB0DB">Minutos de Trayecto de la U vs Nivel de Satisfacción Presencial (Variable cuantitativa vs Variable cualitativa)
+```{r,echo=FALSE}
+boxplot(PY1$Minutos_de_trayecto_a_UTEC ~ PY1$Nivel_de_Satisfacción_mod.presencial, col = 4,
+        main = "Minutos de Trayecto de la U vs Nivel de Satisfacción Presencial")
+means <- tapply(PY1$Minutos_de_trayecto_a_UTEC,PY1$Nivel_de_Satisfacción_mod.presencial,mean)
+points(means,pch=20)
+
+```
+
+- Analizamos la variable Minutos de trayecto a UTEC correspondientes a cada Nivel de Satisfacción en la modalidad presencial.Podemos ver que a simple vista el Rango intercuartil más amplio pertenece a los niveles de satisfacción 3 y 7.Los minutos de trayecto a UTEC son más dispersos en dichos niveles.
+
+- Los niveles de Satisfacción 4,5,6 y 7 presentan una asimetría positiva.Los minutos de trayecto a UTEC se concentran en menos minutos.
+
+
+#### <span style="color:#1FB0DB">Horas de Estudio a la Semana en la modalidad Presencial(Excluyendo horario de clases) (Variable Cuantitativa)
+
+```{r,echo=FALSE}
+boxplot(PY1$Horas_de_estudio_mod.presencial, col = "green",
+        main = "Horas de Estudio en la Mod.Presencial")
+```
+
+- Boxplot de Horas de Estudio a la Semana(Modalidad Presencial): Se puede ver claramente que la gran mayoría de horas de estudio,durante la semana se traducen en aproximadamente 3 horas.Asimismo, hay una cierta simetría en los datos centrales. La mediana se encuentra entre 1 y 5 horas de sueño.
+
+
+#### <span style="color:#1FB0DB">Horas de Descanso al dia en la modalidad Presencial(Variable Cuantitativa)
+
+```{r,echo=FALSE}
+boxplot(PY1$Horas_de_descanso_mod.presencial, col = "red",
+        main = "Horas de Descanso en la Mod.Presencial")
+```
+
+- Boxplot de Horas de Descanso al dia(Modalidad Presencial): Se puede ver claramente que la gran mayoría de horas de descanso se traducen en 2 horas.Asimismo, hay una cierta simetría en los datos centrales. La mediana se encuentra entre 1 y 3 horas de sueño.
+
+
+#### <span style="color:#1FB0DB">Horas de Sueño al dia en la modalidad Presencial(Variable Cuantitativa)
+
+```{r,echo=FALSE}
+boxplot(PY1$Horas_de_sueño_mod.presencial, col = "blue",
+        main = "Horas de Sueño en la Mod.Presencial")
+```
+
+- Boxplot de Horas de Sueño(Modalidad Presencial)- Se puede ver claramente que la gran mayoría de horas de sueño se traducen en 6 horas. Asimismo, hay una clara tendencia de la mediana a ubicarse en el cuartil inferior. La mediana se encuentra entre 5 y 7 horas de sueño.
+
+#### <span style="color:#1FB0DB">Numero de estudiantes encuestados por nivel de Satisfacción en la Mod.presencial(Variable Cualitativas)
+
+```{r,echo=FALSE}
+p<-ggplot(data=PY1,
+       mapping=aes(x=Nivel_de_Satisfacción_mod.presencial,
+                   fill=Género)) 
+p+geom_bar(position='stack',stat='count')
+
+```
+
+- Nivel_de_Satisfacción_mod.presencial: Esta variable nos permite conocer el nivel de conformidad que tuvieron los encuestados con la modalidad presencial.
+
+- Género: Podemos identificar el genero(masculino y femenino)de los encuestados. La proporción entre hombres y mujeres en la muestra presenta una mayor presencia de hombres en los resutados.
+
+#### <span style="color:#1FB0DB">Numero de estudiantes encuestados por nivel de estres en la modalidad Hibrida (Variable Caulitativa)
+```{r,echo=FALSE}
+barplot(table(PY1$Nivel_de_estrés_mod.hibrida),col='green',
+        border='red',
+        main='Nivel de estrés en la modalidad Hibrida',
+        xlab='Niveles de estrés',
+        ylab='Frecuencias')
+```
+
+- Nivel_de_estrés_mod.hibrida: Podemos identificar que la mayoría de estudiantes tienden a tener cierta tendencia a sufrir de un cierto grado de estrés en la modalidad híbrida.
+
+
+
+#### <span style="color:#1FB0DB">Numero de estudiantes encuestados por nivel de desempeño en la modalidad Hibrida (Variable Caulitativa)
+```{r,echo=FALSE}
+barplot(table(PY1$Desempeño_mod.hibrida),col='blue',
+        border='red',
+        main='Nivel de Desempeño en la modalidad Hibrida',
+        xlab='Nivel de Desempeño',
+        ylab='Frecuencias')
+```
+
+- Nivel_de_estrés_mod.hibrida: Podemos identificar  que la mayoría de estudiantes tienden a tener cierta tendencia a mantener un estándar mediano de desempeño académico.
+
+#### <span style="color:#1FB0DB">Numero de estudiantes encuestados por nivel de estres en la modalidad Presencial (Variable Caulitativa)
+```{r,echo=FALSE}
+barplot(table(PY1$Nivel_de_estrés_mod.presencial),col='green',
+        border='red',
+        main='Nivel de estrés en la modalidad Presencial',
+        xlab='Niveles de estrés',
+        ylab='Frecuencias')
+```
+
+- Podemos identificar que el nivel 6 de estrés es el más recurrente de la muestra.
+
+#### <span style="color:#1FB0DB">Numero de estudiantes encuestados por nivel de desempeño en la modalidad Presencial (Variable Cualitativa)
+
+```{r,echo=FALSE}
+xx<-barplot(table(PY1$Desempeño_mod.presencial),col='blue',
+        border='red',
+        main='Nivel de Desempeño en la modalidad Presencial',
+        xlab='Nivel de Desempeño',
+        ylab='Frecuencias')
+```
+
+- Podemos identificar que los estudiantes captan mejor los temas dictados de manera presencial.
+
+
+#### <span style="color:#1FB0DB">Numero de estudiantes encuestados y divididos por genero que prefieren la modalidad Presencial o Hibrida (Variable Cualitativa)
+```{r,echo=FALSE}
+barplot(table(PY1$Género,PY1$Preferencias_de_modalidad),beside = TRUE,col=c('blue',"red"),
+        border='darkgrey',
+        main='Preferencias',
+        xlab='Modalidad',
+        ylab='# Estudiantes',
+        space = c(0.4, 2.5),
+        legend.text = rownames(table(PY1$Género)),
+        args.legend = list(title = "Cilindros", x = "topright",
+                           inset = c(0.393, -0.004)))
+```
+
+- Para la ultima variable se puede notar que los estudiantes en general prefieren la modalidad híbrida se les acomoda mejor, esto puede deberse a que la mayoria de los encuestados son masculinos y tienen un alto indice de estres, y asu vez tienen menos horas de estudio y descanso.
+
+
+## <span style="color:#1FB0DB">**Análisis probabilístico** 
+### <span style="color:#1FB0DB">*Distribución Binomial*
+### <span style="color:#1FB0DB">*Variable Aleatoria Discreta: Genero*
+```{r,echo=FALSE}
+muestra <- table(PY1$Género)
+#PROBABILIDAD DE QUE UN ENCUESTADO SEA HOMBRE O MUJER
+probabilidad_genero <- prop.table(table(PY1$Género))
+barp <- barplot(probabilidad_genero,col=c("red","blue"),ylim = c(0,1),main="Probabilidad de encuestado sea hombre o mujer",font.axis=4,las=1)
+text(barp, probabilidad_genero + 0.05, labels = round(probabilidad_genero,2))
+```
+
+**Tabla de frecuencias absolutas de la cantidad de estudiantes por genera**
+```{r,echo=FALSE}
+df_g <- data.frame(table(PY1$Género))
+df_g <- rename(df_g,Genero = Var1)
+df_g
+```
+
+
+**Grafica binomial de encuestar N personas Masculinas**
+```{r,echo=FALSE}
+prob_hombre <- probabilidad_genero[1]
+x<-c(0:201)
+barplot(dbinom(x,size=201,prob = 0.59),ylab = "Probabilidad",col="yellow",xlim = c(110,170),ylim = c(0,0.06),names.arg = c(0:201))
+title("Probabilidad de encuestar a N personas Masculinas")
+```
+
+**Grafica binomial de encuestar N personas Femeninas**
+```{r,echo=FALSE}
+prob_hombre <- probabilidad_genero[1]
+x<-c(0:201)
+barplot(dbinom(x,size=201,prob = 0.41),ylab = "Probabilidad",col="yellow",xlim = c(70,130),ylim = c(0,0.06),names.arg = c(0:201))
+title("Probabilidad de encuestar a N personas Femeninas")
+```
+
+
+#### CASO I:
+La probabilidad de que al elegir al azar a 118 estudiantes de una muestra de 201 estos sean masculinos
+
+DISTRIBUCION BINOMIAL:
+
+n = 201
+
+x = n° de personas masculinas encuestadas
+
+Éxito = Encontrar encuestar a una persona masculina
+
+P = 0.59 (Probabilidad de éxito)    
+
+P(x=118):
+```{r,echo=FALSE}
+dbinom(x=118,size = 201,prob = 0.59)
+```
+
+#### CASO II:
+La probabilidad de que al elegir al azar a 118 estudiantes de una muestra de 201 estos sean femeninos
+
+DISTRIBUCION BINOMIAL:
+
+n = 201
+
+x = n° de personas femeninas encuestadas
+
+Éxito = Encontrar encuestar a una persona femenina
+
+P = 0.59 (Probabilidad de éxito)    
+
+P(x=118):
+```{r,echo=FALSE}
+dbinom(x=118,size = 201,prob = 0.41)
+```
+
+
+#### Respuestas:
+
+- La probabilidad de encuestar en una muestra de 201 a 118 personas y que estas sean masculinas es de: 0.05 o un 5%
+- La probabilidad de encuestar en una muestra de 201 a 118 personas y que estas sean femeninas es demasiado baja
+
+
+#### *Análisis Probabilistico:*
+
+- Se pudo obtener que al encuestar a mas personas, es más propenso encuestar a personas masculinas que femeninas
+
+### <span style="color:#1FB0DB">*Variable Aleatoria Discreta: Nivel de estrés en la modalidad presencial*
+
+OBJETIVO: Analizar la variable **Nivel de estrés en la modalidad presencial** y determinar la probabilidad de que  más de 50 estudiantes de UTEC perciban un estres de nivel 6 de entre todos los encuestados. 
+
+```{r,echo=FALSE}
+table(PY1$`Nivel_de_estrés_mod.presencial`)
+```
+
+|   <span style="color:#3F7281">*Opciones*   	|   <span style="color:#3F7281">*Probabilidad*  	|      <span style="color:#3F7281">*Unidad*     	|
+|:-----------------:	|:-----------------------:	|:--------------------------:	|
+|     *Nivel 1*    	|   0.0049  |        Probabilidad que se escoja el nivel 1	|
+|     *Nivel 2*    	|   0.0199	|        Probabilidad que se escoja el nivel 2 	|
+|    *Nivel 3*    	|   0.0348	|        Probabilidad que se escoja el nivel 3 	|
+|     *Nivel 4*    	|   0.0696 	|        Probabilidad que se escoja el nivel 4	|
+|     *Nivel 5*    	|   0.2238	|        Probabilidad que se escoja el nivel 5 	|
+|    *Nivel 6*    	|   0.3383 	|        Probabilidad que se escoja el nivel 6 	|
+|     *Nivel 7*    	|   0.1940 	|        Probabilidad que se escoja el nivel 7	|
+|     *Nivel 8*    	|   0.1144	|        Probabilidad que se escoja el nivel 8 	|
+
+
+1. Variable "Nivel de estrés en la modalidad presencial": La percepción de los estudiantes sobre su alimentación actual se divide en 68 entrevistados de 201 que percibieron un nivel de estrés 6. Buscaremos hallar la probabilidad de que dentro de un grupo de 100 entrevistados, mas de 50 escojan ese mismo nivel de estrés.
+Además de esto, buscaremos hallar el valor esperado de nuestra función probabilidad, su varianza y su desviación estándar:
+
+P(x>=50), p=68/201, n = 100
+```{r,echo=FALSE}
+cat('Probabilidad (1 - pbnimon(x, n, p)):', 1-pbinom(50,100,68/201),'\n') 
+cat('Valor esperado (E(X)=n*p):', 100*(68/201),'\n')
+cat('Varianza (V(x)=n*p*q):', 100*(68/201)*(1-(68/201)),'\n')# Donde q = 1 - p  (Probabilidad de fracaso)
+cat('Desviación estándar (D(x)=(n*p*q)^0.5):', (100*(68/201)*(1-68/201))^0.5,'\n')
+```
+
+
+Esta es la gráfica de nuestra función probabilidad binomial
+
+```{r,echo=FALSE}
+plot(1 - pbinom(0:50,100,68/201),type="h",xlab="k",ylab="P(X=k)",main="Función de Probabilidad B(100, 0.0002987632 )")
+```
+
+
+### <span style="color:#1FB0DB">*Distribución Geométrica*
+
+### <span style="color:#1FB0DB">*Variable Aleatoria Discreta: Carrera*
+La distribución de Geométrica se especifica por un parámetro: p ,siendo la probabilidad de acierto de cada ensayo.
+
+![](Tabla_ModGoem.JPG){width=width height=height}
+
+Para este esquema se ha determinado que la variable es aleatoria discreta porque la muestra está dado por solo once carreras, representando un conjunto finito. El número de entrevistas hasta encontrar al primer alumno que se encuentre estudiando la carrera de Ingeniería Química. 
+
+Éxito: Un alumno sea de la carrera de Ingeniería Química. 
+
+X= Nº de estudiantes a los que se selecciona hasta conseguir uno con la carrera de Ingeniería Química 
+
+X ~ Geom(p)
+
+Tabla de frecuencias absolutas de la cantidad de horas que los estudiantes se dedican al descanso en la modalidad híbrida
+
+```{r,echo=FALSE}
+table(PY1$Carrera)
+
+```
+
+Resolución del modelo Geométrico
+
+k=6
+
+p=0.09
+
+Donde:
+
+k: Número de intentos hasta obtener el éxito por primera vez
+
+p: Probabilidad de éxito
+
+a)¿Cuál es la probabilidad de que el séptimo estudiante encuestado, responda por primera vez que es de la carrera de Ingeniería Química?
+
+```{r,echo=FALSE}
+x=6
+p=0.09
+round(dgeom(x, p),2)
+
+```
+
+#### Respuesta:
+
+La probabilidad de que el séptimo estudiante encuestado responda por por primera vez que es de la carrera de Ingeniería Química es 0.05 que indica un 5%.
+
+
+#### *Análisis Probabilistico:*
+
++ El valor esperado de la variable carrera para el caso presentado(La probabilidad de que el séptimo estudiante encuestado responda por por primera vez que es de la carrera de Ingeniería Química) es 11.11(E(x)=1/p),por lo que tenemos que esperar una cantidad aproximada de 11 fracasos por lo general,antes de obtener nuestro éxito.
+
+### <span style="color:#1FB0DB">*Distribución Poisson*
+La distribución de Poisson se especifica por un parámetro: lambda (λ).
+
+### <span style="color:#1FB0DB">Parámetro por variable
+|   <span style="color:#3F7281">*Variable aleatoria*   	|   <span style="color:#3F7281">*lambda/media*  	|      <span style="color:#3F7281">*Unidad*     	|
+|:-----------------:	|:-----------------------:	|:--------------------------:	|
+| *Horas_de_estudio_mod.hibrida* | 4 	            |  Cantidad de horas de estudio en la modalidad híbrida por semana |
+| *Horas_de_descanso_mod.hibrida*| 2.34 	        | Cantidad de horas de descanso en la modalidad híbrida por semana|
+| *Horas_de_sueño_mod.hibrida*   | 6.55 	        | Cantidad de horas de sueño en la modalidad híbrida por semana   |
+
+
+### <span style="color:#1FB0DB">*Variable Aleatoria Discreta: Horas_de_estudio_mod.hibrida*
+Para este esquema se ha elegido las variables de tipo numérica discreta, la cantidad de horas que los estudiantes se dedican al estudio en la modalidad híbrida.Consideramos los siguientes datos: El promedio de horas de estudio en la modalidad híbrida es 4 horas por semana.
+
+x=Cantidad de horas de estudio en la modalidad híbrida por semana
+
+x ~ Poisson(λ)
+
+Tabla de frecuencias absolutas de la cantidad de horas que los estudiantes se dedican al estudio en la modalidad híbrida
+
+```{r,echo=FALSE}
+
+table(PY1$Horas_de_estudio_mod.hibrida)
+
+```
+
+Representación Gráfica-Modelo Poisson
+
+```{r,echo=FALSE}
+o1<-mean(PY1$Horas_de_estudio_mod.hibrida)
+x<- 0:30
+lambda <-o1 
+plot(dpois(x, lambda), type = "h", lwd = 4,
+     main = "Función de masa de probabilidad",
+     ylab = "P(X = x)", xlab = "Horas de estudio en la modalidad hibrida a la semana")
+```
+
+
+
+La probabilidad de que los estudiantes inviertan a lo mucho 5 horas para estudiar en la modalidad híbrida durante la semana, P(X<=5),es:
+
+```{r,echo=FALSE}
+round(ppois(5, lambda = o1, lower.tail = TRUE),2)
+```
+#### Respuesta: 
+
+La probabilidad de los alumnos inviertan a lo mucho 5 horas de estudio en la modalidad híbrida a la semana es  0.78 o un 78%.
+
+### <span style="color:#1FB0DB">*Variable Aleatoria Discreta: Horas_de_descanso_mod.hibrida*
+Para este esquema se ha elegido las variables de tipo numérica discreta, la cantidad de horas que los estudiantes se dedican al descanso en la modalidad híbrida.Consideramos los siguientes datos: El promedio de horas de descanso en la modalidad híbrida es 2.34 horas por semana.
+
+x=Cantidad de horas de descanso en la modalidad híbrida por semana
+
+x ~ Poisson(λ)
+
+Tabla de frecuencias absolutas de la cantidad de horas que los estudiantes se dedican al descanso en la modalidad híbrida
+
+```{r,echo=FALSE}
+table(PY1$Horas_de_descanso_mod.hibrida)
+```
+Representación Gráfica-Modelo Poisson
+
+```{r,echo=FALSE}
+o2<-mean(PY1$Horas_de_descanso_mod.hibrida)
+x<- 0:10
+lambda <-o2
+plot(dpois(x, lambda), type = "h", lwd = 4,
+     main = "Función de masa de probabilidad",
+     ylab = "P(X = x)", xlab = "Horas de descanso en la modalidad hibrida a la semana")
+```
+
+
+
+La probabilidad de que los estudiantes inviertan al menos 3 horas de descanso en la modalidad híbrida durante la semana, P(X<=3),es:
+
+
+```{r,echo=FALSE}
+round(ppois(3, lambda = o2, lower.tail = TRUE),2)
+
+```
+#### Respuesta:
+
+La probabilidad de los alumnos inviertan al menos 3 horas de descanso en la modalidad híbrida durante la semana es  0.79 o un 79%.
+
+
+### <span style="color:#1FB0DB">*Variable Aleatoria Discreta: Horas_de_sueño_mod.hibrida*
+Para este esquema se ha elegido las variables de tipo numérica discreta, la cantidad de horas que los estudiantes duermen en la modalidad híbrida.Consideramos los siguientes datos: El promedio de horas de sueño en la modalidad híbrida es 6.55 horas por semana.
+
+x=Cantidad de horas de sueño en la modalidad híbrida por semana
+
+x ~ Poisson(λ)
+
+Tabla de frecuencias absolutas de la cantidad de horas que los estudiantes duermen en la modalidad híbrida
+
+
+```{r,echo=FALSE}
+
+table(PY1$Horas_de_sueño_mod.hibrida)
+
+
+```
+Representación Gráfica-Modelo Poisson
+
+```{r,echo=FALSE}
+o3<-mean(PY1$Horas_de_sueño_mod.hibrida)
+x<- 0:10
+lambda <-o3
+plot(dpois(x, lambda), type = "h", lwd = 4,
+     main = "Función de masa de probabilidad",
+     ylab = "P(X = x)", xlab = "Horas de sueño en la modalidad hibrida a la semana")
+```
+
+
+
+La probabilidad de que los estudiantes tengan al menos 7 horas de sueño en la modalidad híbrida durante la semana, P(X<=7),es:
+
+
+```{r,echo=FALSE}
+round(ppois(7, lambda = o3, lower.tail = TRUE),2)
+
+```
+#### Respuesta:
+
+La probabilidad de los alumnos inviertan al menos 7 horas de sueño en la modalidad híbrida durante la semana es  0.66 o un 66%.
+
+#### *Análisis Probabilistico:*
++ Es poco probable que los estudiantes dediquen un lapso de tiempo mayor a 5 horas para estudiar en la modalidad híbrida.
+
++ Es poco probable que los estudiantes dediquen un lapso de tiempo mayor a 3 al descanso en la modalidad híbrida.
+
++ Es poco probable que los estudiantes tengan un tiempo de sueño prolongado superior a las 7 horas.
+
+### <span style="color:#1FB0DB">*Distribución Binomial Negativa*
+### <span style="color:#1FB0DB">*Variable Aleatoria Discreta: Desempeño en la modalidad presencial*
+OBJETIVO: Analizar la variable **Desempeño en la modalidad presencial** y determinar la probabilidad de que  más de 50 estudiantes de UTEC perciban cambios en su alimentación dentro de un grupo de 100 encuestados. 
+
+```{r,echo=FALSE}
+table(PY1$`Desempeño_mod.presencial`)
+```
+
+|   <span style="color:#3F7281">*Opciones*   	|   <span style="color:#3F7281">*Probabilidad*  	|      <span style="color:#3F7281">*Unidad*     	|
+|:-----------------:	|:-----------------------:	|:--------------------------:	|
+|     *Nivel 1*    	|   0  |        Probabilidad que se escoja el nivel 1	|
+|     *Nivel 2*    	|   0.0049	|        Probabilidad que se escoja el nivel 2 	|
+|    *Nivel 3*    	|   0.0199	|        Probabilidad que se escoja el nivel 3 	|
+|     *Nivel 4*    	|   0.0746 	|        Probabilidad que se escoja el nivel 4	|
+|     *Nivel 5*    	|   0.2437	|        Probabilidad que se escoja el nivel 5 	|
+|    *Nivel 6*    	|   0.3681 	|        Probabilidad que se escoja el nivel 6 	|
+|     *Nivel 7*    	|   0.2487 	|        Probabilidad que se escoja el nivel 7	|
+|     *Nivel 8*    	|   0.0398	|        Probabilidad que se escoja el nivel 8 	|
+
+2.  Variable "Desempeño en la modalidad virtual": Analizando la data se conoce que del total de entrevistados(201), el número de entrevistados que escogieron el nivel de desempeño igual a 7 son 50. Con este modelo probabilistico se buscará hallar la probabilidad de que en 75 entrevistados se encuentre al 50% del numero de entrevistados que escogieron la opción 7. Además, buscaremos hallar el valor esperado de nuestra función probabilidad, su varianza y su desviación estándar
+
+P(x = 50), k=25, p = 50/201
+
+```{r,echo=FALSE}
+cat('Probabilidad (dnbinom(x − k, k, p)):', dnbinom(75,25,50/201),'\n') 
+cat('Valor esperado (μ = k/p):', 25/(50/201),'\n')
+cat('Varianza (V(x)=k(1 − p)/p^2):', 25*(1-50/201)/(50/201)^2,'\n')
+cat('Desviación estándar (D(x)=(k(1 − p)/p^2)^0.5:', (25*(1-50/201)/(50/201)^2)^0.5 ,'\n')
+```
+Esta es la gráfica de nuestra función probabilidad binomial negativa
+
+```{r,echo=FALSE}
+plot(dnbinom(0:75,25,50/201),type="h",xlab="x",ylab="P(X=k)",main="Función de Probabilidad NB(6, 0.005398092)")
+```
+
+#### *Análisis Probabilistico:*
+El uso de este modelo es debido a que según la teoría de la distribución binomial negativa, se desea obtener 25 de los 50 éxitos posibles dentro del muestreo con un numero de ensayos igual a 75. La probabilidad es de un evento simple, por lo que se encuentra en base a la división de los números de casos favorables entre el numero de eventos posibles(50/201).
+
+
+### <span style="color:#1FB0DB">*Distribución Hipergeométrica*
+### <span style="color:#1FB0DB">*Variable Aleatoria Discreta: Nivel de satisfacción mod. Hibrida*
+```{r,echo=FALSE}
+muestra <- table(PY1$Nivel_de_Satisfacción_mod.hibrida)
+#PROBABILIDAD DE QUE UN ENCUESTADO SEA HOMBRE O MUJER
+probabilidad_N_hibrida <- prop.table(table(PY1$Nivel_de_Satisfacción_mod.hibrida))
+barp <- barplot(probabilidad_N_hibrida,col=c("red","blue"),ylim = c(0,1),main="Probabilidad de niveles de satistaccion mod. Hibrida",font.axis=4,las=1)
+text(barp, probabilidad_N_hibrida + 0.05, labels = round(probabilidad_N_hibrida,2))
+```
+
+**Tabla de frecuencias absolutas del nivel de satisfaccion de la modalidad hibrida:**
+```{r,echo=FALSE}
+d1 <- table(PY1$Nivel_de_Satisfacción_mod.hibrida)
+df <- data.frame(table(PY1$Nivel_de_Satisfacción_mod.hibrida))
+df <- rename(df,Niveles=Var1)
+df
+```
+
+Para este esquema se ha determinado que la variable es aleatoria discreta porque la muestra está dado por solo 8 niveles de satisfacción (1,2,3,4,5,6,7,8), representando un conjunto finito.
+Por ende para este experimento usaremos una distribución Hipergeometrica, para determinar si al agarrar un muestra de la población cuan propenso es a que los encuestados estén más satisfechos que otros por la modalidad híbrida
+
+
+#### CASO I:
+¿Cual es la probabilidad de que al agarrar una muestra al azar de 45 personas encuestadas, 5 personas tengan un nivel de satisfacción de 8 en la modalidad híbrida, sabiendo que la población es de 201 personas encuestadas?
+
+Distribución Hipergeometrica:
+
+Éxito: Que una persona encuestada tengo 8 como nivel de satisfacción en la modalidad híbrida
+
+N = 201 (tamaño de la población)
+
+n = 45 (tamaño de la muestra)
+
+k = 11 (éxitos en la población)
+
+x = 5 (personas de la muestra con 8 de satisfacción en la modalidad híbrida)
+
+P(x=5):
+```{r,echo=FALSE}
+dhyper(x=5,m=11,n=190,k=45)
+```
+
+#### CASO II:
+¿Cual es la probabilidad de que al agarrar una muestra al azar de 45 personas encuestadas, 5 personas tengan un nivel de satisfacción de 3 en la modalidad híbrida, sabiendo que la población es de 201 personas encuestadas?
+
+Distribución Hipergeometrica:
+
+Éxito: Que una persona encuestada tengo 3 como nivel de satisfacción en la modalidad híbrida
+
+N = 201 (tamaño de la población)
+
+n = 45 (tamaño de la muestra)
+
+k = 5 (éxitos en la población)
+
+x = 5 (personas de la muestra con 3 de satisfacción en la modalidad híbrida)
+
+P(x=5):
+```{r,echo=FALSE}
+dhyper(x=5,m=5,n=196,k=45)
+```
+
+#### CASO III:
+¿Cual es la probabilidad de que al agarrar una muestra al azar de 45 personas encuestadas, 5 personas tengan un nivel de satisfacción de 6 en la modalidad híbrida, sabiendo que la población es de 201 personas encuestadas?
+
+Distribución Hipergeometrica:
+
+Éxito: Que una persona encuestada tengo 6 como nivel de satisfacción en la modalidad híbrida
+
+N = 201 (tamaño de la población)
+
+n = 45 (tamaño de la muestra)
+
+k = 67 (éxitos en la población)
+
+x = 5 (personas de la muestra con 6 de satisfacción en la modalidad híbrida)
+
+P(x=5):
+```{r,echo=FALSE}
+dhyper(x=5,m=67,n=134,k=45)
+```
+
+#### Respuestas:
+
+- La probabilidad de que solo 5 personas encuestadas de una muestra de 45 tengan un nivel de satisfacción de `8` con la educación en la modalidad híbrida es de:  `0.05 o 5%`
+- La probabilidad de que solo 5 personas encuestadas de una muestra de 45 tengan un nivel de satisfacción de `3` con la educación en la modalidad híbrida es de:  `0.0004 o 0.04%`
+- La probabilidad de que solo 5 personas encuestadas de una muestra de 45 tengan un nivel de satisfacción de `6` con la educación en la modalidad híbrida es de:  `0.0001 o 0.01%`
+
+Se puede ver que es mas propenso que al escoger una muestra de 45 personas encuestadas, solo 5 de ellas tengan el máximo nivel de satisfacción.
+
+
+#### *Análisis Probabilistico:*
+
++ Finalmente se pudo comprobar que al escoger una muestra es mas probable encontrar personas que tengan un bajo nivel de satisfacción con respecto a la modalidad híbrida, que encontrar personas que estén altamente satisfechas con la modalidad híbrida.
+
+
+### <span style="color:#1FB0DB">*Variable Aleatoria Discreta: Nivel de satisfacción mod. Presencial*
+
+```{r,echo=FALSE}
+muestra <- table(PY1$Nivel_de_Satisfacción_mod.presencial)
+#PROBABILIDAD DE QUE UN ENCUESTADO SEA HOMBRE O MUJER
+probabilidad_N_presencial <- prop.table(table(PY1$Nivel_de_Satisfacción_mod.presencial))
+barp <- barplot(probabilidad_N_presencial,col=c("red","blue"),ylim = c(0,1),main="Probabilidad de niveles de satistaccion mod. Presencial",font.axis=4,las=1)
+text(barp, probabilidad_N_presencial + 0.05, labels = round(probabilidad_N_presencial,2))
+```
+
+
+**Tabla de frecuencias absolutas del nivel de satisfacción de la modalidad presencial:**
+```{r,echo=FALSE}
+d2 <- table(PY1$Nivel_de_Satisfacción_mod.presencial)
+df1 <- data.frame(table(PY1$Nivel_de_Satisfacción_mod.presencial))
+df1 <- rename(df1,Niveles=Var1)
+df1
+```
+
+Para este esquema se ha determinado que la variable es aleatoria discreta porque la muestra está dado por solo 8 niveles de satisfacción (1,2,3,4,5,6,7,8), representando un conjunto finito.
+Por ende para este experimento usaremos una distribución Hipergeometrica, para determinar si al agarrar un muestra de la población cuan propenso es a que los encuestados estén más satisfechos que otros por la modalidad presencial.
+
+
+#### CASO I:
+¿Cual es la probabilidad de que al agarrar una muestra al azar de 60 personas encuestadas, a lo más 10 personas tengan un nivel de satisfacción de 4 en la modalidad presencial, sabiendo que la población es de 201 personas encuestadas?
+
+Distribución Hipergeometrica:
+
+Éxito: Que una persona encuestada tengo 4 como nivel de satisfacción en la modalidad presencial
+
+N = 201 (tamaño de la población)
+
+n = 60 (tamaño de la muestra)
+
+k = 17 (éxitos en la población)
+
+x <= 10 (personas de la muestra con 4 de satisfacción en la modalidad presencial)
+
+P(x<=10):
+```{r,echo=FALSE}
+phyper(q=10,m=17,n=184,k=60)
+```
+
+#### CASO II:
+
+¿Cual es la probabilidad de que al agarrar una muestra al azar de 60 personas encuestadas, a lo más 10 personas tengan un nivel de satisfacción de 5 en la modalidad presencial, sabiendo que la población es de 201 personas encuestadas?
+
+Distribución Hipergeometrica:
+
+Éxito: Que una persona encuestada tengo 5 como nivel de satisfacción en la modalidad presencial
+
+N = 201 (tamaño de la población)
+
+n = 60 (tamaño de la muestra)
+
+k = 41 (éxitos en la población)
+
+x <= 10 (personas de la muestra con 5 de satisfacción en la modalidad presencial)
+
+P(x<=10):
+```{r,echo=FALSE}
+phyper(q=10,m=41,n=160,k=60)
+```
+
+#### CASO III:
+
+¿Cual es la probabilidad de que al agarrar una muestra al azar de 60 personas encuestadas, a lo más 10 personas tengan un nivel de satisfacción de 6 en la modalidad presencial, sabiendo que la población es de 201 personas encuestadas?
+
+Distribución Hipergeometrica:
+
+Éxito: Que una persona encuestada tengo 6 como nivel de satisfacción en la modalidad presencial
+
+N = 201 (tamaño de la población)
+
+n = 60 (tamaño de la muestra)
+
+k = 62 (éxitos en la población)
+
+x <= 10 (personas de la muestra con 6 de satisfacción en la modalidad presencial)
+
+P(x<=10):
+```{r,echo=FALSE}
+round(phyper(q=10,m=62,n=139,k=60),3)
+```
+
+
+#### CASO IV:
+
+¿Cual es la probabilidad de que al agarrar una muestra al azar de 60 personas encuestadas, a lo más 10 personas tengan un nivel de satisfacción de 7 en la modalidad presencial, sabiendo que la población es de 201 personas encuestadas?
+
+Distribución Hipergeometrica:
+
+Éxito: Que una persona encuestada tengo 7 como nivel de satisfacción en la modalidad presencial
+
+N = 201 (tamaño de la población)
+
+n = 60 (tamaño de la muestra)
+
+k = 63 (éxitos en la población)
+
+x <= 10 (personas de la muestra con 7 de satisfacción en la modalidad presencial)
+
+P(x<=10):
+```{r,echo=FALSE}
+round(phyper(q=10,m=63,n=138,k=60),3)
+```
+
+#### Respuestas:
+
+- La probabilidad de que a lo más 10 personas encuestadas de una muestra de 60 tengan un nivel de satisfacción de `4` con la educación en la modalidad híbrida es de:  `0.99 o 99%`
+
+- La probabilidad de que a lo más 10 personas encuestadas de una muestra de 60 tengan un nivel de satisfacción de `5` con la educación en la modalidad híbrida es de:  `0.25 o 25%`
+
+- La probabilidad de que a lo más 10 personas encuestadas de una muestra de 60 tengan un nivel de satisfacción de `6` con la educación en la modalidad híbrida es de:  `0.003 o 0.3%`
+
+- La probabilidad de que a lo más 10 personas encuestadas de una muestra de 60 tengan un nivel de satisfacción de `7` con la educación en la modalidad híbrida es de:  `0.002 o 0.2%`
+
+Se puede ver que es mas propenso que al escoger una muestra de 60 personas encuestadas, como mucho 10 de dichas personas tendrán un alto indice de probabilidad de bajo nivel de satisfacción con respecto a la modalidad presencial.
+
+
+#### *Análisis Probabilistico:*
++ Finalmente se pudo comprobar que al escoger una muestra es mas probable encontrar más personas que tengan un alto nivel de satisfacción con respecto a la modalidad presencial, que encontrar personas que estén bajamente satisfechas con la modalidad presencial.
+
+### **Comparación de los niveles de satisfacción en ambos modelos:**
+De la comparación con respecto al nivel de satisfacción de los estudiantes por la educación brindada en la modalidad híbrida y presencial, se puede observar que es más propenso que al seguir encuestando a estudiantes, ellos respondan que están mas satisfechos con la modalidad presencial que con la híbrida y, por ende, se puede intuir que prefieren la modalidad presencial a la híbrida a nivel de educación.
+
+
+### <span style="color:#1FB0DB">*Variable Aleatoria Discreta: Preferencia de modalidad*
+OBJETIVO: Analizar la variable **Preferencias de modalidad** y determinar la probabilidad de que se encuentre hasta 50 entrevistados de UTEC que prefieran la modalidad presencial de un grupo de 100 entrevistados
+.
+```{r,echo=FALSE}
+table(PY1$`Preferencias_de_modalidad`)
+```
+|   <span style="color:#3F7281">*Opciones*   	|   <span style="color:#3F7281">*Probabilidad*  	|      <span style="color:#3F7281">*Unidad*     	|
+|:-----------------:	|:-----------------------:	|:--------------------------:	|
+|     *Modalidad presencial*    	|   0.4875  |        Probabilidad de que la preferencia sea presencial	|
+|     *Modalidad híbrida*    	|   0.5124	|        Probabilidad de que la preferencia sea híbrida 	|
+
+
+3. Variable "Preferencia de modalidad": También se conoce que solo 98 de los 201 entrevistados escogieron la modalidad presencial como su modalidad de estudios adecuada. Se buscará hallar la probabilidad de que dentro de una muestra aleatoria de 100 entrevistados, se encuentre como máximo 50 entrevistados de los cuales prefieren la modalidad presencial. Además de esto, buscaremos hallar el valor esperado de nuestra función probabilidad, su varianza y su desviación estándar.
+
+P(x ≤ 50), N = 201, M = 98, n=100
+
+
+```{r,echo=FALSE}
+cat('Probabilidad (phyper(x, M, N − M, n)):', phyper(50,98,103,100),'\n') 
+cat('Valor esperado (E(X)= n*M/N):', 100*98/201,'\n')
+cat('Varianza (V(X) = (n*M/N)(1 − M/N)(N-n)/(N-1)):', (100*(98/201))*(1-(98/201))*(201-100)/(201-1),'\n')
+cat('Desviación estándar (D(x)=((n*M/N)(1 − M/N)(N-n)/(N-1))^0.5:', ((100*(98/201))*(1-(98/201))*(201-100)/(201-1))^0.5,'\n')
+```
+
+
+Esta es la gráfica de nuestra función probabilidad Hipergeométrica
+
+```{r,echo=FALSE}
+plot(phyper(0:50,98,103,100),type="h",xlab="N, M, n",ylab="",main="Función de Probabilidad HG(201, 50, 100)")
+```
+
+#### *Analisis Probabilistico:*
+Debido a que en esta variable la población se divide en 2 características mutuamente excluyentes(quienes prefieren la modalidad híbrida y quienes prefieren la modalidad presencial), el uso de este modelo es el mas apropiado ya que además se busca analizar una muestra donde las extracciones no se reemplazan.
+
