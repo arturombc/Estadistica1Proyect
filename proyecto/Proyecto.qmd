@@ -1,5 +1,5 @@
 ---
-title: "Testing database"
+title: <center><span>Análisis de usuarios de una empresa de telefonía movil.</span></center>
 format: 
   html:
     toc: true
@@ -9,7 +9,7 @@ format:
     code_download: TRUE # Permite a los lectores descargar el qmd
     code_folding: TRUE # Permite a los lectores cambiar a none, hide or show
     fig_caption: TRUE # Las imagenes se renderizan con caption
-    theme: superhero # cyborg, darkly, journal, vapor. Library "bslib"
+    theme: journal  #superhero cyborg, darkly, journal, vapor. Library "bslib"
     # runtime: shiny # sirve para que la librería shiny interactiva funcione. library("shiny")
     number-sections: true
     embed-resources: true
@@ -23,15 +23,44 @@ author:
 editor: visual
 ---
 
+# [**Introducción**]{style="color:#1FB0DB"}
+
+## **Relevancia**
+
+En el contexto empresarial, analizar una base de datos con información de los clientes puede llegar a ser crucial para el crecimiento de una empresa; así como del uso correcto de los recursos.\
+A lo largo de este trabajo, se analizará el comportamiento de los clientes de una empresa de telefonía móvil. El objetivo será encontrar *insights* con el fin de optimizar nuestros esfuerzos hacia el crecimiento empresarial.
+
+## **Objetivos**
+
+1.  Encontrar una relación entre el equipo(teléfono) y el consumo de datos del usuario.
+2.  Analizar las llamadas que realizan y reciben los usuarios
+3.  Analizar razones por las que los usuarios no pagan las facturas.
+
+## **Planificación**
+
+# **Datos**
+
+## **Población objetivo**
+
+## **Recolección**
+
+## **Variables**
+
+## **Limpieza**
+
+###### Librerías
+
+```{r}
+if (!require(readr)){install.packages(readr);library(readr)}
+if (!require(dplyr)){install.packages(dplyr);library(dplyr)}
+if (!require(ggplot2)){install.packages(ggplot2);library(ggplot2)}
+```
+
 ```{r, setup, include=FALSE}
 # Se invocan las librerías, se setean los temas, etc.
 knitr::opts_chunk$set(
   comment = '', fig.width = 6, fig.height = 6 # comment = "" hace que no se vean los comentarios
 )
-library(readr)
-library(dplyr)
-library(bslib)
-library(shiny)
 ```
 
 Ahora leeré los txt
