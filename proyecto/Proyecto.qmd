@@ -76,3 +76,57 @@ DF7 <- read_delim("data/TARGET.txt","|")
 DF8 <- read_delim("data/TRAFICO_DATOS.txt","|")
 DF9 <- read_delim("data/TRAFICOVOZSMS.txt","|")
 ```
+
+
+## **Limpieza de datos**
+```{r}
+DF = merge(DF1,DF8, by = "ID1")
+ncol(DF1)
+ncol(DF8)
+nrow(DF)
+ncol(DF)
+round(sum(is.na(DF))/(nrow(DF)*ncol(DF))*100 , digits = 2)
+
+
+DF <- subset(DF, select = -TRAF_DATOS_3G_NO_COSITE)
+DF <- subset(DF, select = -TRAF_DATOS_3G_COSITE)
+names(DF)
+
+colSums(is.na(DF))
+DFF <- na.omit(DF)
+nrow(DFF)
+
+DFFFF <- DF6[, c("ID1", "PERIODO", "ValorRentaMensual", "DEPARTAMENTO_XDR", "DEPARTAMENTO_CDR")]
+obj1 <- na.omit(merge(DFF,DFFFF, by="ID1"))
+nrow(obj1)
+
+write.table(obj1, file="obj1.csv",sep=",") 
+# En esta tabla esta: EQUIPOS, TRAFICO_DATOS y PLANTA. Algunos valores de periodo se repiten, averiguar que hacer con eso
+```
+
+
+```{r}
+DF_ = merge(DF1,DF9, by = "ID1")
+names(DF_)
+
+DFF_ <- na.omit(DF_)
+
+round(sum(is.na(DFF_))/(nrow(DFF_)*ncol(DFF_))*100 , digits = 2)
+
+write.table(DFF_, file="obj2.csv",sep=",")
+```
+
+```{r}
+
+length(unique(DF3$ID2))
+nrow(DF3)
+D <- merge(DF3,DF7, by="ID2")
+nrow(D)
+D <- subset(D, select=-TARGET_PERM)
+D <- subset(D, select=-NUM_BOLETA)
+D <- na.omit(D)
+nrow(D)
+# D <- subset(D, select=-PERIODO) # Ver que hacer con el periodo
+write.table(D, file="obj3.csv",sep=",")
+```
+
