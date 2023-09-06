@@ -77,8 +77,8 @@ DF8 <- read_delim("data/TRAFICO_DATOS.txt","|")
 DF9 <- read_delim("data/TRAFICOVOZSMS.txt","|")
 ```
 
-
 ## **Limpieza de datos**
+
 ```{r}
 DF = merge(DF1,DF8, by = "ID1")
 ncol(DF1)
@@ -104,7 +104,6 @@ write.table(obj1, file="obj1.csv",sep=",")
 # En esta tabla esta: EQUIPOS, TRAFICO_DATOS y PLANTA. Algunos valores de periodo se repiten, averiguar que hacer con eso
 ```
 
-
 ```{r}
 DF_ = merge(DF1,DF9, by = "ID1")
 names(DF_)
@@ -129,4 +128,3 @@ nrow(D)
 # D <- subset(D, select=-PERIODO) # Ver que hacer con el periodo
 write.table(D, file="obj3.csv",sep=",")
 ```
-
