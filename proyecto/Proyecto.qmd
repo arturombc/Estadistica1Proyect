@@ -61,11 +61,11 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 | DEPARTAMENTO       | Categórica   | Nominal  | Departamentos del Perú    | Departamento de ubicación del cliente                                         |
 | AIRTIME_IN_TOT     | Cuantitativa | Continua | Numero positivo           | Tiempo total llamadas recibidas durante el periodo, en minutos                |
 | CALLS_IN_TOT       | Cuantitativa | Discreta | Numero entero y positivo  | Cantidad de llamadas recibidas durante el periodo                             |
-| DAYS_IN_VOICE_TOT  |              |          |                           |                                                                               |
-| AIRTIME_OUT_TOT    |              |          |                           |                                                                               |
-| CALLS_OUT_TOT      |              |          |                           |                                                                               |
-| DAYS_OUT_VOICE_TOT |              |          |                           |                                                                               |
-|                    |              |          |                           |                                                                               |
+| DAYS_IN_VOICE_TOT  | Cuantitativa | Discreta | Numero entero y positivo  | Cantidad de días que recibieron llamadas durante el periodo                   |
+| AIRTIME_OUT_TOT    | Cuantitativa | Continua | Numero positivo           | Tiempo total llamadas realizadas durante el periodo, en minutos               |
+| CALLS_OUT_TOT      | Cuantitativa | Discreta | Numero entero y positivo  | Cantidad de llamadas realizadas durante el periodo                            |
+| DAYS_OUT_VOICE_TOT | Cuantitativa | Discreta | Numero entero y positivo  | Cantidad de días que realizó llamadas durante el periodo                      |
+| MONTO_DEUDA        | Cuantitativa | Continua | Numero positivo           | Deuda en soles durante el periodo                                             |
 |                    |              |          |                           |                                                                               |
 |                    |              |          |                           |                                                                               |
 |                    |              |          |                           |                                                                               |
