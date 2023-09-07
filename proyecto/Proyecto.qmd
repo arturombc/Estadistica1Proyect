@@ -46,6 +46,33 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 
 ## **Variables**
 
+| VARIABLE         | CLASE | TIPO | RESTRICCION | DESCRIPCCION |
+|------------------|-------|------|-------------|--------------|
+| PERIODO          |       |      |             |              |
+| EQUIPO_TEC       |       |      |             |              |
+| EQUIPO_MARCA     |       |      |             |              |
+| EQUIPO_MODELO    |       |      |             |              |
+| EQUIPO_OS        |       |      |             |              |
+| TRAF_DATOS_4G    |       |      |             |              |
+| TRAF_DATOS_3G    |       |      |             |              |
+| TRAF_DATOS_2G    |       |      |             |              |
+| TRAF_DATOS_TOTAL |       |      |             |              |
+|                  |       |      |             |              |
+|                  |       |      |             |              |
+|                  |       |      |             |              |
+|                  |       |      |             |              |
+|                  |       |      |             |              |
+|                  |       |      |             |              |
+|                  |       |      |             |              |
+|                  |       |      |             |              |
+|                  |       |      |             |              |
+|                  |       |      |             |              |
+|                  |       |      |             |              |
+|                  |       |      |             |              |
+|                  |       |      |             |              |
+|                  |       |      |             |              |
+|                  |       |      |             |              |
+
 ## **Limpieza**
 
 ###### Librerías
@@ -54,6 +81,16 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 if (!require(readr)){install.packages(readr);library(readr)}
 if (!require(dplyr)){install.packages(dplyr);library(dplyr)}
 if (!require(ggplot2)){install.packages(ggplot2);library(ggplot2)}
+```
+
+```{r}
+obj2<-read_csv("obj2.csv")
+obj2
+```
+
+```{r}
+obj3<-read_csv("obj3.csv")
+obj3
 ```
 
 ```{r, setup, include=FALSE}
