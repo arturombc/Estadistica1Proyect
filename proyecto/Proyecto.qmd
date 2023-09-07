@@ -47,7 +47,7 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 ## **Variables**
 
 | VARIABLE           | CLASE        | TIPO     | RESTRICCION               | DESCRIPCCION                                                                  |
-|--------------|--------------|--------------|--------------|-----------------|
+|---------------|---------------|---------------|---------------|---------------|
 | PERIODO            | Categórica   | Ordinal  | Alternativas consideradas | Periodo de la información                                                     |
 | EQUIPO_TEC         | Categórica   | Ordinal  | Alternativas consideradas | Tecnología del chip                                                           |
 | EQUIPO_MARCA       | Categórica   | Nominal  | Alternativas consideradas | Marca del equipo en el periodo                                                |
@@ -204,5 +204,6 @@ DFF_ <- subset(DFF_, select = -TOP_CONT_ON_5)
 DFF_ <- subset(DFF_, select = -TOP_CONT_OFF_5)
 DFF_ <- subset(DFF_, select = -PERIODO.x) 
 
+D <- subset(D, select = -PERIODO.y)
 
 ```
