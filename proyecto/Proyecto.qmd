@@ -47,7 +47,7 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 ## **Variables**
 
 | VARIABLE           | CLASE        | TIPO     | RESTRICCION               | DESCRIPCCION                                                                  |
-|-----------|-----------|-----------|-----------|-----------------------------|
+|--------------|--------------|--------------|--------------|-----------------|
 | PERIODO            | Categórica   | Ordinal  | Alternativas consideradas | Periodo de la información                                                     |
 | EQUIPO_TEC         | Categórica   | Ordinal  | Alternativas consideradas | Tecnología del chip                                                           |
 | EQUIPO_MARCA       | Categórica   | Nominal  | Alternativas consideradas | Marca del equipo en el periodo                                                |
@@ -171,5 +171,38 @@ write_csv(D,"obj3.csv")
 **Eliminación de variables:**
 
 ```{r}
-obj1 <- subset(obj1, select = -ID1)
+#obj1 <- subset(obj1, select = -DEPARTAMENTO_CDR)
+#obj1 <- subset(obj1, select = -PERIODO.x)
+
+#DFF_ <- subset(DFF_, select = -AIRTIME_IN_ON)
+#DFF_ <- subset(DFF_, select = -AIRTIME_IN_OFF)
+#DFF_ <- subset(DFF_, select = -AIRTIME_IN_WEEK)
+#DFF_ <- subset(DFF_, select = -AIRTIME_IN_WEEKD)
+DFF_ <- subset(DFF_, select = -CALLS_IN_ON)
+DFF_ <- subset(DFF_, select = -CALLS_IN_OFF)
+DFF_ <- subset(DFF_, select = -CALLS_IN_WEEK)
+DFF_ <- subset(DFF_, select = -CALLS_IN_WEEKD)
+DFF_ <- subset(DFF_, select = -ORIG_VOICE_ON)
+DFF_ <- subset(DFF_, select = -ORIG_VOICE_OFF)
+DFF_ <- subset(DFF_, select = -DAYS_IN_VOICE_ON)
+DFF_ <- subset(DFF_, select = -DAYS_IN_VOICE_OFF)
+DFF_ <- subset(DFF_, select = -AIRTIME_OUT_ON)
+DFF_ <- subset(DFF_, select = -AIRTIME_OUT_OFF)
+DFF_ <- subset(DFF_, select = -AIRTIME_OUT_WEEK)
+DFF_ <- subset(DFF_, select = -AIRTIME_OUT_WEEKD)
+DFF_ <- subset(DFF_, select = -CALLS_OUT_ON)
+DFF_ <- subset(DFF_, select = -CALLS_OUT_OFF)
+DFF_ <- subset(DFF_, select = -CALLS_OUT_WEEK)
+DFF_ <- subset(DFF_, select = -CALLS_OUT_WEEKD)
+DFF_ <- subset(DFF_, select = -DEST_VOICE_ON)
+DFF_ <- subset(DFF_, select = -DEST_VOICE_OFF)
+DFF_ <- subset(DFF_, select = -DAYS_OUT_VOICE_ON)
+DFF_ <- subset(DFF_, select = -DAYS_OUT_VOICE_OFF)
+DFF_ <- subset(DFF_, select = -CONT_ON)
+DFF_ <- subset(DFF_, select = -CONT_OFF)
+DFF_ <- subset(DFF_, select = -TOP_CONT_ON_5)
+DFF_ <- subset(DFF_, select = -TOP_CONT_OFF_5)
+DFF_ <- subset(DFF_, select = -PERIODO.x) 
+
+
 ```
