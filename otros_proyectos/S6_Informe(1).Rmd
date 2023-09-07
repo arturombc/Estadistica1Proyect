@@ -2,9 +2,6 @@
 title: "S6_informe"
 date: "22 de Noviembre del 2022"
 output: 
-  html_document:
-    toc: yes
-    df_print: paged
   html_notebook:
     toc: yes
     toc_float:
@@ -12,6 +9,9 @@ output:
       smooth_scroll: no
     number_sections: yes
     theme: journal
+  html_document:
+    toc: yes
+    df_print: paged
 ---
 
 ##### Libreria a utlizar

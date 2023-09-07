@@ -137,8 +137,10 @@ DFFFF <- DF6[, c("ID1", "PERIODO", "ValorRentaMensual", "DEPARTAMENTO_XDR", "DEP
 obj1 <- na.omit(merge(DFF,DFFFF, by="ID1"))
 nrow(obj1)
 
-write.table(obj1, file="obj1.csv",sep=",") 
+obj1
+write_csv(obj1, "obj1.csv")
 # En esta tabla esta: EQUIPOS, TRAFICO_DATOS y PLANTA. Algunos valores de periodo se repiten, averiguar que hacer con eso
+
 ```
 
 ```{r}
@@ -149,7 +151,7 @@ DFF_ <- na.omit(DF_)
 
 round(sum(is.na(DFF_))/(nrow(DFF_)*ncol(DFF_))*100 , digits = 2)
 
-write.table(DFF_, file="obj2.csv",sep=",")
+write_csv(DFF_, "obj2.csv")
 ```
 
 ```{r}
@@ -163,5 +165,11 @@ D <- subset(D, select=-NUM_BOLETA)
 D <- na.omit(D)
 nrow(D)
 # D <- subset(D, select=-PERIODO) # Ver que hacer con el periodo
-write.table(D, file="obj3.csv",sep=",")
+write_csv(D,"obj3.csv")
+```
+
+**Eliminación de variables:**
+
+```{r}
+obj1 <- subset(obj1, select = -ID1)
 ```
