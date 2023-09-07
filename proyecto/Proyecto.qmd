@@ -46,32 +46,32 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 
 ## **Variables**
 
-| VARIABLE          | CLASE        | TIPO     | RESTRICCION               | DESCRIPCCION                                                                  |
-|-------------------|--------------|----------|---------------------------|-------------------------------------------------------------------------------|
-| PERIODO           | Categórica   | Ordinal  | Alternativas consideradas | Periodo de la información                                                     |
-| EQUIPO_TEC        | Categórica   | Ordinal  | Alternativas consideradas | Tecnología del chip                                                           |
-| EQUIPO_MARCA      | Categórica   | Nominal  | Alternativas consideradas | Marca del equipo en el periodo                                                |
-| EQUIPO_MODELO     | Categórica   | Nominal  | Alternativas consideradas | Modelo del dispositivo                                                        |
-| EQUIPO_OS         | Categórica   | Nominal  | Alternativas consideradas | Tipo de sistema operativo                                                     |
-| TRAF_DATOS_4G     | Cuantitativa | Continua | Numero positivo           | Tráfico de datos 4G en Mb consumidos durante el periodo                       |
-| TRAF_DATOS_3G     | Cuantitativa | Continua | Numero positivo           | Tráfico de datos 3G en Mb consumidos durante el periodo                       |
-| TRAF_DATOS_2G     | Cuantitativa | Continua | Numero positivo           | Tráfico de datos 2G en Mb consumidos durante el periodo                       |
-| TRAF_DATOS_TOTAL  | Cuantitativa | Continua | Numero positivo           | Tráfico de datos Total en Mb consumidos durante el periodo                    |
-| VALORRENTAMENSUAL | Categórica   | Ordinal  | Alternativas consideradas | El cargo fijo mensual de su plan (Lo que debe pagar por el servicio). Sin IGV |
-| DEPARTAMENTO      | Categórica   | Nominal  | Departamentos del Perú    | Departamento de ubicación del cliente                                         |
-| AIRTIME_IN_TOT    | Cuantitativa | Continua | Numero positivo           | Tiempo total llamadas recibidas durante el periodo, en minutos                |
-| CALLS_IN_TOT      | Cuantitativa | Discreta | Numero entero y positivo  | Cantidad de llamadas recibidas durante el periodo                             |
-|                   |              |          |                           |                                                                               |
-|                   |              |          |                           |                                                                               |
-|                   |              |          |                           |                                                                               |
-|                   |              |          |                           |                                                                               |
-|                   |              |          |                           |                                                                               |
-|                   |              |          |                           |                                                                               |
-|                   |              |          |                           |                                                                               |
-|                   |              |          |                           |                                                                               |
-|                   |              |          |                           |                                                                               |
-|                   |              |          |                           |                                                                               |
-|                   |              |          |                           |                                                                               |
+| VARIABLE           | CLASE        | TIPO     | RESTRICCION               | DESCRIPCCION                                                                  |
+|-----------|-----------|-----------|-----------|-----------------------------|
+| PERIODO            | Categórica   | Ordinal  | Alternativas consideradas | Periodo de la información                                                     |
+| EQUIPO_TEC         | Categórica   | Ordinal  | Alternativas consideradas | Tecnología del chip                                                           |
+| EQUIPO_MARCA       | Categórica   | Nominal  | Alternativas consideradas | Marca del equipo en el periodo                                                |
+| EQUIPO_MODELO      | Categórica   | Nominal  | Alternativas consideradas | Modelo del dispositivo                                                        |
+| EQUIPO_OS          | Categórica   | Nominal  | Alternativas consideradas | Tipo de sistema operativo                                                     |
+| TRAF_DATOS_4G      | Cuantitativa | Continua | Numero positivo           | Tráfico de datos 4G en Mb consumidos durante el periodo                       |
+| TRAF_DATOS_3G      | Cuantitativa | Continua | Numero positivo           | Tráfico de datos 3G en Mb consumidos durante el periodo                       |
+| TRAF_DATOS_2G      | Cuantitativa | Continua | Numero positivo           | Tráfico de datos 2G en Mb consumidos durante el periodo                       |
+| TRAF_DATOS_TOTAL   | Cuantitativa | Continua | Numero positivo           | Tráfico de datos Total en Mb consumidos durante el periodo                    |
+| VALORRENTAMENSUAL  | Categórica   | Ordinal  | Alternativas consideradas | El cargo fijo mensual de su plan (Lo que debe pagar por el servicio). Sin IGV |
+| DEPARTAMENTO       | Categórica   | Nominal  | Departamentos del Perú    | Departamento de ubicación del cliente                                         |
+| AIRTIME_IN_TOT     | Cuantitativa | Continua | Numero positivo           | Tiempo total llamadas recibidas durante el periodo, en minutos                |
+| CALLS_IN_TOT       | Cuantitativa | Discreta | Numero entero y positivo  | Cantidad de llamadas recibidas durante el periodo                             |
+| DAYS_IN_VOICE_TOT  |              |          |                           |                                                                               |
+| AIRTIME_OUT_TOT    |              |          |                           |                                                                               |
+| CALLS_OUT_TOT      |              |          |                           |                                                                               |
+| DAYS_OUT_VOICE_TOT |              |          |                           |                                                                               |
+|                    |              |          |                           |                                                                               |
+|                    |              |          |                           |                                                                               |
+|                    |              |          |                           |                                                                               |
+|                    |              |          |                           |                                                                               |
+|                    |              |          |                           |                                                                               |
+|                    |              |          |                           |                                                                               |
+|                    |              |          |                           |                                                                               |
 
 ## **Limpieza**
 
