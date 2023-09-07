@@ -171,13 +171,13 @@ write_csv(D,"obj3.csv")
 **Eliminación de variables:**
 
 ```{r}
-#obj1 <- subset(obj1, select = -DEPARTAMENTO_CDR)
-#obj1 <- subset(obj1, select = -PERIODO.x)
+obj1 <- subset(obj1, select = -DEPARTAMENTO_CDR)
+obj1 <- subset(obj1, select = -PERIODO.x)
 
-#DFF_ <- subset(DFF_, select = -AIRTIME_IN_ON)
-#DFF_ <- subset(DFF_, select = -AIRTIME_IN_OFF)
-#DFF_ <- subset(DFF_, select = -AIRTIME_IN_WEEK)
-#DFF_ <- subset(DFF_, select = -AIRTIME_IN_WEEKD)
+DFF_ <- subset(DFF_, select = -AIRTIME_IN_ON)
+DFF_ <- subset(DFF_, select = -AIRTIME_IN_OFF)
+DFF_ <- subset(DFF_, select = -AIRTIME_IN_WEEK)
+DFF_ <- subset(DFF_, select = -AIRTIME_IN_WEEKD)
 DFF_ <- subset(DFF_, select = -CALLS_IN_ON)
 DFF_ <- subset(DFF_, select = -CALLS_IN_OFF)
 DFF_ <- subset(DFF_, select = -CALLS_IN_WEEK)
