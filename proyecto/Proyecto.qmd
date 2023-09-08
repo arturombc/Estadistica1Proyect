@@ -143,6 +143,7 @@ write_csv(obj1, "obj1.csv")
 
 ```
 
+
 ```{r}
 DF_ = merge(DF1,DF9, by = "ID1")
 names(DF_)
@@ -207,3 +208,4 @@ DFF_ <- subset(DFF_, select = -PERIODO.x)
 D <- subset(D, select = -PERIODO.y)
 
 ```
+
