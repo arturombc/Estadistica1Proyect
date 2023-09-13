@@ -16,7 +16,7 @@ format:
     author-title: Autores
 author: 
   - Arturo Barrantes Chuquimia
-  - .
+  - Sheyla Sanchez Arauco 
   - .
   - .
   - .
