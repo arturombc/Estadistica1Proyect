@@ -1,0 +1,13 @@
+---
+title: "ggplot2_practice"
+format: html
+---
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+
+```
+
