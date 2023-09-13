@@ -1,0 +1,28 @@
+---
+title: "LimpiezaDatos"
+format: html
+---
+
+## Cargando los datos
+
+```{r}
+DF1 <- read_delim("data/EQUIPOS.txt","|")
+DF2 <- read_delim("data/CONSULTAS_PORTA.txt","|")
+DF3 <- read_delim("data/FACTURACION.txt","|")
+DF4 <- read_delim("data/INDICADORES_RED.txt","|")
+DF5 <- read_delim("data/INTENTOS_PORTA.txt","|")
+DF6 <- read_delim("data/PLANTA.txt","|")
+DF7 <- read_delim("data/TARGET.txt","|")
+DF8 <- read_delim("data/TRAFICO_DATOS.txt","|")
+DF9 <- read_delim("data/TRAFICOVOZSMS.txt","|")
+```
+
+### Limpieza 1
+
+```{r}
+DF <- merge(DF1,DF8, by = c("ID1", "PERIODO"))
+round(sum(is.na(DF))/(nrow(DF)*ncol(DF))*100 , digits = 2)
+DF
+
+```
+
