@@ -73,24 +73,12 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 |                    |              |          |                           |                                                                               |
 |                    |              |          |                           |                                                                               |
 
-## **Limpieza**
-
 ###### Librerías
 
 ```{r}
 if (!require(readr)){install.packages(readr);library(readr)}
 if (!require(dplyr)){install.packages(dplyr);library(dplyr)}
 if (!require(ggplot2)){install.packages(ggplot2);library(ggplot2)}
-```
-
-```{r}
-obj2<-read_csv("obj2.csv")
-obj2
-```
-
-```{r}
-obj3<-read_csv("obj3.csv")
-obj3
 ```
 
 ```{r, setup, include=FALSE}
@@ -100,112 +88,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-Ahora leeré los txt
-
-```{r, warning=FALSE, message=FALSE}
-DF1 <- read_delim("data/EQUIPOS.txt","|")
-DF2 <- read_delim("data/CONSULTAS_PORTA.txt","|")
-DF3 <- read_delim("data/FACTURACION.txt","|")
-DF4 <- read_delim("data/INDICADORES_RED.txt","|")
-DF5 <- read_delim("data/INTENTOS_PORTA.txt","|")
-DF6 <- read_delim("data/PLANTA.txt","|")
-DF7 <- read_delim("data/TARGET.txt","|")
-DF8 <- read_delim("data/TRAFICO_DATOS.txt","|")
-DF9 <- read_delim("data/TRAFICOVOZSMS.txt","|")
-```
-
-## **Limpieza de datos**
-
 ```{r}
-DF = merge(DF1,DF8, by = "ID1")
-ncol(DF1)
-ncol(DF8)
-nrow(DF)
-ncol(DF)
-round(sum(is.na(DF))/(nrow(DF)*ncol(DF))*100 , digits = 2)
-
-
-DF <- subset(DF, select = -TRAF_DATOS_3G_NO_COSITE)
-DF <- subset(DF, select = -TRAF_DATOS_3G_COSITE)
+DF <- read_csv("DataLimpia.csv")
 names(DF)
 
-colSums(is.na(DF))
-DFF <- na.omit(DF)
-nrow(DFF)
-
-DFFFF <- DF6[, c("ID1", "PERIODO", "ValorRentaMensual", "DEPARTAMENTO_XDR", "DEPARTAMENTO_CDR")]
-obj1 <- na.omit(merge(DFF,DFFFF, by="ID1"))
-nrow(obj1)
-
-obj1
-write_csv(obj1, "obj1.csv")
-# En esta tabla esta: EQUIPOS, TRAFICO_DATOS y PLANTA. Algunos valores de periodo se repiten, averiguar que hacer con eso
-
 ```
-
-
-```{r}
-DF_ = merge(DF1,DF9, by = "ID1")
-names(DF_)
-
-DFF_ <- na.omit(DF_)
-
-round(sum(is.na(DFF_))/(nrow(DFF_)*ncol(DFF_))*100 , digits = 2)
-
-write_csv(DFF_, "obj2.csv")
-```
-
-```{r}
-
-length(unique(DF3$ID2))
-nrow(DF3)
-D <- merge(DF3,DF7, by="ID2")
-nrow(D)
-D <- subset(D, select=-TARGET_PERM)
-D <- subset(D, select=-NUM_BOLETA)
-D <- na.omit(D)
-nrow(D)
-# D <- subset(D, select=-PERIODO) # Ver que hacer con el periodo
-write_csv(D,"obj3.csv")
-```
-
-**Eliminación de variables:**
-
-```{r}
-obj1 <- subset(obj1, select = -DEPARTAMENTO_CDR)
-obj1 <- subset(obj1, select = -PERIODO.x)
-
-DFF_ <- subset(DFF_, select = -AIRTIME_IN_ON)
-DFF_ <- subset(DFF_, select = -AIRTIME_IN_OFF)
-DFF_ <- subset(DFF_, select = -AIRTIME_IN_WEEK)
-DFF_ <- subset(DFF_, select = -AIRTIME_IN_WEEKD)
-DFF_ <- subset(DFF_, select = -CALLS_IN_ON)
-DFF_ <- subset(DFF_, select = -CALLS_IN_OFF)
-DFF_ <- subset(DFF_, select = -CALLS_IN_WEEK)
-DFF_ <- subset(DFF_, select = -CALLS_IN_WEEKD)
-DFF_ <- subset(DFF_, select = -ORIG_VOICE_ON)
-DFF_ <- subset(DFF_, select = -ORIG_VOICE_OFF)
-DFF_ <- subset(DFF_, select = -DAYS_IN_VOICE_ON)
-DFF_ <- subset(DFF_, select = -DAYS_IN_VOICE_OFF)
-DFF_ <- subset(DFF_, select = -AIRTIME_OUT_ON)
-DFF_ <- subset(DFF_, select = -AIRTIME_OUT_OFF)
-DFF_ <- subset(DFF_, select = -AIRTIME_OUT_WEEK)
-DFF_ <- subset(DFF_, select = -AIRTIME_OUT_WEEKD)
-DFF_ <- subset(DFF_, select = -CALLS_OUT_ON)
-DFF_ <- subset(DFF_, select = -CALLS_OUT_OFF)
-DFF_ <- subset(DFF_, select = -CALLS_OUT_WEEK)
-DFF_ <- subset(DFF_, select = -CALLS_OUT_WEEKD)
-DFF_ <- subset(DFF_, select = -DEST_VOICE_ON)
-DFF_ <- subset(DFF_, select = -DEST_VOICE_OFF)
-DFF_ <- subset(DFF_, select = -DAYS_OUT_VOICE_ON)
-DFF_ <- subset(DFF_, select = -DAYS_OUT_VOICE_OFF)
-DFF_ <- subset(DFF_, select = -CONT_ON)
-DFF_ <- subset(DFF_, select = -CONT_OFF)
-DFF_ <- subset(DFF_, select = -TOP_CONT_ON_5)
-DFF_ <- subset(DFF_, select = -TOP_CONT_OFF_5)
-DFF_ <- subset(DFF_, select = -PERIODO.x) 
-
-D <- subset(D, select = -PERIODO.y)
-
-```
-
