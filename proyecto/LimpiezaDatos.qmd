@@ -6,6 +6,13 @@ format: html
 ## Cargando los datos
 
 ```{r}
+library(readr)
+library(dplyr)
+```
+
+
+
+```{r}
 DF1 <- read_delim("data/EQUIPOS.txt","|")
 DF2 <- read_delim("data/CONSULTAS_PORTA.txt","|")
 DF3 <- read_delim("data/FACTURACION.txt","|")
@@ -20,9 +27,50 @@ DF9 <- read_delim("data/TRAFICOVOZSMS.txt","|")
 ### Limpieza 1
 
 ```{r}
-DF <- merge(DF1,DF8, by = c("ID1", "PERIODO"))
-round(sum(is.na(DF))/(nrow(DF)*ncol(DF))*100 , digits = 2)
-DF
+data1 <- merge(DF1,DF8, by = c("ID1", "PERIODO"))
+data1 %>% subset(select = -c(TRAF_DATOS_3G_NO_COSITE,TRAF_DATOS_3G_COSITE))
 
+
+temp1 <- DF6[, c("ID1", "PERIODO", "DEPARTAMENTO_XDR", "DEPARTAMENTO_CDR")]
+data2 <- merge(data1,temp1, by=c("ID1","PERIODO"))
+
+round(sum(is.na(data2))/(nrow(data2)*ncol(data2))*100 , digits = 2)
 ```
+
+## Limpieza 2
+
+```{r}
+temp2 <- subset(DF9,select = -c(
+  CALLS_OUT_ON,
+  CALLS_OUT_OFF,
+  DEST_VOICE_ON,
+  DEST_VOICE_OFF,
+  DAYS_OUT_VOICE_ON,
+  DAYS_OUT_VOICE_OFF,
+  CONT_ON,
+  CONT_OFF,
+  TOP_CONT_ON_5,
+  TOP_CONT_OFF_5,
+  CALLS_OUT_ON,
+  CALLS_OUT_OFF,
+  DEST_VOICE_ON,
+  AIRTIME_IN_ON,
+  AIRTIME_IN_OFF,
+  CALLS_IN_ON,
+  CALLS_IN_OFF,
+  ORIG_VOICE_ON,
+  ORIG_VOICE_OFF,
+  DAYS_IN_VOICE_ON,
+  DAYS_IN_VOICE_OFF,
+  AIRTIME_OUT_ON,
+  AIRTIME_OUT_OFF
+))
+
+
+
+data3 <- merge(data2, temp2, by=c("ID1", "PERIODO"))
+
+write.csv(data3, "DataLimpia.csv")
+```
+
 
