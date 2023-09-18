@@ -46,7 +46,7 @@ Analizar el comportamiento de la transferencia de datos en los clientes peruanos
 
 # **Datos**
 
-## **Población objetivo**
+## **Población objetivo** 
 
 ## **Recolección**
 
@@ -67,8 +67,8 @@ Analizar el comportamiento de la transferencia de datos en los clientes peruanos
 | TRAF_DURACION_4G   | Cuantitativa | Continua | Número positivo           | Trafico de duración 4G consumidos durante el periodo                                                                                |
 | TRAF_DURACION_3G   | Cuantitativa | Continua | Número positivo           | Trafico de duración 3G consumidos durante el periodo                                                                                |
 | TRAF_DURACION_2G   | Cuantitativa | Continua | Número positivo           | Trafico de duración 2G durante el periodo                                                                                           |
-| DEPARTAMENTO_XDR   | Categória    | Nominal  | Alternativas Consideradas | Departamento de ubicación del cliente                                                                                               |
-| DEPARTAMENTO_CDR   | Categória    | Nominal  | Alternativas Consideradas | Departamento de ubicación del cliente                                                                                               |
+| DEPARTAMENTO_XDR   | Categória    | Nominal  | Alternativas Consideradas | Departamento en el cuál se consumió mayor cantidad de Mb's                                                                          |
+| DEPARTAMENTO_CDR   | Categória    | Nominal  | Alternativas Consideradas | Departamento en el cuál se consumió mayor cantidad de minutos en llamadas                                                           |
 | VALORRENTAMENSUAL  | Categórica   | Ordinal  | Alternativas consideradas | El cargo fijo mensual de su plan (Lo que debe pagar por el servicio). Sin IGV                                                       |
 | DEPARTAMENTO       | Categórica   | Nominal  | Departamentos del Perú    | Departamento de ubicación del cliente                                                                                               |
 | AIRTIME_IN_TOT     | Cuantitativa | Continua | Número positivo           | Tiempo total llamadas recibidas durante el periodo, en minutos                                                                      |
