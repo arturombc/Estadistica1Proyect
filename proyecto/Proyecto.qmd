@@ -34,7 +34,7 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 
 ### **Objetivo general**
 
-Analizar el comportamiento de la transferencia de datos en los clientes movistar entre diciembre de 2018 y abril del 2019.
+Analizar el comportamiento de la transferencia de datos en los clientes peruanos de Movistar entre diciembre de 2018 y abril del 2019.
 
 ### **Objetivos específicos**
 
