@@ -19,7 +19,7 @@ author:
   - Sheyla Sanchez Arauco 
   - Andrea Maricielo Pérez Castro 
   - Alejandro Rojas Alvarez
-  - .
+  - Luis David Acedo Lopez
 editor: visual
 ---
 
@@ -53,7 +53,7 @@ Analizar el comportamiento de la transferencia de datos en los clientes movistar
 ## **Variables**
 
 | VARIABLE           | CLASE        | TIPO     | RESTRICCION               | DESCRIPCCION                                                                                                                        |
-|------------------|---------------|---------------|---------------|---------------|
+|---------------|---------------|---------------|---------------|---------------|
 | ID1                | Categórica   | Nominal  |                           | Nombre encriptado de la persona                                                                                                     |
 | PERIODO            | Categórica   | Ordinal  | Alternativas consideradas | Periodo de la información                                                                                                           |
 | EQUIPO_TEC         | Categórica   | Ordinal  | Alternativas consideradas | Tecnología del chip                                                                                                                 |
