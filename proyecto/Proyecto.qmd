@@ -118,7 +118,3 @@ str(DF)
 ```{r}
 glimpse(DF)
 ```
-
-```{r}
-DF$TOP_CONT_5
-```
