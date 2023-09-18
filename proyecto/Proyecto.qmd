@@ -32,9 +32,15 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 
 ## **Objetivos**
 
-1.  Encontrar una relación entre el equipo(teléfono) y el consumo de datos del usuario.
-2.  Analizar las llamadas que realizan y reciben los usuarios
-3.  Analizar razones por las que los usuarios no pagan las facturas.
+### **Objetivo general**
+
+Analizar el comportamiento de la transferencia de datos en los clientes movistar entre diciembre de 2018 y abril del 2019.
+
+### **Objetivos específicos**
+
+1.  Analizar la relación entre el equipo y el tráfico de datos de los usuarios de Movistar por periodo.
+2.  Analizar los eventos entrantes a cada usuario
+3.  Analizar los eventos salientes a cada usuario
 
 ## **Planificación**
 
@@ -47,9 +53,9 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 ## **Variables**
 
 | VARIABLE           | CLASE        | TIPO     | RESTRICCION               | DESCRIPCCION                                                                  |
-|-----------|-----------|-----------|-----------|-----------------------------|
+|--------------|--------------|--------------|--------------|-----------------|
 | ID1                | Categórica   |          |                           |                                                                               |
-| PERIODO            | Categórica   | Ordinal  | Alternativas consideradas | Periodo de la información                                                     |
+| PERIODO            | Categórica   | Ordinal  | Alternativas consideradas | Año y mes en que fue tomada la información                                    |
 | EQUIPO_TEC         | Categórica   | Ordinal  | Alternativas consideradas | Tecnología del chip                                                           |
 | EQUIPO_MARCA       | Categórica   | Nominal  | Alternativas consideradas | Marca del equipo en el periodo                                                |
 | EQUIPO_MODELO      | Categórica   | Nominal  | Alternativas consideradas | Modelo del dispositivo                                                        |
@@ -108,4 +114,3 @@ glimpse(DF)
 ```{r}
 DF
 ```
-
