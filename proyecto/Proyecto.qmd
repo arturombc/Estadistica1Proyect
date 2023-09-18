@@ -23,13 +23,14 @@ author:
   - Luis David Acedo Lopez
 editor: visual
 ---
+
+```{=html}
 <style>
 .toggle-content {
   display: none;
 }
 </style>
-
-
+```
 # [**Introducción**]{style="color:#1FB0DB"}
 
 ## **Relevancia**
@@ -51,7 +52,23 @@ Analizar el comportamiento de la transferencia de datos y llamadas en los client
 
 ## **Planificación**
 
-Después de limpiar los datos iniciales, juntar los datos que nos son relevantes en un único csv. Podemos hacer un análisis más exhaustivo y menos complicado que si fueran en varias tablas. El trabajo se dividirá en el cumplimiento de los 3 objetivos antes presentados. Cada objetivo tendrá su respectiva sección, así como lo que motivó su búsqueda y conclusiones.
+Después de limpiar los datos iniciales, juntar los datos que nos son relevantes en un único csv. Podemos hacer un análisis más exhaustivo y menos complicado que si fueran en varias tablas. El trabajo se dividirá en el cumplimiento de los 3 objetivos antes presentados. Cada objetivo tendrá su respectiva sección, así como lo que motivó su búsqueda y conclusiones. Finalmente se uniran todas las conclusiones en un capítulo final.
+
+```{mermaid}
+flowchart LR
+  A[Recolección de datos] --> B(Unión y limpieza de datos)
+  B --> C{Objetivos}
+  C --> D[Objetivo 1]
+  C --> E[Objetivo 2]
+  C --> F[Objetivo 3]
+  D --> G(Resultado 1)
+  E --> H(Resultado 2)
+  F --> I(Resultado 3)
+  G --> J(Conclusiones finales)
+  H --> J
+  I --> J
+```
+
 
 # **Datos**
 
@@ -69,15 +86,19 @@ Es importante destacar que estos datos se han limpiado y preparado previamente p
 
 Las variables con las que contamos son las siguientes:
 
-<button id="toggle-button" onclick="toggleContent()">Mostrar/Ocultar Contenido</button>
-<div class="toggle-content">
+<button id="toggle-button" onclick="toggleContent()">
 
+Mostrar/Ocultar Contenido
+
+</button>
+
+::: toggle-content
 | VARIABLE           | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|---------------|---------------|---------------|---------------------------|
+|----------------|----------------|----------------|------------------------|
 | ID1                | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO            | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | EQUIPO_TEC         | Categórica Ordinal    | 3G, 4G, 5G                    | Tecnología del chip                                                                                                                 |
-| EQUIPO_MARCA       | Categórica Nominal    | LG, SAMSUNG, APPLE, etc.      | Marca del equipo                                                                                                       |
+| EQUIPO_MARCA       | Categórica Nominal    | LG, SAMSUNG, APPLE, etc.      | Marca del equipo                                                                                                                    |
 | EQUIPO_MODELO      | Categórica Nominal    | Galaxy J2, iPhone6, etc.      | Modelo del dispositivo                                                                                                              |
 | EQUIPO_OS          | Categórica Nominal    | Android, iOS, sin tac, otros. | Tipo de sistema operativo                                                                                                           |
 | TRAF_DATOS_4G      | Cuantitativa Continua | Número positivo               | Tráfico de datos 4G en Mb consumidos durante el periodo                                                                             |
@@ -110,9 +131,7 @@ Las variables con las que contamos son las siguientes:
 | DEST_VOICE         | Cuantitativa Discreta | Número entero y positivo      | Contactos totales a los que llamó durante el periodo                                                                                |
 | CONT_TOT           | Cuantitativa Discreta | Número entero y positivo      | Contactos totales con los que realizó un evento (llamada entrante / saliente o mensaje de texto saliente) durante el periodo        |
 | TOP_CONT_5         | Cuantitativa Discreta | Número entero y positivo      | Contactos totales con los que realizó más de 5 eventos (llamada entrante / saliente o mensaje de texto saliente) durante el periodo |
-
-</div>
-
+:::
 
 # Análisis
 
@@ -133,12 +152,12 @@ knitr::opts_chunk$set(
 
 ## Carga y exploración de los datos
 
-
 ```{r}
 DF <- read_csv("DataLimpia.csv")
 DF
 ```
 
+```{=html}
 <script>
 function toggleContent() {
   var content = document.querySelector(".toggle-content");
@@ -149,3 +168,4 @@ function toggleContent() {
   }
 }
 </script>
+```
