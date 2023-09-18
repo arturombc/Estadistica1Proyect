@@ -17,7 +17,7 @@ format:
 author: 
   - Arturo Barrantes Chuquimia
   - Sheyla Sanchez Arauco 
-  - .
+  - Andrea Maricielo Pérez Castro 
   - .
   - .
 editor: visual
@@ -48,9 +48,13 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 
 | VARIABLE           | CLASE        | TIPO     | RESTRICCION               | DESCRIPCCION                                                                  |
 <<<<<<< HEAD
+<<<<<<< HEAD
 |-----------|-----------|-----------|-----------|-----------------------------|
 =======
 |--------------------|--------------|----------|---------------------------|-------------------------------------------------------------------------------|
+=======
+|-----------|-----------|-----------|-----------|-----------------------------|
+>>>>>>> 5a0aad7fd1e0693711f0c50dad01eb2796ff3e92
 | ID1                | Categórica   |          |                           |                                                                               |
 >>>>>>> 41e4d424490e381dcd7d44c2345c27e956447d46
 | PERIODO            | Categórica   | Ordinal  | Alternativas consideradas | Periodo de la información                                                     |
@@ -104,6 +108,7 @@ DF <- read_csv("DataLimpia.csv")
 names(DF)
 
 ```
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 ```{r}
@@ -172,3 +177,13 @@ D <- subset(D, select = -PERIODO.y)
 ```
 =======
 >>>>>>> 41e4d424490e381dcd7d44c2345c27e956447d46
+=======
+
+```{r}
+glimpse(DF)
+```
+
+```{r}
+DF
+```
+>>>>>>> 5a0aad7fd1e0693711f0c50dad01eb2796ff3e92
