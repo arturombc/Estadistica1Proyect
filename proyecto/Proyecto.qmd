@@ -47,7 +47,8 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 ## **Variables**
 
 | VARIABLE           | CLASE        | TIPO     | RESTRICCION               | DESCRIPCCION                                                                  |
-|---------------|---------------|---------------|---------------|---------------|
+|--------------------|--------------|----------|---------------------------|-------------------------------------------------------------------------------|
+| ID1                | Categórica   |          |                           |                                                                               |
 | PERIODO            | Categórica   | Ordinal  | Alternativas consideradas | Periodo de la información                                                     |
 | EQUIPO_TEC         | Categórica   | Ordinal  | Alternativas consideradas | Tecnología del chip                                                           |
 | EQUIPO_MARCA       | Categórica   | Nominal  | Alternativas consideradas | Marca del equipo en el periodo                                                |
@@ -57,6 +58,11 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 | TRAF_DATOS_3G      | Cuantitativa | Continua | Numero positivo           | Tráfico de datos 3G en Mb consumidos durante el periodo                       |
 | TRAF_DATOS_2G      | Cuantitativa | Continua | Numero positivo           | Tráfico de datos 2G en Mb consumidos durante el periodo                       |
 | TRAF_DATOS_TOTAL   | Cuantitativa | Continua | Numero positivo           | Tráfico de datos Total en Mb consumidos durante el periodo                    |
+| TRAF_DURACION_4G   | Cuantitativa | Continua | Numero positivo           | Trafico de duracion 4G consumidos durante el periodo                          |
+| TRAF_DURACION_3G   | Cuantitativa | Continua | Numero positivo           | Trafico de duracion 3G consumidos durante el periodo                          |
+| TRAF_DURACION_2G   | Cuantitativa | Continua | Numero positivo           | Trafico de duracion 2G durante el periodo                                     |
+| DEPARTAMENTO_XDR   | Categoria    | Nominal  | Alternativas Consideradas | Departamento de ubicación del cliente                                         |
+| DEPARTAMENTO_CDR   | Categoria    | Nominal  | Alternativas Consideradas | Departamento de ubicación del cliente                                         |
 | VALORRENTAMENSUAL  | Categórica   | Ordinal  | Alternativas consideradas | El cargo fijo mensual de su plan (Lo que debe pagar por el servicio). Sin IGV |
 | DEPARTAMENTO       | Categórica   | Nominal  | Departamentos del Perú    | Departamento de ubicación del cliente                                         |
 | AIRTIME_IN_TOT     | Cuantitativa | Continua | Numero positivo           | Tiempo total llamadas recibidas durante el periodo, en minutos                |
@@ -66,6 +72,7 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 | CALLS_OUT_TOT      | Cuantitativa | Discreta | Numero entero y positivo  | Cantidad de llamadas realizadas durante el periodo                            |
 | DAYS_OUT_VOICE_TOT | Cuantitativa | Discreta | Numero entero y positivo  | Cantidad de días que realizó llamadas durante el periodo                      |
 | MONTO_DEUDA        | Cuantitativa | Continua | Numero positivo           | Deuda en soles durante el periodo                                             |
+|                    |              |          |                           |                                                                               |
 |                    |              |          |                           |                                                                               |
 |                    |              |          |                           |                                                                               |
 |                    |              |          |                           |                                                                               |
