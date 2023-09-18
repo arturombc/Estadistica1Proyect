@@ -72,6 +72,13 @@ round(sum(is.na(data3))/(nrow(data3)*ncol(data3))*100 , digits = 2)
 
 ```
 
+## Limpieza 3
+
+```{r}
+data3$PERIODO <- as.character(data3$PERIODO)
+```
+
+
 ```{r}
 str(data3)
 ```
