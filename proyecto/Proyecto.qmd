@@ -110,11 +110,5 @@ knitr::opts_chunk$set(
 ```
 
 ```{r}
-DF <- read_csv("DataLimpia.csv")
-names(DF)
-str(DF)
-```
-
-```{r}
-glimpse(DF)
+DF <- data3
 ```
