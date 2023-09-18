@@ -8,42 +8,14 @@ library(ggplot2)
 ```
 
 ```{r}
-mpg
-```
-
-```{r}
 ggplot(mpg, aes(x = displ, y = hwy)) + 
   geom_point()
 ```
 ```{r}
-ggplot(mpg, aes(x = displ, y= hwy)) +
+ggplot(mpg, aes(displ, hwy)) +
   geom_point()
 ```
-
 ```{r}
-#names(mpg)
-ggplot(mpg, aes(displ, hwy, colour = class)) + 
-  geom_point()
-```
-
-```{r}
-
-data3 <- read.csv("proyecto/DataLimpia.csv")
 
 ```
 
-```{r}
-marcas_deseadas <- c("LG", "APPLE", "SAMSUNG")
-data3_filtrado <- data3[data3$EQUIPO_MARCA %in% marcas_deseadas, ]
-
-ggplot(data3_filtrado, aes(EQUIPO_TEC)) +
-  geom_bar() +
-  facet_wrap(~EQUIPO_MARCA)
-
-```
-
-```{r}
-ggplot(data3, aes(TRAF_DATOS_4G)) +
-  geom_histogram(bins=300)+
-  coord_cartesian(xlim = c(0, 50000))
-```
