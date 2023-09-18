@@ -10,8 +10,6 @@ library(readr)
 library(dplyr)
 ```
 
-
-
 ```{r}
 DF1 <- read_delim("data/EQUIPOS.txt","|")
 DF2 <- read_delim("data/CONSULTAS_PORTA.txt","|")
@@ -77,7 +75,3 @@ round(sum(is.na(data3))/(nrow(data3)*ncol(data3))*100 , digits = 2)
 ```{r}
 str(data3)
 ```
-
-
-
-
