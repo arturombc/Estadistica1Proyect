@@ -28,13 +28,12 @@ DF9 <- read_delim("data/TRAFICOVOZSMS.txt","|")
 
 ```{r}
 data1 <- merge(DF1,DF8, by = c("ID1", "PERIODO"))
-data1 %>% subset(select = -c(TRAF_DATOS_3G_NO_COSITE,TRAF_DATOS_3G_COSITE))
+data1 %>% subset(select = -c(TRAF_DATOS_3G_NO_COSITE,TRAF_DATOS_3G_COSITE)) -> data1
 
 
 temp1 <- DF6[, c("ID1", "PERIODO", "DEPARTAMENTO_XDR", "DEPARTAMENTO_CDR")]
 data2 <- merge(data1,temp1, by=c("ID1","PERIODO"))
 
-round(sum(is.na(data2))/(nrow(data2)*ncol(data2))*100 , digits = 2)
 ```
 
 ## Limpieza 2
@@ -70,7 +69,15 @@ temp2 <- subset(DF9,select = -c(
 
 data3 <- merge(data2, temp2, by=c("ID1", "PERIODO"))
 
-write.csv(data3, "DataLimpia.csv")
+write.csv(data3, "DataLimpia.csv", row.names = FALSE)
+round(sum(is.na(data3))/(nrow(data3)*ncol(data3))*100 , digits = 2)
+
 ```
+
+```{r}
+str(data3)
+```
+
+
 
 
