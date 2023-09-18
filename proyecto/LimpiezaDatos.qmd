@@ -66,16 +66,18 @@ temp2 <- subset(DF9,select = -c(
 
 
 data3 <- merge(data2, temp2, by=c("ID1", "PERIODO"))
-
-write.csv(data3, "DataLimpia.csv", row.names = FALSE)
-round(sum(is.na(data3))/(nrow(data3)*ncol(data3))*100 , digits = 2)
-
 ```
 
 ## Limpieza 3
 
 ```{r}
 data3$PERIODO <- as.character(data3$PERIODO)
+```
+
+
+```{r}
+write.csv(data3, "DataLimpia.csv", row.names = FALSE)
+round(sum(is.na(data3))/(nrow(data3)*ncol(data3))*100 , digits = 2)
 ```
 
 
