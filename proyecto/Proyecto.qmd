@@ -17,7 +17,7 @@ format:
 author: 
   - Arturo Barrantes Chuquimia
   - Sheyla Sanchez Arauco 
-  - .
+  - Andrea Maricielo Pérez Castro  
   - .
   - .
 editor: visual
@@ -47,7 +47,7 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 ## **Variables**
 
 | VARIABLE           | CLASE        | TIPO     | RESTRICCION               | DESCRIPCCION                                                                  |
-|---------------|---------------|---------------|---------------|---------------|
+|-------------|-------------|-------------|-------------|----------------------|
 | PERIODO            | Categórica   | Ordinal  | Alternativas consideradas | Periodo de la información                                                     |
 | EQUIPO_TEC         | Categórica   | Ordinal  | Alternativas consideradas | Tecnología del chip                                                           |
 | EQUIPO_MARCA       | Categórica   | Nominal  | Alternativas consideradas | Marca del equipo en el periodo                                                |
@@ -92,4 +92,12 @@ knitr::opts_chunk$set(
 DF <- read_csv("DataLimpia.csv")
 names(DF)
 
+```
+
+```{r}
+glimpse(DF)
+```
+
+```{r}
+DF
 ```
