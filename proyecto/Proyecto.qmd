@@ -16,7 +16,7 @@ format:
     author-title: Autores
 author: 
   - Arturo Barrantes Chuquimia
-  - .
+  - Sheyla Sanchez Arauco 
   - .
   - .
   - .
@@ -47,7 +47,7 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 ## **Variables**
 
 | VARIABLE           | CLASE        | TIPO     | RESTRICCION               | DESCRIPCCION                                                                  |
-|---------------|---------------|---------------|---------------|---------------|
+|-----------|-----------|-----------|-----------|-----------------------------|
 | PERIODO            | Categórica   | Ordinal  | Alternativas consideradas | Periodo de la información                                                     |
 | EQUIPO_TEC         | Categórica   | Ordinal  | Alternativas consideradas | Tecnología del chip                                                           |
 | EQUIPO_MARCA       | Categórica   | Nominal  | Alternativas consideradas | Marca del equipo en el periodo                                                |
@@ -143,7 +143,6 @@ write_csv(obj1, "obj1.csv")
 
 ```
 
-
 ```{r}
 DF_ = merge(DF1,DF9, by = "ID1")
 names(DF_)
@@ -208,4 +207,3 @@ DFF_ <- subset(DFF_, select = -PERIODO.x)
 D <- subset(D, select = -PERIODO.y)
 
 ```
-
