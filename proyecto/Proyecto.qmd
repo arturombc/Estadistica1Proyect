@@ -171,10 +171,6 @@ function toggleContent() {
 GRAFICA:
 
 ```{r}
-# Cargar la librería ggplot2 si no está cargada
-# install.packages("ggplot2")
-library(ggplot2)
-
 # Crear un gráfico de barras agrupadas
 ggplot(data = DF, aes(x = PERIODO)) +
   geom_bar(aes(y = CALLS_OUT_TOT, fill = "Llamadas Salientes"), stat = "identity") +
