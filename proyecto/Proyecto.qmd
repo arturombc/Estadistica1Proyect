@@ -177,8 +177,8 @@ library(ggplot2)
 
 # Crear un gráfico de barras agrupadas
 ggplot(data = DF, aes(x = PERIODO)) +
-  geom_bar(aes(y = CALLS_OUT_TOT, fill = "Llamadas Salientes"), position = "stack", stat = "identity") +
-  geom_bar(aes(y = CALLS_IN_TOT, fill = "Llamadas Entrantes"), position = "stack", stat = "identity") +
+  geom_bar(aes(y = CALLS_OUT_TOT, fill = "Llamadas Salientes"), stat = "identity") +
+  geom_bar(aes(y = CALLS_IN_TOT, fill = "Llamadas Entrantes"), stat = "identity") +
   scale_fill_manual(values = c("Llamadas Salientes" = "blue", "Llamadas Entrantes" = "green")) +
   labs(x = "Periodo", y = "Total de Llamadas", title = "Comparación de Llamadas Entrantes y Salientes por Periodo") +
   theme_minimal() +
