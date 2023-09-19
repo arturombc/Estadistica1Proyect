@@ -42,7 +42,7 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 
 ### **Objetivo general**
 
-Analizar el comportamiento de la transferencia de datos y llamadas en los clientes peruanos de una empresa de telefonía móvil entre diciembre de 2018 y abril del 2019.
+Analizar el comportamiento de la transferencia de datos y llamadas en los clientes peruanos de una empresa de telefonía móvil entre febrero de 2019 y mayo del 2019.
 
 ### **Objetivos específicos**
 
@@ -69,7 +69,6 @@ flowchart LR
   I --> J
 ```
 
-
 # **Datos**
 
 ## **Población objetivo**
@@ -94,7 +93,7 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 | VARIABLE           | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|----------------|----------------|----------------|------------------------|
+|-----------------|-----------------|-----------------|----------------------|
 | ID1                | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO            | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | EQUIPO_TEC         | Categórica Ordinal    | 3G, 4G, 5G                    | Tecnología del chip                                                                                                                 |
@@ -168,4 +167,21 @@ function toggleContent() {
   }
 }
 </script>
+```
+GRAFICA:
+
+```{r}
+# Cargar la librería ggplot2 si no está cargada
+# install.packages("ggplot2")
+library(ggplot2)
+
+# Crear un gráfico de barras agrupadas
+ggplot(data = DF, aes(x = PERIODO)) +
+  geom_bar(aes(y = CALLS_OUT_TOT, fill = "Llamadas Salientes"), position = "stack", stat = "identity") +
+  geom_bar(aes(y = CALLS_IN_TOT, fill = "Llamadas Entrantes"), position = "stack", stat = "identity") +
+  scale_fill_manual(values = c("Llamadas Salientes" = "blue", "Llamadas Entrantes" = "green")) +
+  labs(x = "Periodo", y = "Total de Llamadas", title = "Comparación de Llamadas Entrantes y Salientes por Periodo") +
+  theme_minimal() +
+  theme(legend.title = element_blank())
+
 ```
