@@ -204,16 +204,21 @@ Anasilis de datos:
 grafico 2:
 
 ```{r}
-ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=OS),xlabel=)+geom_col(position="dodge")+ggtitle("TRAFICO DE DATOS TOTAL Y TECNOLOGIA DEL CHIP") + theme(plot.title = element_text(hjust = 0.5)) +ylab("TRAFICO DE DATO(Mb)")+labs(fill="TECNOLOGIA DEL CHIP")+theme(axis.text = element_text(angle = 90))
+ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=OS),xlabel=)+geom_col(position="dodge")+ggtitle("TRAFICO DE DATOS TOTAL Y SISTEMA OPERATIVO") + theme(plot.title = element_text(hjust = 0.5)) +ylab("TRAFICO DE DATO(Mb)")+labs(fill="SISTEMA OPERATIVO")+theme(axis.text = element_text(angle = 90))
 ```
 
 analisis de datos:
 
+**OBJETIVO 2:**
+
 **Dispersión de Datos:**
 
 ```{r}
-ggplot(data = DF, aes(y = DF$CALLS_IN_TOT, x = DF$AIRTIME_IN_TOT)) +
-  geom_point()  + labs(x="LLAMADAS ENTRANTES TOTALES", y="TIEMPO TOTAL DE LLAMADAS RECIBIDAS", title="Gráfico 4: dispersión de compras diarias vs gasto diario con billeteras digitales")
+plot(DF$AIRTIME_IN_TOT, DF$AIRTIME_IN_WEEKD,
+     xlab = "Numero de ocaciones claras",
+     ylab = "Numero ocaciones claras falladas",
+     main = "Rendimiento de los equipos sudamericanos")
+abline(a = 0, b = 0.577, col = "blue")
 ```
 
 ANALISIS DEL GRAFICO:
@@ -226,17 +231,9 @@ categorica_factor <- factor(DF$CHIP)
 # Usar summary en la variable factorizada
 summary(categorica_factor)
 
-print("Descriptores numéricos y de dispersión de la cantidad de compras diarias con efectivo")
+print("Descriptores numéricos y de trafico de datos totales")
 summary(DF$DATOS_TOTAL)
 
-
-```
-
-OTRO GRAFICO:
-
-```{r}
-# Crear un gráfico de barras agrupadas
-ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=categorica_factor),xlabel=)+geom_col(position="dodge")+ggtitle("TRAFICO DE DATOS TOTAL Y TECNOLOGIA DEL CHIP") + theme(plot.title = element_text(hjust = 0.5)) +ylab("TRAFICO DE DATO(Mb)")+labs(fill="TECNOLOGIA DEL CHIP")+theme(axis.text = element_text(angle = 90))
 
 ```
 
