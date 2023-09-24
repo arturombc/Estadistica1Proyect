@@ -168,17 +168,18 @@ function toggleContent() {
 }
 </script>
 ```
-GRAFICA:
+**GRAFICAS:**
+
+**Dispersión de Datos:**
+
+```{r}
+ggplot(data = DF, aes(y = DF$EQUIPO_TEC, x = DF$TRAF_DATOS_TOTAL)) +
+  geom_point()  + labs(x="Compras diarias", y="Gasto diario con su billetera digital(soles)", title="Gráfico 4: dispersión de compras diarias vs gasto diario con billeteras digitales")
+```
 
 ```{r}
 # Crear un gráfico de barras agrupadas
-ggplot(data = DF, aes(x = PERIODO)) +
-  geom_bar(aes(y = CALLS_OUT_TOT, fill = "Llamadas Salientes"), stat = "identity") +
-  geom_bar(aes(y = CALLS_IN_TOT, fill = "Llamadas Entrantes"), stat = "identity") +
-  scale_fill_manual(values = c("Llamadas Salientes" = "blue", "Llamadas Entrantes" = "green")) +
-  labs(x = "Periodo", y = "Total de Llamadas", title = "Comparación de Llamadas Entrantes y Salientes por Periodo") +
-  theme_minimal() +
-  theme(legend.title = element_blank())
+ggplot(DF,aes(x=PERIODO,y=TRAF_DATOS_TOTAL,fill=EQUIPO_TEC),xlabel=)+geom_col(position="dodge")+ggtitle("TRAFICO DE DATOS TOTAL Y TECNOLOGIA DEL CHIP") + theme(plot.title = element_text(hjust = 0.5)) +ylab("TRAFICO DE DATO(Mb)")+labs(fill="TECNOLOGIA DEL CHIP")+theme(axis.text = element_text(angle = 90))
 
 ```
 
