@@ -93,7 +93,7 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 | VARIABLE           | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|------------|------------|------------|--------------------------------------|
+|--------------|--------------|--------------|-------------------------------|
 | ID1                | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO            | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | EQUIPO_TEC         | Categórica Ordinal    | 3G, 4G, 5G                    | Tecnología del chip                                                                                                                 |
@@ -168,25 +168,93 @@ function toggleContent() {
 }
 </script>
 ```
+Renombrar las variables:
+
+```{r}
+
+DF <- DF %>%
+  rename(ID = ID1,
+         CHIP = EQUIPO_TEC,
+         MARCA = EQUIPO_MARCA,
+         MODELO = EQUIPO_MODELO,
+         OS= EQUIPO_OS,
+         DATOS_4G= TRAF_DATOS_4G,
+         DATOS_3G= TRAF_DATOS_3G,
+         DATOS_2G= TRAF_DATOS_2G,
+         DATOS_TOTAL= TRAF_DATOS_TOTAL,
+         DURACION_4G=TRAF_DURACION_4G,
+         DURACION_3G=TRAF_DURACION_3G,
+         DURACION_2G=TRAF_DURACION_2G
+         )
+
+```
+
 **GRAFICAS:**
+
+**OBJETIVO 1:**
+
+grafico 1
+
+```{r}
+ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=CHIP),xlabel=)+geom_col(position="dodge")+ggtitle("TRAFICO DE DATOS TOTAL Y TECNOLOGIA DEL CHIP") + theme(plot.title = element_text(hjust = 0.5)) +ylab("TRAFICO DE DATO(Mb)")+labs(fill="TECNOLOGIA DEL CHIP")+theme(axis.text = element_text(angle = 90))
+```
+
+Anasilis de datos:
+
+grafico 2:
+
+```{r}
+ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=OS),xlabel=)+geom_col(position="dodge")+ggtitle("TRAFICO DE DATOS TOTAL Y TECNOLOGIA DEL CHIP") + theme(plot.title = element_text(hjust = 0.5)) +ylab("TRAFICO DE DATO(Mb)")+labs(fill="TECNOLOGIA DEL CHIP")+theme(axis.text = element_text(angle = 90))
+```
+
+analisis de datos:
 
 **Dispersión de Datos:**
 
 ```{r}
-ggplot(data = DF, aes(y = DF$EQUIPO_TEC, x = DF$TRAF_DATOS_TOTAL)) +
-  geom_point()  + labs(x="Compras diarias", y="Gasto diario con su billetera digital(soles)", title="Gráfico 4: dispersión de compras diarias vs gasto diario con billeteras digitales")
+ggplot(data = DF, aes(y = DF$CALLS_IN_TOT, x = DF$AIRTIME_IN_TOT)) +
+  geom_point()  + labs(x="LLAMADAS ENTRANTES TOTALES", y="TIEMPO TOTAL DE LLAMADAS RECIBIDAS", title="Gráfico 4: dispersión de compras diarias vs gasto diario con billeteras digitales")
 ```
+
+ANALISIS DEL GRAFICO:
+
+```{r}
+print("Descriptores numéricos y de dispersión de la cantidad de compras diarias con una billetera digital")
+# Convertir la variable categórica en un factor
+categorica_factor <- factor(DF$CHIP)
+
+# Usar summary en la variable factorizada
+summary(categorica_factor)
+
+print("Descriptores numéricos y de dispersión de la cantidad de compras diarias con efectivo")
+summary(DF$DATOS_TOTAL)
+
+
+```
+
+OTRO GRAFICO:
 
 ```{r}
 # Crear un gráfico de barras agrupadas
-ggplot(DF,aes(x=PERIODO,y=TRAF_DATOS_TOTAL,fill=EQUIPO_TEC),xlabel=)+geom_col(position="dodge")+ggtitle("TRAFICO DE DATOS TOTAL Y TECNOLOGIA DEL CHIP") + theme(plot.title = element_text(hjust = 0.5)) +ylab("TRAFICO DE DATO(Mb)")+labs(fill="TECNOLOGIA DEL CHIP")+theme(axis.text = element_text(angle = 90))
+ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=categorica_factor),xlabel=)+geom_col(position="dodge")+ggtitle("TRAFICO DE DATOS TOTAL Y TECNOLOGIA DEL CHIP") + theme(plot.title = element_text(hjust = 0.5)) +ylab("TRAFICO DE DATO(Mb)")+labs(fill="TECNOLOGIA DEL CHIP")+theme(axis.text = element_text(angle = 90))
 
 ```
 
-```{r}
-ggplot(DF,aes(x=PERIODO,y=TRAF_DATOS_TOTAL,fill=EQUIPO_TEC),xlabel=)+geom_col(position="dodge")+ggtitle("TRAFICO DE DATOS TOTAL Y TECNOLOGIA DEL CHIP") + theme(plot.title = element_text(hjust = 0.5)) +ylab("TRAFICO DE DATO(Mb)")+labs(fill="TECNOLOGIA DEL CHIP")+theme(axis.text = element_text(angle = 90))
-```
+**Comparación de llamadas de días laborables y no laborales:**
 
 ```{r}
+# Calcular el promedio de llamadas en días laborables y no laborables
+promedio_calls_week <- mean(DF$CALLS_OUT_WEEK)
+promedio_calls_weekd <- mean(DF$CALLS_OUT_WEEKD)
 
+# Crear un gráfico de barras para comparar llamadas en días laborables y no laborables
+barplot(c(promedio_calls_week, promedio_calls_weekd), 
+        names.arg = c("Días Laborables", "Días No Laborables"),
+        main = "Promedio de Llamadas Salientes por Tipo de Día",
+        ylab = "Promedio de Llamadas",
+        col = c("lightblue", "lightcoral"))
+
+# Imprimir el promedio de llamadas en días laborables y no laborables
+cat("Promedio de Llamadas en Días Laborables:", promedio_calls_week, "\n")
+cat("Promedio de Llamadas en Días No Laborables:", promedio_calls_weekd, "\n")
 ```
