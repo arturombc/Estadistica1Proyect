@@ -86,7 +86,19 @@ data3 %>% rename(ID = ID1,
          DATOS_TOTAL= TRAF_DATOS_TOTAL,
          DURACION_4G=TRAF_DURACION_4G,
          DURACION_3G=TRAF_DURACION_3G,
-         DURACION_2G=TRAF_DURACION_2G
+         DURACION_2G=TRAF_DURACION_2G,
+         DPTO_XDR=DEPARTAMENTO_XDR,
+         DPTO_CDR=DEPARTAMENTO_CDR,
+         TIEMPO_IN_TOT=AIRTIME_IN_TOT,
+         TIEMPO_IN_SEM=AIRTIME_IN_WEEK,
+         TIEMPO_IN_FINDE=AIRTIME_IN_WEEKD,
+         LLAMADAS_IN_TOT=CALLS_IN_TOT,
+         LLAMADAS_IN_SEM=CALLS_IN_WEEK,
+         DIAS_LLAMADAS_IN_TOT=DAYS_IN_VOICE_TOT,
+         TIEMPO_OUT_TOT=AIRTIME_OUT_TOT,
+         LLAMADAS_OUT_TOT=CALLS_OUT_TOT,
+         DIAS_LLAMADAS_OUT_TOT=DAYS_OUT_VOICE_TOT,
+         
          ) -> data3
 
 ```
@@ -94,5 +106,8 @@ data3 %>% rename(ID = ID1,
 ```{r}
 write.csv(data3, "DataLimpia.csv", row.names = FALSE)
 round(sum(is.na(data3))/(nrow(data3)*ncol(data3))*100 , digits = 2)
+```
+```{r}
+str(data3)
 ```
 
