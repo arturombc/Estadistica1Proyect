@@ -74,27 +74,25 @@ data3 <- merge(data2, temp2, by=c("ID1", "PERIODO"))
 data3$PERIODO <- as.character(data3$PERIODO)
 ```
 
+```{r}
+data3 %>% rename(ID = ID1,
+         CHIP = EQUIPO_TEC,
+         MARCA = EQUIPO_MARCA,
+         MODELO = EQUIPO_MODELO,
+         OS= EQUIPO_OS,
+         DATOS_4G= TRAF_DATOS_4G,
+         DATOS_3G= TRAF_DATOS_3G,
+         DATOS_2G= TRAF_DATOS_2G,
+         DATOS_TOTAL= TRAF_DATOS_TOTAL,
+         DURACION_4G=TRAF_DURACION_4G,
+         DURACION_3G=TRAF_DURACION_3G,
+         DURACION_2G=TRAF_DURACION_2G
+         ) -> data3
+
+```
 
 ```{r}
 write.csv(data3, "DataLimpia.csv", row.names = FALSE)
 round(sum(is.na(data3))/(nrow(data3)*ncol(data3))*100 , digits = 2)
-```
-
-```{r}
-str(data3)
-```
-```{r}
-summary(data3)
-```
-
-```{r}
-data3$PERIODO
-```
-```{r}
-names(data3)
-```
-
-```{r}
-str(data3)
 ```
 

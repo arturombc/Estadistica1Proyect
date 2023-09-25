@@ -42,18 +42,37 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 
 ### **Objetivo general**
 
-Analizar el comportamiento de la transferencia de datos y llamadas en los clientes peruanos de una empresa de telefonía móvil entre febrero de 2019 y mayo del 2019.
+Analizar el comportamiento de la transferencia de datos y llamadas en los clientes peruanos de una empresa de telefonía móvil entre febrero de 2019 y mayo del 2019. Los objetivos están orientados a encontrar posibles _insights_ que nos permitan mejorar el desempeño de la empresa de telefonía móvil.
+
+Las conclusiones de estos objetivos nos permitirán tomar decisiones que puedan resultar en un mejor desempeño general.
 
 ### **Objetivos específicos**
 
 1.  Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
-2.  Analizar la duración y la cantidad de llamadas entrantes a un usuario.
-3.  Analizar la duración y la cantidad de llamadas salientes de un usuario.
-4.  
+2.  Analizar la duración y la cantidad de llamadas entrantes y salientes a un usuario.
+3.  Describir la comunicación del usuario con sus contactos durante el periodo.
 
 ## **Planificación**
 
 Después de limpiar los datos iniciales, juntar los datos que nos son relevantes en un único csv. Podemos hacer un análisis más exhaustivo y menos complicado que si fueran en varias tablas. El trabajo se dividirá en el cumplimiento de los 3 objetivos antes presentados. Cada objetivo tendrá su respectiva sección, así como lo que motivó su búsqueda y conclusiones. Finalmente se uniran todas las conclusiones en un capítulo final.
+
+### Librerías y setup
+
+```{r, liberías, message=FALSE}
+if (!require(readr)){install.packages(readr);library(readr)}
+if (!require(dplyr)){install.packages(dplyr);library(dplyr)}
+if (!require(ggplot2)){install.packages(ggplot2);library(ggplot2)}
+if(!require(ggthemes)){install.packages(ggthemes);library(ggthemes)}
+if(!require(ggrepel)){install.packages(ggrepel);library(ggrepel)}
+```
+
+```{r, setup, message=FALSE}
+knitr::opts_chunk$set(
+  comment = '', fig.width = 15, fig.height = 9
+)
+```
+
+### Milestones del proyecto
 
 ```{mermaid}
 flowchart LR
@@ -70,17 +89,46 @@ flowchart LR
   I --> J
 ```
 
+### Timeline del proyecto
+
+```{R Timeline, message=FALSE}
+data <- read_csv("timeline.csv")
+ggplot(data, aes(x = inicio, xend = fin, y = Integrantes, yend = Integrantes, color = actividad)) +
+  geom_segment(linewidth = 2, lineend = "round") +
+  labs(
+    title = 'Timeline de proyecto',
+    x = 'Fecha',
+    y = 'Participantes'
+  ) +
+  scale_colour_brewer(palette = "Set1") +
+  theme_minimal() +
+  theme(
+    axis.title = element_text(size = 15),
+    axis.text.x = element_text(size = 10),
+    legend.position = "top",
+    legend.title = element_blank(),
+    plot.title = element_text(size = 20, hjust = 0.5)
+  )
+
+```
+
+
+
 # **Datos**
-
-## **Población objetivo**
-
-Nuestra población objetivo para este estudio comprende a los clientes de una empresa de telefonía móvil en Perú durante el período de febrero a mayo de 2019. Estos clientes representan el grupo de interés principal para nuestro análisis de comportamiento y consumo de servicios de telefonía móvil.
 
 ## **Recolección**
 
 Los datos utilizados en este análisis fueron recopilados durante el período mencionado de febrero a mayo de 2019. La información se obtuvo de los registros de la empresa de telefonía móvil, que incluye una variedad de variables relacionadas con el equipo, el tráfico de datos, las llamadas y otros aspectos del uso del servicio por parte de los clientes.
 
-Es importante destacar que estos datos se han limpiado y preparado previamente para su análisis con el fin de garantizar la calidad y la coherencia de la información. La recolección de datos es esencial para nuestro estudio, ya que nos proporciona la base necesaria para analizar el comportamiento de los clientes y extraer conocimientos significativos que puedan beneficiar a la empresa.
+## **Población, muestra y muestreo **
+
+- **POBLACIÓN:** Usuarios de telefonía móvil dentro de Perú.
+- **MUESTRA:** Clientes de una empresa de telefonía móvil en Perú durante el período de febrero a mayo de 2019. 
+    -   **UNIDAD MUESTRAL:** Registro de un cliente en un determinado mes.
+    -   **TAMAÑO:** 113779 observaciones.
+    -   **REPRESENTATIVIDAD:** Si.
+-   **MUESTREO:** Muestreo no aleatorio por conveniencia.
+
 
 ## **Variables**
 
@@ -133,71 +181,37 @@ Mostrar/Ocultar Contenido
 | TOP_CONT_5         | Cuantitativa Discreta | Número entero y positivo      | Contactos totales con los que realizó más de 5 eventos (llamada entrante / saliente o mensaje de texto saliente) durante el periodo |
 :::
 
-# Análisis
+## **Política de Limpieza de Datos**
 
-## Librerías y setup
 
-```{r, liberías, message=FALSE}
-if (!require(readr)){install.packages(readr);library(readr)}
-if (!require(dplyr)){install.packages(dplyr);library(dplyr)}
-if (!require(ggplot2)){install.packages(ggplot2);library(ggplot2)}
-```
+# **Análisis Descriptivo**
 
-```{r, setup, message=FALSE}
-# Se invocan las librerías, se setean los temas, etc.
-knitr::opts_chunk$set(
-  comment = '', fig.width = 6, fig.height = 6 # comment = "" hace que no se vean los comentarios
-)
-```
-
-## Carga y exploración de los datos
+## **Carga de la base de datos**
 
 ```{r}
-DF <- read_csv("DataLimpia.csv")
-DF
+DF <- read_csv("DataLimpia.csv"
+               , col_types = cols(.default = col_guess()
+                                  , CHIP=col_factor(levels = c("2G","3G","4G"))
+                                  , PERIODO=col_date(format = "%Y%m")
+                                  )
+               )
 ```
 
-```{=html}
-<script>
-function toggleContent() {
-  var content = document.querySelector(".toggle-content");
-  if (content.style.display === "none" || content.style.display === "") {
-    content.style.display = "block";
-  } else {
-    content.style.display = "none";
-  }
-}
-</script>
-```
-Renombrar las variables:
-
-```{r}
-
-DF <- DF %>%
-  rename(ID = ID1,
-         CHIP = EQUIPO_TEC,
-         MARCA = EQUIPO_MARCA,
-         MODELO = EQUIPO_MODELO,
-         OS= EQUIPO_OS,
-         DATOS_4G= TRAF_DATOS_4G,
-         DATOS_3G= TRAF_DATOS_3G,
-         DATOS_2G= TRAF_DATOS_2G,
-         DATOS_TOTAL= TRAF_DATOS_TOTAL,
-         DURACION_4G=TRAF_DURACION_4G,
-         DURACION_3G=TRAF_DURACION_3G,
-         DURACION_2G=TRAF_DURACION_2G
-         )
-
-```
+## **Descriptores Numéricos**
 
 **GRAFICAS:**
 
 **OBJETIVO 1:**
 
-grafico 1
+Grafico 1
 
 ```{r}
-ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=CHIP),xlabel=)+geom_col(position="dodge")+ggtitle("TRAFICO DE DATOS TOTAL Y TECNOLOGIA DEL CHIP") + theme(plot.title = element_text(hjust = 0.5)) +ylab("TRAFICO DE DATO(Mb)")+labs(fill="TECNOLOGIA DEL CHIP")+theme(axis.text = element_text(angle = 90))
+ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=CHIP))+
+  geom_col(position="dodge")+
+  ggtitle("TRAFICO DE DATOS TOTAL Y TECNOLOGIA DEL CHIP")+
+  theme(plot.title = element_text(hjust = 0.5)) +
+  labs(fill="TECNOLOGIA DEL CHIP", x="terrible", y="TRAFICO DE DATO(Mb)")+
+  theme(axis.text = element_text(angle = 90))
 ```
 
 Anasilis de datos:-
@@ -343,3 +357,20 @@ legend(x = 1.35,  # Ajustar la posición x
        fill = bar_colors,
        cex = 1)
 ```
+
+
+
+```{=html}
+<script>
+function toggleContent() {
+  var content = document.querySelector(".toggle-content");
+  if (content.style.display === "none" || content.style.display === "") {
+    content.style.display = "block";
+  } else {
+    content.style.display = "none";
+  }
+}
+</script>
+```
+
+
