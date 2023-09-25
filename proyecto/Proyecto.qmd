@@ -272,11 +272,11 @@ print("Descriptores numéricos del trafico de datos 4G")
 summary(DF$DATOS_4G)
 ```
 
-En el caso del tráfico de datos 2G, la mediana es 0.326, lo cual está relacionado con el uso de los usuarios en megabytes (MB). Observamos que el tercer cuartil es 2.220, lo que indica que el 75% de los datos son iguales o menores a 2.220. Del mismo modo, se observa que el primer cuartil es 0.009, lo cual indica que el 25% de los datos son iguales o menores a 0.009.
+En el caso del tráfico de datos 2G, la mediana de 0.326 Mb significa que la mitad de los usuarios consumió 0.326 Mb o menos, y el tercer cuartil de 2.220 Mb indica que el 75% de los usuarios utilizó 2.220 Mb o menos, mientras que el primer cuartil de 0.009 Mb indica que el 25% de los usuarios consumió 0.009 Mb o menos.
 
-En el caso del tráfico de datos 3G, la mediana es 120.89, lo cual está relacionado con el uso de los usuarios en megabytes (MB). Observamos que el tercer cuartil es 367.70, lo que indica que el 75% de los datos son iguales o menores a 367.70. Del mismo modo, se observa que el primer cuartil es 36.95, lo cual indica que el 25% de los datos son iguales o menores a 36.95.
+En el caso del tráfico de datos 3G, la mediana de 120.89 Mb significa que la mitad de los usuarios consumió 120.89 Mb o menos, y el tercer cuartil de 367.70 Mb indica que el 75% de los usuarios utilizó 367.70 Mb o menos, mientras que el primer cuartil de 36.95 Mb indica que el 25% de los usuarios consumió 36.95 Mb o menos.
 
-En el caso del tráfico de datos 4G, la mediana es 9136, lo cual está relacionado con el uso de los usuarios en megabytes (MB). Observamos que el tercer cuartil es 12964, lo que indica que el 75% de los datos son iguales o menores a 12964. Del mismo modo, se observa que el primer cuartil es 2173, lo cual indica que el 25% de los datos son iguales o menores a 2173.
+En el caso del tráfico de datos 4G, la mediana de 6354 Mb significa que la mitad de los usuarios consumió 6354 Mb o menos, y el tercer cuartil de 12964 Mb indica que el 75% de los usuarios utilizó 12964 Mb o menos, mientras que el primer cuartil de 2173 Mb indica que el 25% de los usuarios consumió 2173 Mb o menos.
 
 **OBJETIVO 2:**
 
@@ -299,17 +299,19 @@ Linealización:
 lm(DF$AIRTIME_IN_TOT~DF$CALLS_IN_TOT,data=DF)
 ```
 
-**Gráfico de cantidad de días en los que recibieron llamadas :**
+**Histograma de cantidad de días en los que recibieron llamadas :**
 
 ```{r}
-hist(DF$DAYS_OUT_VOICE_TOT,breaks= 6, col = "lightblue", xlab = "", ylab = "Frecuencia", main = "Gráfico 1: histograma de edad")
+hist(DF$DAYS_IN_VOICE_TOT,breaks= 6, col = "lightblue", xlab = "", ylab = "Frecuencia", main = "Gráfico 1: histograma de edad")
 # Agregar la media y la mediana al histograma
-abline(v = mean(DF$DAYS_OUT_VOICE_TOT), col="blue")
-abline(v = median(DF$DAYS_OUT_VOICE_TOT), col="red")
+abline(v = mean(DF$DAYS_IN_VOICE_TOT), col="blue")
+abline(v = median(DF$DAYS_IN_VOICE_TOT), col="red")
 
 # Añadir leyenda
 legend("topright", legend = c("Media", "Mediana"), col = c("blue", "red"), lty = 1)
 ```
+
+**Descriptores:**
 
 ```{r}
 print("Descriptores numéricos de los días ")
@@ -370,6 +372,25 @@ LINEALIZACIÓN:
 
 ```{r}
 lm(DF$AIRTIME_OUT_TOT~DF$CALLS_OUT_TOT,data=DF)
+```
+
+**Histograma de cantidad de días en los que recibieron llamadas :**
+
+```{r}
+hist(DF$DAYS_IN_VOICE_TOT,breaks= 6, col = "lightblue", xlab = "", ylab = "Frecuencia", main = "Gráfico 1: histograma de edad")
+# Agregar la media y la mediana al histograma
+abline(v = mean(DF$DAYS_IN_VOICE_TOT), col="blue")
+abline(v = median(DF$DAYS_IN_VOICE_TOT), col="red")
+
+# Añadir leyenda
+legend("topright", legend = c("Media", "Mediana"), col = c("blue", "red"), lty = 1)
+```
+
+**Descriptores:**
+
+```{r}
+print("Descriptores numéricos de los días ")
+summary(DF$DAYS_OUT_VOICE_TOT)
 ```
 
 **Comparación del tiempo llamadas salientes de días laborables y no laborales:**
