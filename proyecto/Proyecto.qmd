@@ -295,6 +295,10 @@ ggplot(DF, aes(x = DF$CALLS_IN_TOT, y = DF$AIRTIME_IN_TOT)) +
 
 **Analisis del gráfico**
 
+```{mermaid}
+
+```
+
 **Linealización:**
 
 ```{r}
@@ -433,8 +437,9 @@ bar_colors <- c("lightblue", "lightcoral")
 
 barplot(bar_heights, 
         names.arg = bar_names,
-        main = "Promedio del Tiempo Total de Llamadas recibidas por Tipo de Día",
-        ylab = "Promedio del Tiempo Total de Llamadas recibidas",
+        main = "Promedio del duración Total de Llamadas realizadas",
+        xlab= "Tipo de día",
+        ylab = "Duración",
         col = bar_colors)
 
 # Agregamos etiquetas de porcentaje a las barras
