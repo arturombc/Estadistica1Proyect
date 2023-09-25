@@ -211,8 +211,47 @@ ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=OS),xlabel=)+geom_col(position="dodge
 
 analisis de datos:
 
+grafico 3:
+
 ```{r}
-boxplot(DF$DATOS_TOTAL, main="Gráfico 5: boxplot de monto semanal disponible en billeteras digitales", ylab="Monto semanal en soles")
+# Crear un boxplot estándar
+boxplot(DF$DATOS_2G, horizontal = T, col = "green",
+        main = "Boxplot del trafico de datos 2g")
+
+# Crear un boxplot visible 
+boxplot(DF$DATOS_2G, horizontal = T, col = "green",
+        main = "Boxplot del trafico de datos 2g",
+        notch = TRUE, outline = F)
+
+axis(side = 1, at =c(0, 3, 1200))
+
+```
+
+Grafico 4:
+
+```{r}
+# Crear un boxplot estándar
+boxplot(DF$DATOS_3G, horizontal = T, col = "lightblue",
+        main = "Boxplot del trafico de datos 4g")
+
+boxplot(DF$DATOS_3G, horizontal = T, col = "lightblue",
+        main = "Boxplot del trafico de datos 4g",
+        notch = TRUE, outline = F)
+```
+
+grafico 5:
+
+```{r}
+# Crear un boxplot estándar
+boxplot(DF$DATOS_4G, horizontal = T, col = "lightblue",
+        main = "Boxplot del trafico de datos 4g")
+
+boxplot(DF$DATOS_4G, horizontal = T, col = "lightblue",
+        main = "Boxplot del trafico de datos 4g",
+        notch = TRUE, outline = F)
+
+
+
 ```
 
 ```{r}
@@ -229,12 +268,13 @@ summary(DF$DATOS_4G)
 **Dispersión de Datos:**
 
 ```{r}
-plot(DF$AIRTIME_IN_TOT, DF$CALLS_IN_TOT,
-     xlab = "Numero de ocaciones claras",
-     ylab = "Numero ocaciones claras falladas",
-     main = "Rendimiento de los equipos sudamericanos")
-abline()
-lm(DF$AIRTIME_IN_TOT~DF$CALLS_IN_TOT,data=DF)
+# Crear un gráfico de dispersión con ggplot2 y agregar una línea de tendencia
+ggplot(DF, aes(x = DF$CALLS_IN_TOT, y = DF$AIRTIME_IN_TOT)) +
+  geom_point(shape = 16, color = "pink") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(x = "", y = "Eje Y",
+       title = "Gráfico de Dispersión con Línea de Tendencia")
+
 ```
 
 ANALISIS DEL GRAFICO:
@@ -242,7 +282,7 @@ ANALISIS DEL GRAFICO:
 Linealización:
 
 ```{r}
-lm(DF$AIRTIME_IN_TOT~DF$AIRTIME_IN_WEEKD,data=DF)
+lm(DF$AIRTIME_IN_TOT~DF$CALLS_IN_TOT,data=DF)
 ```
 
 ```{r}
