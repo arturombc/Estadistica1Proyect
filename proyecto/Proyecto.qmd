@@ -70,7 +70,7 @@ flowchart LR
   I --> J
 ```
 
-# **Datos**
+# [**Datos**]{style="color:#1FB0DB"}
 
 ## **Población objetivo**
 
@@ -133,7 +133,7 @@ Mostrar/Ocultar Contenido
 | TOP_CONT_5         | Cuantitativa Discreta | Número entero y positivo      | Contactos totales con los que realizó más de 5 eventos (llamada entrante / saliente o mensaje de texto saliente) durante el periodo |
 :::
 
-# Análisis
+# [**Analisis**]{style="color:#1FB0DB"}
 
 ## Librerías y setup
 
