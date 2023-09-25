@@ -49,7 +49,7 @@ Analizar el comportamiento de la transferencia de datos y llamadas en los client
 1.  Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
 2.  Analizar la duración y la cantidad de llamadas entrantes de un usuario.
 3.  Analizar la duración y la cantidad de llamadas salientes de un usuario.
-4.  
+4.  Identificar que plan de telefonía resulta conveniente y el público de este.
 
 ## **Planificación**
 
@@ -94,7 +94,7 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 | VARIABLE           | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|------------------|------------------|------------------|--------------------|
+|------------------|------------------|------------------|-------------------|
 | ID1                | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO            | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | EQUIPO_TEC         | Categórica Ordinal    | 3G, 4G, 5G                    | Tecnología del chip                                                                                                                 |
@@ -491,3 +491,33 @@ legend(x = 1.18,  # Ajustar la posición x
        fill = bar_colors,
        cex = 1)
 ```
+
+**Objetivo 4:** Identificar que plan de telefonía resulta conveniente y el público de este.
+
+**Gráfico 12: Tiempo de duración de llamadas salientes por sistema operativo por periodo**.
+
+```{r}
+ggplot(DF,aes(x=PERIODO,y=AIRTIME_OUT_TOT,fill=OS),xlabel=)+geom_col(position="dodge")+ggtitle("DURACIÓN DE LLAMADAS Y SISTEMA OPERATIVO") + theme(plot.title = element_text(hjust = 0.5)) +ylab("N° Llamadas")+labs(fill="SISTEMA OPERATIVO")+theme(axis.text = element_text(angle = 90))
+```
+
+**Analisis:**
+
+Al analizar la relación entre la duración de llamadas salientes y el periodo de tiempo, se evidencia una disparidad considerable en el año 2019 entre las barras de color rosa, que corresponden a dispositivos con sistema operativo Android. Esto significa que el principal publico al que debería de estar destinado este plan debería de ser Android, ya que son los que pasan más tiempo hablando por teléfono.
+
+**Graficio 14: Cantidad de llamadas salientes por sistema operativo por periodo**.
+
+```{r}
+ggplot(DF,aes(x=PERIODO,y=CALLS_OUT_TOT,fill=OS),xlabel=)+geom_col(position="dodge")+ggtitle("LLAMADAS SALIENTES Y SISTEMA OPERATIVO") + theme(plot.title = element_text(hjust = 0.5)) +ylab("N° Llamadas")+labs(fill="SISTEMA OPERATIVO")+theme(axis.text = element_text(angle = 90))
+```
+
+**Analisis:**
+
+Al analizar la relación entre el numero de llamadas salientes y el periodo de tiempo, se evidencia una disparidad considerable en el año 2019 entre las barras de color rosa, que corresponden a dispositivos con sistema operativo Android. Esto significa que el principal publico al que debería de estar destinado este plan debería de ser android, ya que son los que realizan más llamadas.
+
+```{r}
+mosaicplot(table(DF$OS,DF$CHIP), col = c("green", "skyblue","red"),cex.axis = 0.6,main="Tabla de chip vs sistema operativo")
+```
+
+**Analisis del gráfico:**
+
+En este grafico se muestra que la mayoría de clientes Android, sin tac y IOS poseen un chip 4G. Mientras que la mayoría de clientes de otro sistema operativo poseen un chip 2G. Asimismo por gráficos anteriores sabemos que o
