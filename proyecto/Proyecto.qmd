@@ -302,7 +302,7 @@ lm(DF$AIRTIME_IN_TOT~DF$CALLS_IN_TOT,data=DF)
 **Histograma de cantidad de días en los que recibieron llamadas :**
 
 ```{r}
-hist(DF$DAYS_IN_VOICE_TOT,breaks= 6, col = "lightblue", xlab = "", ylab = "Frecuencia", main = "Gráfico 1: histograma de edad")
+hist(DF$DAYS_IN_VOICE_TOT,breaks= 6, col = "lightblue", xlab = "Dias", ylab = "Clientes", main = "Cantidad de dias en los que recibieron llamadas")
 # Agregar la media y la mediana al histograma
 abline(v = mean(DF$DAYS_IN_VOICE_TOT), col="blue")
 abline(v = median(DF$DAYS_IN_VOICE_TOT), col="red")
@@ -314,7 +314,7 @@ legend("topright", legend = c("Media", "Mediana"), col = c("blue", "red"), lty =
 **Descriptores:**
 
 ```{r}
-print("Descriptores numéricos de los días ")
+print("Descriptores numéricos de los días en los que recibieron llamadas")
 summary(DF$DAYS_IN_VOICE_TOT)
 
 ```
@@ -364,8 +364,8 @@ OBJETIVO 3
 ggplot(DF, aes(x = DF$CALLS_OUT_TOT, y = DF$AIRTIME_OUT_TOT)) +
   geom_point(shape = 16, color = "pink") +
   geom_smooth(method = "lm", se = FALSE, color = "red") +
-  labs(x = "", y = "Eje Y",
-       title = "Gráfico de Dispersión con Línea de Tendencia")
+  labs(x = "Cantidad de llamadas", y = "Tiempo en total",
+       title = "Llamadas salientes : Cantidad vs tiempo")
 ```
 
 LINEALIZACIÓN:
@@ -377,7 +377,7 @@ lm(DF$AIRTIME_OUT_TOT~DF$CALLS_OUT_TOT,data=DF)
 **Histograma de cantidad de días en los que recibieron llamadas :**
 
 ```{r}
-hist(DF$DAYS_IN_VOICE_TOT,breaks= 6, col = "lightblue", xlab = "", ylab = "Frecuencia", main = "Gráfico 1: histograma de edad")
+hist(DF$DAYS_OUT_VOICE_TOT,breaks= 6, col = "lightblue", xlab = "Clientes", ylab = "Frecuencia", main = "Cantidad de dias en los que relizaron llamadas")
 # Agregar la media y la mediana al histograma
 abline(v = mean(DF$DAYS_IN_VOICE_TOT), col="blue")
 abline(v = median(DF$DAYS_IN_VOICE_TOT), col="red")
@@ -389,7 +389,7 @@ legend("topright", legend = c("Media", "Mediana"), col = c("blue", "red"), lty =
 **Descriptores:**
 
 ```{r}
-print("Descriptores numéricos de los días ")
+print("Descriptores numéricos de los días en la que los clientes recibieron llamadas ")
 summary(DF$DAYS_OUT_VOICE_TOT)
 ```
 
