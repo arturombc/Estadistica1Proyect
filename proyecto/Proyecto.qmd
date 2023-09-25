@@ -197,20 +197,17 @@ DF <- read_csv("DataLimpia.csv"
                )
 ```
 
-## **Descriptores Numéricos**
 
-## **ANALISIS DESCRIPTIVO:**
-
-### **OBJETIVO 1:** Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
+## **OBJETIVO 1:** Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
 
 Grafico 1
 
 ```{r}
-ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=CHIP))+
-  geom_col(position="dodge")+
-  ggtitle("TRAFICO DE DATOS TOTAL Y TECNOLOGIA DEL CHIP")+
+ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=CHIP)) +
+  geom_col(position="dodge") +
+  ggtitle("TRAFICO DE DATOS TOTAL Y TECNOLOGIA DEL CHIP") +
   theme(plot.title = element_text(hjust = 0.5)) +
-  labs(fill="TECNOLOGIA DEL CHIP", x="terrible", y="TRAFICO DE DATO(Mb)")+
+  labs(fill="TECNOLOGIA DEL CHIP", x="terrible", y="TRAFICO DE DATO(Mb)") +
   theme(axis.text = element_text(angle = 90))
 ```
 
@@ -227,7 +224,13 @@ En mayo, se aprecia un crecimiento en la adopción de la tecnología 4G, mientra
 **Gráfico 2: Trafico total de datos y tipo de sistema operativo por periodo**
 
 ```{r}
-ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=OS),xlabel=)+geom_col(position="dodge")+ggtitle("TRAFICO DE DATOS Y SISTEMA OPERATIVO") + theme(plot.title = element_text(hjust = 0.5)) +ylab("TRAFICO DE DATO(Mb)")+labs(fill="SISTEMA OPERATIVO")+theme(axis.text = element_text(angle = 90))
+ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=OS),xlabel=)+
+  geom_col(position="dodge")+
+  ggtitle("TRAFICO DE DATOS Y SISTEMA OPERATIVO") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  ylab("TRAFICO DE DATO(Mb)")+
+  labs(fill="SISTEMA OPERATIVO")+
+  theme(axis.text = element_text(angle = 90))
 ```
 
 **Anasilis del gráfico:**
@@ -294,7 +297,7 @@ En el caso del tráfico de datos 3G, la mediana de 120.89 Mb significa que la mi
 
 En el caso del tráfico de datos 4G, la mediana de 6354 Mb significa que la mitad de los usuarios consumió 6354 Mb o menos, y el tercer cuartil de 12964 Mb indica que el 75% de los usuarios utilizó 12964 Mb o menos, mientras que el primer cuartil de 2173 Mb indica que el 25% de los usuarios consumió 2173 Mb o menos.
 
-### **OBJETIVO 2:** Analizar la duración y la cantidad de llamadas entrantes de un usuario.
+## **OBJETIVO 2:** Analizar la duración y la cantidad de llamadas entrantes de un usuario.
 
 **Gráfico 6: Gráfica de dispersión de cantidad vs tiempo total de llamadas entrantes por usuario**
 
@@ -399,7 +402,7 @@ legend(x = 1.2,  # Ajustar la posición x
        cex = 1)
 ```
 
-### **OBJETIVO 3: Analizar la duración y la cantidad de llamadas salientes de un usuario.**
+## **OBJETIVO 3: Analizar la duración y la cantidad de llamadas salientes de un usuario.**
 
 **Grafico 9: Gráfica de dispersión de cantidad vs tiempo total de llamadas salientes por usuario**
 
@@ -506,7 +509,7 @@ legend(x = 1.18,  # Ajustar la posición x
 
 
 
-### **Objetivo 4:** Identificar que plan de telefonía resulta conveniente y el público de este.
+## **Objetivo 4:** Identificar que plan de telefonía resulta conveniente y el público de este.
 
 **Gráfico 12: Tiempo de duración de llamadas salientes por sistema operativo por periodo**.
 
