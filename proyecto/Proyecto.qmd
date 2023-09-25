@@ -94,7 +94,7 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 | VARIABLE           | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|--------------|--------------|--------------|-------------------------------|
+|-----------------|-----------------|-----------------|---------------------|
 | ID1                | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO            | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | EQUIPO_TEC         | Categórica Ordinal    | 3G, 4G, 5G                    | Tecnología del chip                                                                                                                 |
@@ -190,9 +190,9 @@ DF <- DF %>%
 
 ```
 
-### **ANALISIS DESCRIPTIVO:**
+## **ANALISIS DESCRIPTIVO:**
 
-**OBJETIVO 1:** Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
+# **OBJETIVO 1:** Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
 
 **Grafico 1: Trafico total de datos y tipo de tecnología de chip por periodo**
 
@@ -280,7 +280,7 @@ En el caso del tráfico de datos 3G, la mediana de 120.89 Mb significa que la mi
 
 En el caso del tráfico de datos 4G, la mediana de 6354 Mb significa que la mitad de los usuarios consumió 6354 Mb o menos, y el tercer cuartil de 12964 Mb indica que el 75% de los usuarios utilizó 12964 Mb o menos, mientras que el primer cuartil de 2173 Mb indica que el 25% de los usuarios consumió 2173 Mb o menos.
 
-**OBJETIVO 2:** Analizar la duración y la cantidad de llamadas entrantes de un usuario.
+# **OBJETIVO 2:** Analizar la duración y la cantidad de llamadas entrantes de un usuario.
 
 **Gráfico 6: Gráfica de dispersión de cantidad vs tiempo total de llamadas entrantes por usuario**
 
@@ -293,11 +293,25 @@ ggplot(DF, aes(x = DF$CALLS_IN_TOT, y = DF$AIRTIME_IN_TOT)) +
 
 ```
 
-**Analisis del gráfico**
+**Analisis del gráfico:**
 
-```{mermaid}
+**Línea Vertical:** Tiempo total de llamadas recibidas durante el periodo, en minutos
 
-```
+**Línea Horizontal:** Cantidad total de llamadas recibidas durante el periodo
+
+**Línea Diagonal:** Representa la relación cantidad y tiempo
+
+**Punto en el gráfico:** Representa a cada usuario del servicio telefonico
+
+**Diagonal:** Representa la línea de equipos que generan y convierten la misma cantidad de oportunidades claras de gol.
+
+**Puntos sobre la diagonal:** Representa a los usuarios con una mayor cantidad de llamadas a comparación del tiempo total de llamadas recibidas, lo que indica aproximadamente una mayor duración de cada una de estas .
+
+Puntos debajo de la diagonal: Representa a los usuarios con una menor cantidad de llamadas a comparación del tiempo total de llamadas recibidas, lo que indica aproximadamente una menor duración de cada una de estas.
+
+Puntos en zona superior derecha del gráfico: Representa a los usuarios con una mayor cantidad de llamadas y de mayor duración en total
+
+Puntos en zona inferior izquierda del gráfico: Representa a los usuarios con una menor cantidad de llamadas y de menor duración en total
 
 **Linealización:**
 
@@ -351,8 +365,9 @@ bar_colors <- c("lightblue", "lightcoral")
 
 barplot(bar_heights, 
         names.arg = bar_names,
-        main = "Promedio del Tiempo Total de Llamadas recibidas por Tipo de Día",
-        ylab = "Promedio del Tiempo Total de Llamadas recibidas",
+        main = "Promedio del duración Total de Llamadas recibidas",
+        xlab= "Tipo de día",
+        ylab = "Duración",
         col = bar_colors)
 
 # Agregamos etiquetas de porcentaje a las barras
