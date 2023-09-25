@@ -301,15 +301,13 @@ ggplot(DF, aes(x = DF$CALLS_IN_TOT, y = DF$AIRTIME_IN_TOT)) +
 lm(DF$AIRTIME_IN_TOT~DF$CALLS_IN_TOT,data=DF)
 ```
 
-Formulando la ecuación de Regresión para el diagrama de dispersión:
+**Ecuación de regresión:**
 
-B0=0.239�0=0.239
+$$
+y = 1.589x + 107.891
+$$
 
-B1=1.611�1=1.611
-
-Ecuación de regresión
-
-y=0.239+1.611x
+La ecuación de regresión lineal y = 1.589x + 107.891 modela una relación lineal positiva entre la cantidad de llamadas entrantes por usuario (y) y el tiempo total de llamadas entrantes registrado por usuario (x). El coeficiente 1.589 indica que, en promedio, por cada unidad adicional de tiempo total, se esperan 1.589 llamadas entrantes adicionales. El término constante 107.891 representa el valor inicial de llamadas cuando el tiempo total es cero. Esta ecuación proporciona una herramienta para predecir la cantidad de llamadas entrantes en función del tiempo total y entender su relación en un contexto de análisis de datos.
 
 **Gráfico 7: Histograma de cantidad de días en los que recibieron llamadas :**
 
@@ -387,6 +385,12 @@ ggplot(DF, aes(x = DF$CALLS_OUT_TOT, y = DF$AIRTIME_OUT_TOT)) +
 ```{r}
 lm(DF$AIRTIME_OUT_TOT~DF$CALLS_OUT_TOT,data=DF)
 ```
+
+**Ecuación de regresión:**
+
+$$ y = 1.863x + 112.272 $$
+
+La ecuación de regresión lineal y = 1.863x + 112.272 modela una relación lineal positiva entre el número de llamadas realizadas por usuario (y) y la duración total de las llamadas (x) registradas por usuario. El coeficiente 1.863 indica que, en promedio, por cada unidad adicional de duración de llamadas, se esperan 1.863 llamadas realizadas adicionales. El término constante 112.272 representa el valor inicial de llamadas realizadas cuando la duración total es cero. En resumen, esta ecuación proporciona una herramienta para predecir la cantidad de llamadas realizadas en función de la duración total de las llamadas y entender su relación en un contexto de análisis de datos.
 
 **Gráfico 10: Histograma de cantidad de días en los que realizaron llamadas :**
 
