@@ -114,7 +114,7 @@ ggplot(data, aes(x = inicio, xend = fin, y = Integrantes, yend = Integrantes, co
 
 
 
-# **Datos**
+# [**Datos**]{style="color:#1FB0DB"}
 
 ## **Recolección**
 
@@ -181,7 +181,7 @@ Mostrar/Ocultar Contenido
 | TOP_CONT_5         | Cuantitativa Discreta | Número entero y positivo      | Contactos totales con los que realizó más de 5 eventos (llamada entrante / saliente o mensaje de texto saliente) durante el periodo |
 :::
 
-## **Política de Limpieza de Datos**
+## [**Política de Limpieza de Datos**]{style="color:#1FB0DB"}
 
 
 # **Análisis Descriptivo**
@@ -199,9 +199,9 @@ DF <- read_csv("DataLimpia.csv"
 
 ## **Descriptores Numéricos**
 
-**GRAFICAS:**
+## **ANALISIS DESCRIPTIVO:**
 
-**OBJETIVO 1:**
+### **OBJETIVO 1:** Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
 
 Grafico 1
 
@@ -214,7 +214,7 @@ ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=CHIP))+
   theme(axis.text = element_text(angle = 90))
 ```
 
-Anasilis de datos:-
+**Analisis del gráfico:**
 
 En el gráfico que representa el tráfico de datos en función del periodo, se evidencia una variación significativa en el año 2019, especialmente en el mes de febrero. En este mes, la tecnología 4G, medida en notación científica como 6e+05, mostró una preferencia notable en comparación con el 3G y un uso prácticamente nulo en la tecnología 2G, que registró un tráfico de datos de 0e+00.
 
@@ -224,17 +224,17 @@ En abril, los niveles se mantienen estables tanto en términos de tecnología de
 
 En mayo, se aprecia un crecimiento en la adopción de la tecnología 4G, mientras que se registra una ligera disminución en el uso de las tecnologías 2G y 3G. Este cambio podría estar relacionado con una mayor cobertura de red y la adopción de nuevas tendencias para mejorar los servicios de los usuarios en diferentes regiones, tanto en Perú como en otras partes del mundo.
 
-grafico 2:
+**Gráfico 2: Trafico total de datos y tipo de sistema operativo por periodo**
 
 ```{r}
 ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=OS),xlabel=)+geom_col(position="dodge")+ggtitle("TRAFICO DE DATOS Y SISTEMA OPERATIVO") + theme(plot.title = element_text(hjust = 0.5)) +ylab("TRAFICO DE DATO(Mb)")+labs(fill="SISTEMA OPERATIVO")+theme(axis.text = element_text(angle = 90))
 ```
 
-analisis de datos:
+**Anasilis del gráfico:**
 
 Al analizar la relación entre el tráfico de datos y el periodo de tiempo, se evidencia una disparidad considerable en el año 2019 entre las barras de color rosa, que corresponden a dispositivos con sistema operativo Android, y las barras de Apple, que son significativamente más altas. También se observa un nivel muy bajo de tráfico asociado a otros sistemas operativos y la categoría "sin sistema operativo". En los meses de marzo, abril y mayo, se observa una marcada disminución en el tráfico de datos de dispositivos Apple. Sin embargo, se nota que los niveles de tráfico de datos de dispositivos Android se mantienen constantes en marzo y abril de 2019, experimentando un aumento significativo en mayo de ese año. Esto sugiere una tendencia a la estabilidad en la adopción de sistemas operativos "otros" y la presencia de dispositivos "sin sistema operativo".
 
-grafico 3:
+**Grafico 3: Boxplot del trafico de datos 2g**
 
 ```{r}
 # Crear un boxplot estándar
@@ -250,19 +250,19 @@ axis(side = 1, at =c(0, 3, 1200))
 
 ```
 
-Grafico 4:
+**Grafico 4: Boxplot del trafico de datos 3g**
 
 ```{r}
 # Crear un boxplot estándar
-boxplot(DF$DATOS_3G, horizontal = T, col = "lightblue",
-        main = "Boxplot del trafico de datos 4g")
+boxplot(DF$DATOS_3G, horizontal = T, col = "pink",
+        main = "Boxplot del trafico de datos 3g")
 
-boxplot(DF$DATOS_3G, horizontal = T, col = "lightblue",
-        main = "Boxplot del trafico de datos 4g",
+boxplot(DF$DATOS_3G, horizontal = T, col = "pink",
+        main = "Boxplot del trafico de datos 3g",
         notch = TRUE, outline = F)
 ```
 
-grafico 5:
+**Grafico 5:Boxplot del trafico de datos 4g**
 
 ```{r}
 # Crear un boxplot estándar
@@ -277,53 +277,196 @@ boxplot(DF$DATOS_4G, horizontal = T, col = "lightblue",
 
 ```
 
+**Descriptores númericos:**
+
 ```{r}
-print("Descriptores numéricos y de trafico de datos 2G")
+print("Descriptores numéricos del trafico de datos 2G")
 summary(DF$DATOS_2G)
-print("Descriptores numéricos y de trafico de datos 3G")
+print("Descriptores numéricos del trafico de datos 3G")
 summary(DF$DATOS_3G)
-print("Descriptores numéricos y de trafico de datos 4G")
+print("Descriptores numéricos del trafico de datos 4G")
 summary(DF$DATOS_4G)
 ```
 
-En el caso del tráfico de datos 2G, la mediana es 0.326, lo cual está relacionado con el uso de los usuarios en megabytes (MB). Observamos que el tercer cuartil es 2.220, lo que indica que el 75% de los datos son iguales o menores a 2.220. Del mismo modo, se observa que el primer cuartil es 0.009, lo cual indica que el 25% de los datos son iguales o menores a 0.009.
+En el caso del tráfico de datos 2G, la mediana de 0.326 Mb significa que la mitad de los usuarios consumió 0.326 Mb o menos, y el tercer cuartil de 2.220 Mb indica que el 75% de los usuarios utilizó 2.220 Mb o menos, mientras que el primer cuartil de 0.009 Mb indica que el 25% de los usuarios consumió 0.009 Mb o menos.
 
-En el caso del tráfico de datos 3G, la mediana es 120.89, lo cual está relacionado con el uso de los usuarios en megabytes (MB). Observamos que el tercer cuartil es 367.70, lo que indica que el 75% de los datos son iguales o menores a 367.70. Del mismo modo, se observa que el primer cuartil es 36.95, lo cual indica que el 25% de los datos son iguales o menores a 36.95.
+En el caso del tráfico de datos 3G, la mediana de 120.89 Mb significa que la mitad de los usuarios consumió 120.89 Mb o menos, y el tercer cuartil de 367.70 Mb indica que el 75% de los usuarios utilizó 367.70 Mb o menos, mientras que el primer cuartil de 36.95 Mb indica que el 25% de los usuarios consumió 36.95 Mb o menos.
 
-En el caso del tráfico de datos 4G, la mediana es 9136, lo cual está relacionado con el uso de los usuarios en megabytes (MB). Observamos que el tercer cuartil es 12964, lo que indica que el 75% de los datos son iguales o menores a 12964. Del mismo modo, se observa que el primer cuartil es 2173, lo cual indica que el 25% de los datos son iguales o menores a 2173.
+En el caso del tráfico de datos 4G, la mediana de 6354 Mb significa que la mitad de los usuarios consumió 6354 Mb o menos, y el tercer cuartil de 12964 Mb indica que el 75% de los usuarios utilizó 12964 Mb o menos, mientras que el primer cuartil de 2173 Mb indica que el 25% de los usuarios consumió 2173 Mb o menos.
 
-**OBJETIVO 2:**
+### **OBJETIVO 2:** Analizar la duración y la cantidad de llamadas entrantes de un usuario.
 
-**Dispersión de Datos:**
+**Gráfico 6: Gráfica de dispersión de cantidad vs tiempo total de llamadas entrantes por usuario**
 
 ```{r}
 ggplot(DF, aes(x = DF$CALLS_IN_TOT, y = DF$AIRTIME_IN_TOT)) +
   geom_point(shape = 16, color = "pink") +
   geom_smooth(method = "lm", se = FALSE, color = "red") +
-  labs(x = "", y = "Eje Y",
-       title = "Gráfico de Dispersión con Línea de Tendencia")
+  labs(x = "Cantidad de llamadas", y = "Tiempo en total",
+       title = "Llamadas entrantes: Cantidad vs tiempo")
 
 ```
 
-ANALISIS DEL GRAFICO:
+**Analisis del gráfico:**
 
-Linealización:
+**Línea Vertical:** Tiempo total de llamadas recibidas durante el periodo, en minutos
+
+**Línea Horizontal:** Cantidad total de llamadas recibidas durante el periodo
+
+**Línea Diagonal:** Representa la relación cantidad y tiempo, y nos permite predecir el tiempo de llamadas recibidas con la cantidad de llamadas recibidas
+
+**Punto en el gráfico:** Representa a cada usuario del servicio telefónico
+
+**Puntos sobre la diagonal:** Representa a los usuarios con una menor cantidad de llamadas a comparación del tiempo total de llamadas recibidas, lo que indica aproximadamente una mayor duración de cada una de estas .
+
+**Puntos debajo de la diagonal:** Representa a los usuarios con una mayor cantidad de llamadas a comparación del tiempo total de llamadas recibidas, lo que indica aproximadamente una menor duración de cada una de estas.
+
+**Puntos en zona superior derecha del gráfico:** Representa a los usuarios con una mayor cantidad de llamadas y de mayor duración en total
+
+**Puntos en zona inferior izquierda del gráfico:** Representa a los usuarios con una menor cantidad de llamadas y de menor duración en total
+
+**Regresión lineal:**
 
 ```{r}
 lm(DF$AIRTIME_IN_TOT~DF$CALLS_IN_TOT,data=DF)
 ```
 
-```{r}
-print("Descriptores numéricos y de dispersión de la cantidad de compras diarias con una billetera digital")
-# Convertir la variable categórica en un factor
-categorica_factor <- factor(DF$CHIP)
+**Ecuación de regresión:**
 
-# Usar summary en la variable factorizada
-summary(categorica_factor)
+$$
+y = 1.589x + 107.891
+$$
+
+La ecuación de regresión lineal y = 1.589x + 107.891 modela una relación lineal positiva entre la cantidad de llamadas entrantes por usuario (y) y el tiempo total de llamadas entrantes registrado por usuario (x). El coeficiente 1.589 indica que, en promedio, por cada unidad adicional de tiempo total, se esperan 1.589 llamadas entrantes adicionales. El término constante 107.891 representa el valor inicial de llamadas cuando el tiempo total es cero. Esta ecuación proporciona una herramienta para predecir la cantidad de llamadas entrantes en función del tiempo total y entender su relación en un contexto de análisis de datos.
+
+**Gráfico 7: Histograma de cantidad de días en los que recibieron llamadas :**
+
+```{r}
+hist(DF$DAYS_IN_VOICE_TOT,breaks= 6, col = "lightblue", xlab = "Dias", ylab = "Clientes", main = "Cantidad de dias en los que recibieron llamadas")
+# Agregar la media y la mediana al histograma
+abline(v = mean(DF$DAYS_IN_VOICE_TOT), col="blue")
+abline(v = median(DF$DAYS_IN_VOICE_TOT), col="red")
+
+# Añadir leyenda
+legend("topright", legend = c("Media", "Mediana"), col = c("blue", "red"), lty = 1)
+```
+
+El histograma representa la distribución de la cantidad de días en los que los clientes recibieron llamadas, abarcando un rango de 0 a 31 días. Esto significa que hay clientes que no recibieron llamadas en absoluto, mientras que otros fueron contactados todos los días del mes. Se destaca un grupo particular en el intervalo de 25 a 30 días, lo que indica un conjunto de clientes que recibieron llamadas de manera consistente durante la mayoría de los días. Además, la diferencia entre la media y la mediana sugiere una posible asimetría en la distribución, con una inclinación hacia el lado izquierdo.
+
+**Descriptores:**
+
+```{r}
+print("Descriptores numéricos de la cantidad de días en los que recibieron llamadas")
+summary(DF$DAYS_IN_VOICE_TOT)
 
 ```
 
-**Comparación del tiempo llamadas de días laborables y no laborales:**
+Los valores incluyen el mínimo de 0 días, lo que indica que al menos un cliente no recibió llamadas en ningún día, un primer cuartil de 24, lo que significa que el 25% de los clientes recibieron llamadas en 24 días o menos, una mediana de 28, que representa el valor medio de los días de recepción de llamadas, una media de 25.56, que es el promedio de la cantidad de días en que los clientes recibieron llamadas, un tercer cuartil de 30, indicando que el 75% de los clientes recibieron llamadas en 30 días o menos, y un máximo de 31, lo que implica que al menos un cliente recibió llamadas durante todos los días del período considerado. En resumen, esta información proporciona una visión general de la distribución de la frecuencia de las llamadas entre los clientes, desde aquellos que no recibieron llamadas en absoluto hasta aquellos que lo hicieron durante la mayoría de los días.
+
+**Grafico 8:Comparación del tiempo llamadas entrantes de días laborables y no laborales:**
+
+```{r}
+# Calculamos el promedio del tiempo total de llamadas en días laborables y no laborables
+promedio_tiempo_week <- mean(DF$AIRTIME_IN_WEEK)
+promedio_tiempo_weekd <- mean(DF$AIRTIME_IN_WEEKD)
+
+# Creamos un gráfico de barras para comparar el tiempo total de llamadas en días laborables y no laborables
+bar_heights <- c(promedio_tiempo_week, promedio_tiempo_weekd)
+bar_names <- c("Días Laborables", "Días No Laborables")
+bar_colors <- c("lightblue", "lightcoral")
+
+barplot(bar_heights, 
+        names.arg = bar_names,
+        main = "Promedio del duración Total de Llamadas recibidas",
+        xlab= "Tipo de día",
+        ylab = "Duración",
+        col = bar_colors)
+
+# Agregamos etiquetas de porcentaje a las barras
+porcentajes <- c(round((promedio_tiempo_week / sum(bar_heights)) * 100, 2),
+                 round((promedio_tiempo_weekd / sum(bar_heights)) * 100, 2))
+
+
+# Imprimimos el promedio del tiempo total de llamadas en días laborables y no laborables
+cat("Promedio del Tiempo Total de Llamadas realizadas en Días Laborables:", promedio_tiempo_week, "\n")
+cat("Promedio del Tiempo Total de Llamadas realizadas en Días No Laborables:", promedio_tiempo_weekd, "\n")
+
+# Creamos una leyenda con porcentajes
+legend(x = 1.2,  # Ajustar la posición x
+       y = max(bar_heights) - 2,  # Ajustar la posición y
+       legend = paste0(bar_names, "   ", porcentajes, "%"), 
+       fill = bar_colors,
+       cex = 1)
+```
+
+### **OBJETIVO 3: Analizar la duración y la cantidad de llamadas salientes de un usuario.**
+
+**Grafico 9: Gráfica de dispersión de cantidad vs tiempo total de llamadas salientes por usuario**
+
+```{r}
+ggplot(DF, aes(x = DF$CALLS_OUT_TOT, y = DF$AIRTIME_OUT_TOT)) +
+  geom_point(shape = 16, color = "pink") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(x = "Cantidad de llamadas", y = "Tiempo en total",
+       title = "Llamadas salientes : Cantidad vs tiempo")
+```
+
+**Analisis del gráfico:**
+
+**Línea Vertical:** Tiempo total de llamadas realizadas durante el periodo, en minutos
+
+**Línea Horizontal:** Cantidad total de llamadas realizadas durante el periodo
+
+**Línea Diagonal:** Representa la relación cantidad y duración de llamadas realizadas , y nos permite predecir el tiempo de llamadas recibidas con la cantidad de llamadas realizadas.
+
+**Punto en el gráfico:** Representa a cada usuario del servicio telefónico
+
+**Puntos sobre la diagonal:** Representa a los usuarios con una menor cantidad de llamadas a comparación del tiempo total de llamadas recibidas, lo que indica aproximadamente una mayor duración de cada una de estas .
+
+**Puntos debajo de la diagonal:** Representa a los usuarios con una mayor cantidad de llamadas a comparación del tiempo total de llamadas recibidas, lo que indica aproximadamente una menor duración de cada una de estas.
+
+**Puntos en zona superior derecha del gráfico:** Representa a los usuarios con una mayor cantidad de llamadas y de mayor duración en total
+
+**Puntos en zona inferior izquierda del gráfico:** Representa a los usuarios con una menor cantidad de llamadas y de menor duración en total
+
+**Regresión lineal:**
+
+```{r}
+lm(DF$AIRTIME_OUT_TOT~DF$CALLS_OUT_TOT,data=DF)
+```
+
+**Ecuación de regresión:**
+
+$$ y = 1.863x + 112.272 $$
+
+La ecuación de regresión lineal y = 1.863x + 112.272 modela una relación lineal positiva entre el número de llamadas realizadas por usuario (y) y la duración total de las llamadas (x) registradas por usuario. El coeficiente 1.863 indica que, en promedio, por cada unidad adicional de duración de llamadas, se esperan 1.863 llamadas realizadas adicionales. El término constante 112.272 representa el valor inicial de llamadas realizadas cuando la duración total es cero. En resumen, esta ecuación proporciona una herramienta para predecir la cantidad de llamadas realizadas en función de la duración total de las llamadas y entender su relación en un contexto de análisis de datos.
+
+**Gráfico 10: Histograma de cantidad de días que se realizaron llamadas :**
+
+```{r}
+hist(DF$DAYS_OUT_VOICE_TOT,breaks= 6, col = "lightblue", xlab = "Clientes", ylab = "Frecuencia", main = "Cantidad de dias en los que realizaron llamadas")
+# Agregar la media y la mediana al histograma
+abline(v = mean(DF$DAYS_IN_VOICE_TOT), col="blue")
+abline(v = median(DF$DAYS_IN_VOICE_TOT), col="red")
+
+# Añadir leyenda
+legend("topright", legend = c("Media", "Mediana"), col = c("blue", "red"), lty = 1)
+```
+
+**Analisis:**
+
+El histograma representa la distribución de la cantidad de días en los que los clientes realizaron llamadas, abarcando un rango de 0 a 31 días. Esto significa que hay clientes que no realizaron llamadas en absoluto, mientras que otros realizaron llamadas todos los días del mes. Se destaca un grupo particular en el intervalo de 25 a 30 días, lo que indica un conjunto de clientes que realizaron llamadas de manera consistente durante la mayoría de los días. Además, la diferencia entre la media y la mediana sugiere una posible asimetría en la distribución, con una inclinación hacia el lado izquierdo.
+
+**Descriptores:**
+
+```{r}
+print("Descriptores numéricos de los días en la que los clientes recibieron llamadas ")
+summary(DF$DAYS_OUT_VOICE_TOT)
+```
+
+Los valores incluyen el mínimo de 0 días, lo que indica que al menos un cliente no recibió llamadas en ningún día, un primer cuartil de 24 días, lo que significa que el 25% de los clientes recibieron llamadas en 24 días o menos, una mediana de 28 días, que es el valor central de la distribución, una media de 25.69 días, que es el promedio de días de recepción de llamadas, un tercer cuartil de 30 días, indicando que el 75% de los clientes recibieron llamadas en 30 días o menos, y un máximo de 31 días, lo que implica que al menos un cliente recibió llamadas todos los días. En resumen, esta información proporciona una visión general de la distribución de la frecuencia de las llamadas entre los clientes, desde aquellos que no recibieron llamadas en absoluto hasta aquellos que lo hicieron durante la mayoría de los días.
+
+**Grafico 11:Comparación del tiempo llamadas salientes en días laborables y no laborales :**
 
 ```{r}
 # Calculamos el promedio del tiempo total de llamadas en días laborables y no laborables
@@ -337,8 +480,9 @@ bar_colors <- c("lightblue", "lightcoral")
 
 barplot(bar_heights, 
         names.arg = bar_names,
-        main = "Promedio del Tiempo Total de Llamadas realizadas por Tipo de Día",
-        ylab = "Promedio del Tiempo Total de Llamadas realizadas",
+        main = "Promedio del duración Total de Llamadas realizadas",
+        xlab= "Tipo de día",
+        ylab = "Duración",
         col = bar_colors)
 
 # Agregamos etiquetas de porcentaje a las barras
@@ -347,16 +491,51 @@ porcentajes <- c(round((promedio_tiempo_week / sum(bar_heights)) * 100, 2),
 
 
 # Imprimimos el promedio del tiempo total de llamadas en días laborables y no laborables
-cat("Promedio del Tiempo Total de Llamadas realizadas en Días Laborables:", promedio_tiempo_week, "\n")
-cat("Promedio del Tiempo Total de Llamadas realizadas en Días No Laborables:", promedio_tiempo_weekd, "\n")
+cat("Promedio del Tiempo Total de Llamadas recibidas en Días Laborables:", promedio_tiempo_week, "\n")
+cat("Promedio del Tiempo Total de Llamadas recibidas en Días No Laborables:", promedio_tiempo_weekd, "\n")
 
 # Creamos una leyenda con porcentajes
-legend(x = 1.35,  # Ajustar la posición x
+legend(x = 1.18,  # Ajustar la posición x
        y = max(bar_heights) - 3,  # Ajustar la posición y
        legend = paste0(bar_names, "   ", porcentajes, "%"), 
        fill = bar_colors,
        cex = 1)
 ```
+
+
+
+
+
+### **Objetivo 4:** Identificar que plan de telefonía resulta conveniente y el público de este.
+
+**Gráfico 12: Tiempo de duración de llamadas salientes por sistema operativo por periodo**.
+
+```{r}
+ggplot(DF,aes(x=PERIODO,y=AIRTIME_OUT_TOT,fill=OS),xlabel=)+geom_col(position="dodge")+ggtitle("DURACIÓN DE LLAMADAS Y SISTEMA OPERATIVO") + theme(plot.title = element_text(hjust = 0.5)) +ylab("N° Llamadas")+labs(fill="SISTEMA OPERATIVO")+theme(axis.text = element_text(angle = 90))
+```
+
+**Analisis:**
+
+Al analizar la relación entre la duración de llamadas salientes y el periodo de tiempo, se evidencia una disparidad considerable en el año 2019 entre las barras de color rosa, que corresponden a dispositivos con sistema operativo Android. Esto significa que el principal publico al que debería de estar destinado este plan debería de ser Android, ya que son los que pasan más tiempo hablando por teléfono.
+
+**Graficio 14: Cantidad de llamadas salientes por sistema operativo por periodo**.
+
+```{r}
+ggplot(DF,aes(x=PERIODO,y=CALLS_OUT_TOT,fill=OS),xlabel=)+geom_col(position="dodge")+ggtitle("LLAMADAS SALIENTES Y SISTEMA OPERATIVO") + theme(plot.title = element_text(hjust = 0.5)) +ylab("N° Llamadas")+labs(fill="SISTEMA OPERATIVO")+theme(axis.text = element_text(angle = 90))
+```
+
+**Analisis:**
+
+Al analizar la relación entre el numero de llamadas salientes y el periodo de tiempo, se evidencia una disparidad considerable en el año 2019 entre las barras de color rosa, que corresponden a dispositivos con sistema operativo Android. Esto significa que el principal publico al que debería de estar destinado este plan debería de ser android, ya que son los que realizan más llamadas.
+
+```{r}
+mosaicplot(table(DF$OS,DF$CHIP), col = c("green", "skyblue","red"),cex.axis = 0.6,main="Tabla de chip vs sistema operativo")
+```
+
+**Analisis del gráfico:**
+
+En este grafico se muestra que la mayoría de clientes Android, sin tac y IOS poseen un chip 4G. Mientras que la mayoría de clientes de otro sistema operativo poseen un chip 2G. Asimismo por gráficos anteriores sabemos que o
+
 
 
 
@@ -372,5 +551,3 @@ function toggleContent() {
 }
 </script>
 ```
-
-
