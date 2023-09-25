@@ -47,7 +47,7 @@ Analizar el comportamiento de la transferencia de datos y llamadas en los client
 ### **Objetivos específicos**
 
 1.  Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
-2.  Analizar la duración y la cantidad de llamadas entrantes a un usuario.
+2.  Analizar la duración y la cantidad de llamadas entrantes de un usuario.
 3.  Analizar la duración y la cantidad de llamadas salientes de un usuario.
 4.  
 
@@ -264,11 +264,11 @@ boxplot(DF$DATOS_4G, horizontal = T, col = "lightblue",
 ```
 
 ```{r}
-print("Descriptores numéricos y de trafico de datos 2G")
+print("Descriptores numéricos del trafico de datos 2G")
 summary(DF$DATOS_2G)
-print("Descriptores numéricos y de trafico de datos 3G")
+print("Descriptores numéricos del trafico de datos 3G")
 summary(DF$DATOS_3G)
-print("Descriptores numéricos y de trafico de datos 4G")
+print("Descriptores numéricos del trafico de datos 4G")
 summary(DF$DATOS_4G)
 ```
 
@@ -299,17 +299,64 @@ Linealización:
 lm(DF$AIRTIME_IN_TOT~DF$CALLS_IN_TOT,data=DF)
 ```
 
-```{r}
-print("Descriptores numéricos y de dispersión de la cantidad de compras diarias con una billetera digital")
-# Convertir la variable categórica en un factor
-categorica_factor <- factor(DF$CHIP)
+**Gráfico de cantidad de días en los que recibieron llamadas :**
 
-# Usar summary en la variable factorizada
-summary(categorica_factor)
+```{r}
+hist(DF$DAYS_OUT_VOICE_TOT,breaks= 6, col = "lightblue", xlab = "", ylab = "Frecuencia", main = "Gráfico 1: histograma de edad")
+# Agregar la media y la mediana al histograma
+abline(v = mean(DF$DAYS_OUT_VOICE_TOT), col="blue")
+abline(v = median(DF$DAYS_OUT_VOICE_TOT), col="red")
+
+# Añadir leyenda
+legend("topright", legend = c("Media", "Mediana"), col = c("blue", "red"), lty = 1)
+```
+
+```{r}
+print("Descriptores numéricos de los días ")
+summary(DF$DAYS_IN_VOICE_TOT)
 
 ```
 
-**Comparación del tiempo llamadas de días laborables y no laborales:**
+Analisis:
+
+**Comparación del tiempo llamadas entrantes de días laborables y no laborales:**
+
+```{r}
+# Calculamos el promedio del tiempo total de llamadas en días laborables y no laborables
+promedio_tiempo_week <- mean(DF$AIRTIME_IN_WEEK)
+promedio_tiempo_weekd <- mean(DF$AIRTIME_IN_WEEKD)
+
+# Creamos un gráfico de barras para comparar el tiempo total de llamadas en días laborables y no laborables
+bar_heights <- c(promedio_tiempo_week, promedio_tiempo_weekd)
+bar_names <- c("Días Laborables", "Días No Laborables")
+bar_colors <- c("lightblue", "lightcoral")
+
+barplot(bar_heights, 
+        names.arg = bar_names,
+        main = "Promedio del Tiempo Total de Llamadas recibidas por Tipo de Día",
+        ylab = "Promedio del Tiempo Total de Llamadas recibidas",
+        col = bar_colors)
+
+# Agregamos etiquetas de porcentaje a las barras
+porcentajes <- c(round((promedio_tiempo_week / sum(bar_heights)) * 100, 2),
+                 round((promedio_tiempo_weekd / sum(bar_heights)) * 100, 2))
+
+
+# Imprimimos el promedio del tiempo total de llamadas en días laborables y no laborables
+cat("Promedio del Tiempo Total de Llamadas realizadas en Días Laborables:", promedio_tiempo_week, "\n")
+cat("Promedio del Tiempo Total de Llamadas realizadas en Días No Laborables:", promedio_tiempo_weekd, "\n")
+
+# Creamos una leyenda con porcentajes
+legend(x = 1.35,  # Ajustar la posición x
+       y = max(bar_heights) - 3,  # Ajustar la posición y
+       legend = paste0(bar_names, "   ", porcentajes, "%"), 
+       fill = bar_colors,
+       cex = 1)
+```
+
+OBJETIVO 3
+
+**Comparación del tiempo llamadas salientes de días laborables y no laborales:**
 
 ```{r}
 # Calculamos el promedio del tiempo total de llamadas en días laborables y no laborables
