@@ -47,8 +47,8 @@ Analizar el comportamiento de la transferencia de datos y llamadas en los client
 ### **Objetivos específicos**
 
 1.  Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
-2.  Analizar el tiempo y la cantidad de llamadas entrantes a un usuario.
-3.  Analizar el tiempo y la cantidad de llamadas salientes de un usuario.
+2.  Analizar la duración y la cantidad de llamadas entrantes a un usuario.
+3.  Analizar la duración y la cantidad de llamadas salientes de un usuario.
 
 ## **Planificación**
 
@@ -201,6 +201,8 @@ ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=CHIP),xlabel=)+geom_col(position="dod
 
 Anasilis de datos:
 
+En el presente gráfico Tráfico de datos vs periodo, podemos observar la gran variación que existe en el año 2019 en el mes de febrero teniendo como mayor preferencia a la tecnología chip del 4G de notación científica 6e + 05, frente al 3g y muy inferior al 2g con un tráfico de datos de 0e+00. Consecutivo a eso podemos observar que en el mes de marzo del mismo año se reduce lo que viene a ser la tecnología chip 4G en casi 50% frente a un aumento en la tecnología 2G y se mantiene el uso de el chip 3G, siguiendo con el análisis para el mes de abril, podemos ver que se mantiene en los estándares tanto de tecnología en el chip como el tráfico de datos frente al mes de marzo; en el mes de mayo se observa un creciente en la tecnología 4G y una caída leve en el uso de en el uso de tecnología 2G y 3G todo esto se debe y se presume a la mayor cobertura que puede existir y a las nuevas tendencias de captación de red para mejorar el servicio de los usuarios en distintas zonas del Perú o del mundo.
+
 grafico 2:
 
 ```{r}
@@ -209,19 +211,39 @@ ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=OS),xlabel=)+geom_col(position="dodge
 
 analisis de datos:
 
+```{r}
+boxplot(DF$DATOS_TOTAL, main="Gráfico 5: boxplot de monto semanal disponible en billeteras digitales", ylab="Monto semanal en soles")
+```
+
+```{r}
+print("Descriptores numéricos y de trafico de datos 2G")
+summary(DF$DATOS_2G)
+print("Descriptores numéricos y de trafico de datos 3G")
+summary(DF$DATOS_3G)
+print("Descriptores numéricos y de trafico de datos 4G")
+summary(DF$DATOS_4G)
+```
+
 **OBJETIVO 2:**
 
 **Dispersión de Datos:**
 
 ```{r}
-plot(DF$AIRTIME_IN_TOT, DF$AIRTIME_IN_WEEKD,
+plot(DF$AIRTIME_IN_TOT, DF$CALLS_IN_TOT,
      xlab = "Numero de ocaciones claras",
      ylab = "Numero ocaciones claras falladas",
      main = "Rendimiento de los equipos sudamericanos")
-abline(a = 0, b = 0.577, col = "blue")
+abline()
+lm(DF$AIRTIME_IN_TOT~DF$CALLS_IN_TOT,data=DF)
 ```
 
 ANALISIS DEL GRAFICO:
+
+Linealización:
+
+```{r}
+lm(DF$AIRTIME_IN_TOT~DF$AIRTIME_IN_WEEKD,data=DF)
+```
 
 ```{r}
 print("Descriptores numéricos y de dispersión de la cantidad de compras diarias con una billetera digital")
@@ -231,27 +253,42 @@ categorica_factor <- factor(DF$CHIP)
 # Usar summary en la variable factorizada
 summary(categorica_factor)
 
-print("Descriptores numéricos y de trafico de datos totales")
-summary(DF$DATOS_TOTAL)
+
 
 
 ```
 
-**Comparación de llamadas de días laborables y no laborales:**
+**Comparación del tiempo llamadas de días laborables y no laborales:**
 
 ```{r}
-# Calcular el promedio de llamadas en días laborables y no laborables
-promedio_calls_week <- mean(DF$CALLS_OUT_WEEK)
-promedio_calls_weekd <- mean(DF$CALLS_OUT_WEEKD)
+# Calculamos el promedio del tiempo total de llamadas en días laborables y no laborables
+promedio_tiempo_week <- mean(DF$AIRTIME_OUT_WEEK)
+promedio_tiempo_weekd <- mean(DF$AIRTIME_OUT_WEEKD)
 
-# Crear un gráfico de barras para comparar llamadas en días laborables y no laborables
-barplot(c(promedio_calls_week, promedio_calls_weekd), 
-        names.arg = c("Días Laborables", "Días No Laborables"),
-        main = "Promedio de Llamadas Salientes por Tipo de Día",
-        ylab = "Promedio de Llamadas",
-        col = c("lightblue", "lightcoral"))
+# Creamos un gráfico de barras para comparar el tiempo total de llamadas en días laborables y no laborables
+bar_heights <- c(promedio_tiempo_week, promedio_tiempo_weekd)
+bar_names <- c("Días Laborables", "Días No Laborables")
+bar_colors <- c("lightblue", "lightcoral")
 
-# Imprimir el promedio de llamadas en días laborables y no laborables
-cat("Promedio de Llamadas en Días Laborables:", promedio_calls_week, "\n")
-cat("Promedio de Llamadas en Días No Laborables:", promedio_calls_weekd, "\n")
+barplot(bar_heights, 
+        names.arg = bar_names,
+        main = "Promedio del Tiempo Total de Llamadas realizadas por Tipo de Día",
+        ylab = "Promedio del Tiempo Total de Llamadas realizadas",
+        col = bar_colors)
+
+# Agregamos etiquetas de porcentaje a las barras
+porcentajes <- c(round((promedio_tiempo_week / sum(bar_heights)) * 100, 2),
+                 round((promedio_tiempo_weekd / sum(bar_heights)) * 100, 2))
+
+
+# Imprimimos el promedio del tiempo total de llamadas en días laborables y no laborables
+cat("Promedio del Tiempo Total de Llamadas realizadas en Días Laborables:", promedio_tiempo_week, "\n")
+cat("Promedio del Tiempo Total de Llamadas realizadas en Días No Laborables:", promedio_tiempo_weekd, "\n")
+
+# Creamos una leyenda con porcentajes
+legend(x = 1.35,  # Ajustar la posición x
+       y = max(bar_heights) - 3,  # Ajustar la posición y
+       legend = paste0(bar_names, "   ", porcentajes, "%"), 
+       fill = bar_colors,
+       cex = 1)
 ```
