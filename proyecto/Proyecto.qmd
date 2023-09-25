@@ -301,6 +301,16 @@ ggplot(DF, aes(x = DF$CALLS_IN_TOT, y = DF$AIRTIME_IN_TOT)) +
 lm(DF$AIRTIME_IN_TOT~DF$CALLS_IN_TOT,data=DF)
 ```
 
+Formulando la ecuación de Regresión para el diagrama de dispersión:
+
+B0=0.239�0=0.239
+
+B1=1.611�1=1.611
+
+Ecuación de regresión
+
+y=0.239+1.611x
+
 **Gráfico 7: Histograma de cantidad de días en los que recibieron llamadas :**
 
 ```{r}
