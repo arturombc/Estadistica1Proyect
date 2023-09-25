@@ -299,11 +299,9 @@ ggplot(DF, aes(x = DF$CALLS_IN_TOT, y = DF$AIRTIME_IN_TOT)) +
 
 **Línea Horizontal:** Cantidad total de llamadas recibidas durante el periodo
 
-**Línea Diagonal:** Representa la relación cantidad y tiempo
+**Línea Diagonal:** Representa la relación cantidad y tiempo, y nos permite predecir el tiempo de llamadas recibidas con la cantidad de llamadas recibidas
 
 **Punto en el gráfico:** Representa a cada usuario del servicio telefónico
-
-**Diagonal:** Representa la línea de usuarios que su cantidad de llamadas es proporcional a la duración de ellas
 
 **Puntos sobre la diagonal:** Representa a los usuarios con una menor cantidad de llamadas a comparación del tiempo total de llamadas recibidas, lo que indica aproximadamente una mayor duración de cada una de estas .
 
@@ -401,15 +399,13 @@ ggplot(DF, aes(x = DF$CALLS_OUT_TOT, y = DF$AIRTIME_OUT_TOT)) +
 
 **Analisis del gráfico:**
 
-**Línea Vertical:** Tiempo total de llamadas recibidas durante el periodo, en minutos
+**Línea Vertical:** Tiempo total de llamadas realizadas durante el periodo, en minutos
 
-**Línea Horizontal:** Cantidad total de llamadas recibidas durante el periodo
+**Línea Horizontal:** Cantidad total de llamadas realizadas durante el periodo
 
-**Línea Diagonal:** Representa la relación cantidad y tiempo
+**Línea Diagonal:** Representa la relación cantidad y duración de llamadas realizadas , y nos permite predecir el tiempo de llamadas recibidas con la cantidad de llamadas realizadas.
 
 **Punto en el gráfico:** Representa a cada usuario del servicio telefónico
-
-**Diagonal:** Representa la línea de usuarios que su cantidad de llamadas es proporcional a la duración de ellas
 
 **Puntos sobre la diagonal:** Representa a los usuarios con una menor cantidad de llamadas a comparación del tiempo total de llamadas recibidas, lo que indica aproximadamente una mayor duración de cada una de estas .
 
