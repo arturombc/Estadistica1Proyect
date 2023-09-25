@@ -94,10 +94,20 @@ data3 %>% rename(ID = ID1,
          TIEMPO_IN_FINDE=AIRTIME_IN_WEEKD,
          LLAMADAS_IN_TOT=CALLS_IN_TOT,
          LLAMADAS_IN_SEM=CALLS_IN_WEEK,
+         LLAMADAS_IN_FINDE=CALLS_IN_WEEKD,
+         CONTACTOS_IN_TOT=ORIG_VOICE_TOT,
          DIAS_LLAMADAS_IN_TOT=DAYS_IN_VOICE_TOT,
          TIEMPO_OUT_TOT=AIRTIME_OUT_TOT,
+         TIEMPO_OUT_SEM=AIRTIME_OUT_WEEK,
+         TIEMPO_OUT_FINDE=AIRTIME_OUT_WEEKD,
          LLAMADAS_OUT_TOT=CALLS_OUT_TOT,
+         LLAMADAS_OUT_SEM=CALLS_OUT_WEEK,
+         LLAMADAS_OUT_FINDE=CALLS_OUT_WEEKD,
+         CONTACTOS_OUT_TOT=DEST_VOICE,
          DIAS_LLAMADAS_OUT_TOT=DAYS_OUT_VOICE_TOT,
+         CONTACTOS_TOT=CONT_TOT,
+         TOP_CONT_5=TOP_CONT_5,
+        
          
          ) -> data3
 
@@ -108,6 +118,7 @@ write.csv(data3, "DataLimpia.csv", row.names = FALSE)
 round(sum(is.na(data3))/(nrow(data3)*ncol(data3))*100 , digits = 2)
 ```
 ```{r}
+data3
 str(data3)
 ```
 
