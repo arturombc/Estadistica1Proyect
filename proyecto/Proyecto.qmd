@@ -49,6 +49,7 @@ Analizar el comportamiento de la transferencia de datos y llamadas en los client
 1.  Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
 2.  Analizar la duración y la cantidad de llamadas entrantes a un usuario.
 3.  Analizar la duración y la cantidad de llamadas salientes de un usuario.
+4.  
 
 ## **Planificación**
 
@@ -201,7 +202,13 @@ ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=CHIP),xlabel=)+geom_col(position="dod
 
 Anasilis de datos:
 
-En el presente gráfico Tráfico de datos vs periodo, podemos observar la gran variación que existe en el año 2019 en el mes de febrero teniendo como mayor preferencia a la tecnología chip del 4G de notación científica 6e + 05, frente al 3g y muy inferior al 2g con un tráfico de datos de 0e+00. Consecutivo a eso podemos observar que en el mes de marzo del mismo año se reduce lo que viene a ser la tecnología chip 4G en casi 50% frente a un aumento en la tecnología 2G y se mantiene el uso de el chip 3G, siguiendo con el análisis para el mes de abril, podemos ver que se mantiene en los estándares tanto de tecnología en el chip como el tráfico de datos frente al mes de marzo; en el mes de mayo se observa un creciente en la tecnología 4G y una caída leve en el uso de en el uso de tecnología 2G y 3G todo esto se debe y se presume a la mayor cobertura que puede existir y a las nuevas tendencias de captación de red para mejorar el servicio de los usuarios en distintas zonas del Perú o del mundo.
+En el gráfico que representa el tráfico de datos en función del periodo, se evidencia una variación significativa en el año 2019, especialmente en el mes de febrero. En este mes, la tecnología 4G, medida en notación científica como 6e+05, mostró una preferencia notable en comparación con el 3G y un uso prácticamente nulo en la tecnología 2G, que registró un tráfico de datos de 0e+00.
+
+Luego, en marzo del mismo año, se observa una disminución de casi el 50% en la utilización de la tecnología 4G, acompañada de un aumento en la tecnología 2G, mientras que el uso de la tecnología 3G se mantiene constante.
+
+En abril, los niveles se mantienen estables tanto en términos de tecnología de chips como en tráfico de datos con respecto a marzo.
+
+En mayo, se aprecia un crecimiento en la adopción de la tecnología 4G, mientras que se registra una ligera disminución en el uso de las tecnologías 2G y 3G. Este cambio podría estar relacionado con una mayor cobertura de red y la adopción de nuevas tendencias para mejorar los servicios de los usuarios en diferentes regiones, tanto en Perú como en otras partes del mundo.
 
 grafico 2:
 
@@ -263,12 +270,17 @@ print("Descriptores numéricos y de trafico de datos 4G")
 summary(DF$DATOS_4G)
 ```
 
+En el caso del tráfico de datos 2G, la mediana es 0.326, lo cual está relacionado con el uso de los usuarios en megabytes (MB). Observamos que el tercer cuartil es 2.220, lo que indica que el 75% de los datos son iguales o menores a 2.220. Del mismo modo, se observa que el primer cuartil es 0.009, lo cual indica que el 25% de los datos son iguales o menores a 0.009.
+
+En el caso del tráfico de datos 3G, la mediana es 120.89, lo cual está relacionado con el uso de los usuarios en megabytes (MB). Observamos que el tercer cuartil es 367.70, lo que indica que el 75% de los datos son iguales o menores a 367.70. Del mismo modo, se observa que el primer cuartil es 36.95, lo cual indica que el 25% de los datos son iguales o menores a 36.95.
+
+En el caso del tráfico de datos 4G, la mediana es 9136, lo cual está relacionado con el uso de los usuarios en megabytes (MB). Observamos que el tercer cuartil es 12964, lo que indica que el 75% de los datos son iguales o menores a 12964. Del mismo modo, se observa que el primer cuartil es 2173, lo cual indica que el 25% de los datos son iguales o menores a 2173.
+
 **OBJETIVO 2:**
 
 **Dispersión de Datos:**
 
 ```{r}
-# Crear un gráfico de dispersión con ggplot2 y agregar una línea de tendencia
 ggplot(DF, aes(x = DF$CALLS_IN_TOT, y = DF$AIRTIME_IN_TOT)) +
   geom_point(shape = 16, color = "pink") +
   geom_smooth(method = "lm", se = FALSE, color = "red") +
