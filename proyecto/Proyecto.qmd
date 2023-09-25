@@ -314,12 +314,12 @@ legend("topright", legend = c("Media", "Mediana"), col = c("blue", "red"), lty =
 **Descriptores:**
 
 ```{r}
-print("Descriptores numéricos de los días en los que recibieron llamadas")
+print("Descriptores numéricos de la cantidad de días en los que recibieron llamadas")
 summary(DF$DAYS_IN_VOICE_TOT)
 
 ```
 
-Analisis:
+Los valores incluyen el mínimo de 0 días, lo que indica que al menos un cliente no recibió llamadas en ningún día, un primer cuartil de 24, lo que significa que el 25% de los clientes recibieron llamadas en 24 días o menos, una mediana de 28, que representa el valor medio de los días de recepción de llamadas, una media de 25.56, que es el promedio de la cantidad de días en que los clientes recibieron llamadas, un tercer cuartil de 30, indicando que el 75% de los clientes recibieron llamadas en 30 días o menos, y un máximo de 31, lo que implica que al menos un cliente recibió llamadas durante todos los días del período considerado. En resumen, esta información proporciona una visión general de la distribución de la frecuencia de las llamadas entre los clientes, desde aquellos que no recibieron llamadas en absoluto hasta aquellos que lo hicieron durante la mayoría de los días.
 
 **Comparación del tiempo llamadas entrantes de días laborables y no laborales:**
 
@@ -392,6 +392,8 @@ legend("topright", legend = c("Media", "Mediana"), col = c("blue", "red"), lty =
 print("Descriptores numéricos de los días en la que los clientes recibieron llamadas ")
 summary(DF$DAYS_OUT_VOICE_TOT)
 ```
+
+Los valores incluyen el mínimo de 0 días, lo que indica que al menos un cliente no recibió llamadas en ningún día, un primer cuartil de 24 días, lo que significa que el 25% de los clientes recibieron llamadas en 24 días o menos, una mediana de 28 días, que es el valor central de la distribución, una media de 25.69 días, que es el promedio de días de recepción de llamadas, un tercer cuartil de 30 días, indicando que el 75% de los clientes recibieron llamadas en 30 días o menos, y un máximo de 31 días, lo que implica que al menos un cliente recibió llamadas todos los días. En resumen, esta información proporciona una visión general de la distribución de la frecuencia de las llamadas entre los clientes, desde aquellos que no recibieron llamadas en absoluto hasta aquellos que lo hicieron durante la mayoría de los días.
 
 **Comparación del tiempo llamadas salientes de días laborables y no laborales:**
 
