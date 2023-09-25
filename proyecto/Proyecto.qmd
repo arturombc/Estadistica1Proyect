@@ -286,8 +286,8 @@ En el caso del tráfico de datos 4G, la mediana de 6354 Mb significa que la mita
 ggplot(DF, aes(x = DF$CALLS_IN_TOT, y = DF$AIRTIME_IN_TOT)) +
   geom_point(shape = 16, color = "pink") +
   geom_smooth(method = "lm", se = FALSE, color = "red") +
-  labs(x = "", y = "Eje Y",
-       title = "Gráfico de Dispersión con Línea de Tendencia")
+  labs(x = "Cantidad de llamadas", y = "Tiempo en total",
+       title = "Llamadas entrantes: Cantidad vs tiempo")
 
 ```
 
