@@ -42,13 +42,14 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 
 ### **Objetivo general**
 
-Analizar el comportamiento de la transferencia de datos y llamadas en los clientes peruanos de una empresa de telefonía móvil entre diciembre de 2018 y abril del 2019.
+Analizar el comportamiento de la transferencia de datos y llamadas en los clientes peruanos de una empresa de telefonía móvil entre febrero de 2019 y mayo del 2019.
 
 ### **Objetivos específicos**
 
 1.  Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
-2.  Analizar el tiempo y la cantidad de llamadas entrantes a un usuario.
-3.  Analizar el tiempo y la cantidad de llamadas salientes de un usuario.
+2.  Analizar la duración y la cantidad de llamadas entrantes a un usuario.
+3.  Analizar la duración y la cantidad de llamadas salientes de un usuario.
+4.  
 
 ## **Planificación**
 
@@ -167,4 +168,178 @@ function toggleContent() {
   }
 }
 </script>
+```
+Renombrar las variables:
+
+```{r}
+
+DF <- DF %>%
+  rename(ID = ID1,
+         CHIP = EQUIPO_TEC,
+         MARCA = EQUIPO_MARCA,
+         MODELO = EQUIPO_MODELO,
+         OS= EQUIPO_OS,
+         DATOS_4G= TRAF_DATOS_4G,
+         DATOS_3G= TRAF_DATOS_3G,
+         DATOS_2G= TRAF_DATOS_2G,
+         DATOS_TOTAL= TRAF_DATOS_TOTAL,
+         DURACION_4G=TRAF_DURACION_4G,
+         DURACION_3G=TRAF_DURACION_3G,
+         DURACION_2G=TRAF_DURACION_2G
+         )
+
+```
+
+**GRAFICAS:**
+
+**OBJETIVO 1:**
+
+grafico 1
+
+```{r}
+ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=CHIP),xlabel=)+geom_col(position="dodge")+ggtitle("TRAFICO DE DATOS TOTAL Y TECNOLOGIA DEL CHIP") + theme(plot.title = element_text(hjust = 0.5)) +ylab("TRAFICO DE DATO(Mb)")+labs(fill="TECNOLOGIA DEL CHIP")+theme(axis.text = element_text(angle = 90))
+```
+
+Anasilis de datos:-
+
+En el gráfico que representa el tráfico de datos en función del periodo, se evidencia una variación significativa en el año 2019, especialmente en el mes de febrero. En este mes, la tecnología 4G, medida en notación científica como 6e+05, mostró una preferencia notable en comparación con el 3G y un uso prácticamente nulo en la tecnología 2G, que registró un tráfico de datos de 0e+00.
+
+Luego, en marzo del mismo año, se observa una disminución de casi el 50% en la utilización de la tecnología 4G, acompañada de un aumento en la tecnología 2G, mientras que el uso de la tecnología 3G se mantiene constante.
+
+En abril, los niveles se mantienen estables tanto en términos de tecnología de chips como en tráfico de datos con respecto a marzo.
+
+En mayo, se aprecia un crecimiento en la adopción de la tecnología 4G, mientras que se registra una ligera disminución en el uso de las tecnologías 2G y 3G. Este cambio podría estar relacionado con una mayor cobertura de red y la adopción de nuevas tendencias para mejorar los servicios de los usuarios en diferentes regiones, tanto en Perú como en otras partes del mundo.
+
+grafico 2:
+
+```{r}
+ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=OS),xlabel=)+geom_col(position="dodge")+ggtitle("TRAFICO DE DATOS Y SISTEMA OPERATIVO") + theme(plot.title = element_text(hjust = 0.5)) +ylab("TRAFICO DE DATO(Mb)")+labs(fill="SISTEMA OPERATIVO")+theme(axis.text = element_text(angle = 90))
+```
+
+analisis de datos:
+
+Al analizar la relación entre el tráfico de datos y el periodo de tiempo, se evidencia una disparidad considerable en el año 2019 entre las barras de color rosa, que corresponden a dispositivos con sistema operativo Android, y las barras de Apple, que son significativamente más altas. También se observa un nivel muy bajo de tráfico asociado a otros sistemas operativos y la categoría "sin sistema operativo". En los meses de marzo, abril y mayo, se observa una marcada disminución en el tráfico de datos de dispositivos Apple. Sin embargo, se nota que los niveles de tráfico de datos de dispositivos Android se mantienen constantes en marzo y abril de 2019, experimentando un aumento significativo en mayo de ese año. Esto sugiere una tendencia a la estabilidad en la adopción de sistemas operativos "otros" y la presencia de dispositivos "sin sistema operativo".
+
+grafico 3:
+
+```{r}
+# Crear un boxplot estándar
+boxplot(DF$DATOS_2G, horizontal = T, col = "green",
+        main = "Boxplot del trafico de datos 2g")
+
+# Crear un boxplot visible 
+boxplot(DF$DATOS_2G, horizontal = T, col = "green",
+        main = "Boxplot del trafico de datos 2g",
+        notch = TRUE, outline = F)
+
+axis(side = 1, at =c(0, 3, 1200))
+
+```
+
+Grafico 4:
+
+```{r}
+# Crear un boxplot estándar
+boxplot(DF$DATOS_3G, horizontal = T, col = "lightblue",
+        main = "Boxplot del trafico de datos 4g")
+
+boxplot(DF$DATOS_3G, horizontal = T, col = "lightblue",
+        main = "Boxplot del trafico de datos 4g",
+        notch = TRUE, outline = F)
+```
+
+grafico 5:
+
+```{r}
+# Crear un boxplot estándar
+boxplot(DF$DATOS_4G, horizontal = T, col = "lightblue",
+        main = "Boxplot del trafico de datos 4g")
+
+boxplot(DF$DATOS_4G, horizontal = T, col = "lightblue",
+        main = "Boxplot del trafico de datos 4g",
+        notch = TRUE, outline = F)
+
+
+
+```
+
+```{r}
+print("Descriptores numéricos y de trafico de datos 2G")
+summary(DF$DATOS_2G)
+print("Descriptores numéricos y de trafico de datos 3G")
+summary(DF$DATOS_3G)
+print("Descriptores numéricos y de trafico de datos 4G")
+summary(DF$DATOS_4G)
+```
+
+En el caso del tráfico de datos 2G, la mediana es 0.326, lo cual está relacionado con el uso de los usuarios en megabytes (MB). Observamos que el tercer cuartil es 2.220, lo que indica que el 75% de los datos son iguales o menores a 2.220. Del mismo modo, se observa que el primer cuartil es 0.009, lo cual indica que el 25% de los datos son iguales o menores a 0.009.
+
+En el caso del tráfico de datos 3G, la mediana es 120.89, lo cual está relacionado con el uso de los usuarios en megabytes (MB). Observamos que el tercer cuartil es 367.70, lo que indica que el 75% de los datos son iguales o menores a 367.70. Del mismo modo, se observa que el primer cuartil es 36.95, lo cual indica que el 25% de los datos son iguales o menores a 36.95.
+
+En el caso del tráfico de datos 4G, la mediana es 9136, lo cual está relacionado con el uso de los usuarios en megabytes (MB). Observamos que el tercer cuartil es 12964, lo que indica que el 75% de los datos son iguales o menores a 12964. Del mismo modo, se observa que el primer cuartil es 2173, lo cual indica que el 25% de los datos son iguales o menores a 2173.
+
+**OBJETIVO 2:**
+
+**Dispersión de Datos:**
+
+```{r}
+ggplot(DF, aes(x = DF$CALLS_IN_TOT, y = DF$AIRTIME_IN_TOT)) +
+  geom_point(shape = 16, color = "pink") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(x = "", y = "Eje Y",
+       title = "Gráfico de Dispersión con Línea de Tendencia")
+
+```
+
+ANALISIS DEL GRAFICO:
+
+Linealización:
+
+```{r}
+lm(DF$AIRTIME_IN_TOT~DF$CALLS_IN_TOT,data=DF)
+```
+
+```{r}
+print("Descriptores numéricos y de dispersión de la cantidad de compras diarias con una billetera digital")
+# Convertir la variable categórica en un factor
+categorica_factor <- factor(DF$CHIP)
+
+# Usar summary en la variable factorizada
+summary(categorica_factor)
+
+```
+
+**Comparación del tiempo llamadas de días laborables y no laborales:**
+
+```{r}
+# Calculamos el promedio del tiempo total de llamadas en días laborables y no laborables
+promedio_tiempo_week <- mean(DF$AIRTIME_OUT_WEEK)
+promedio_tiempo_weekd <- mean(DF$AIRTIME_OUT_WEEKD)
+
+# Creamos un gráfico de barras para comparar el tiempo total de llamadas en días laborables y no laborables
+bar_heights <- c(promedio_tiempo_week, promedio_tiempo_weekd)
+bar_names <- c("Días Laborables", "Días No Laborables")
+bar_colors <- c("lightblue", "lightcoral")
+
+barplot(bar_heights, 
+        names.arg = bar_names,
+        main = "Promedio del Tiempo Total de Llamadas realizadas por Tipo de Día",
+        ylab = "Promedio del Tiempo Total de Llamadas realizadas",
+        col = bar_colors)
+
+# Agregamos etiquetas de porcentaje a las barras
+porcentajes <- c(round((promedio_tiempo_week / sum(bar_heights)) * 100, 2),
+                 round((promedio_tiempo_weekd / sum(bar_heights)) * 100, 2))
+
+
+# Imprimimos el promedio del tiempo total de llamadas en días laborables y no laborables
+cat("Promedio del Tiempo Total de Llamadas realizadas en Días Laborables:", promedio_tiempo_week, "\n")
+cat("Promedio del Tiempo Total de Llamadas realizadas en Días No Laborables:", promedio_tiempo_weekd, "\n")
+
+# Creamos una leyenda con porcentajes
+legend(x = 1.35,  # Ajustar la posición x
+       y = max(bar_heights) - 3,  # Ajustar la posición y
+       legend = paste0(bar_names, "   ", porcentajes, "%"), 
+       fill = bar_colors,
+       cex = 1)
 ```
