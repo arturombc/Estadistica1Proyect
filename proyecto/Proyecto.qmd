@@ -139,7 +139,7 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 | VARIABLE              | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|--------------|--------------|--------------|-------------------------------|
+|---------------|---------------|---------------|---------------------------|
 | ID                    | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO               | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | CHIP                  | Categórica Ordinal    | 3G, 4G, 5G                    | Tecnología del chip                                                                                                                 |
@@ -226,7 +226,6 @@ ggplot(DF,aes(x=PERIODO,y=(DATOS_TOTAL/1000),fill=CHIP)) +
 **Analisis del gráfico:**
 
 En el gráfico que representa el tráfico de datos en función del periodo, se evidencia una variación significativa en el año 2019 durante el mes de febrero, probablemente debido al aumento de tiempo libre durante las vacaciones. Ademas, se puede observar una gran superioridad por parte de la tecnologia 4G sobre las otras durante los 4 periodos de tiempo, probablemente debido a que la tecnologia 4G se ha vuelto muy usada debido a sus mejoras en velocidad, rendimiento y capacidad de resolver servicios exigentes, lo cual lo hace escencial para la conectividad móvil actual.
-
 
 Filtrando la base de datos según la tecnología del chip de cada usuario, se pueden llegar a los siguientes descriptores:
 
@@ -580,7 +579,6 @@ function toggleContent() {
 }
 </script>
 ```
-
 # **Bibliografía**
 
 [link-1]: https://m.inei.gob.pe/prensa/noticias/el-668-de-la-poblacion-de-6-y-mas-anos-de-edad-accedio-a-internet-de-enero-a-marzo-del-presente-ano-12954/ "Uso de teléfonos móviles Perú"
