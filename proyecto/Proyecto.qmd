@@ -196,7 +196,11 @@ DF <- read_csv("DataLimpia.csv"
 
 ## **OBJETIVO 1:** Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
 
-Grafico 1
+Hola `r mode(DF$CHIP)` xd
+
+![](chip.jpg)
+
+Para contextualizar las búsquedas que haremos aquí, pondremos una tabla de cuánto puedes hacer con cierta cantidad de MB.
 
 ```{r}
 ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=CHIP)) +
@@ -501,15 +505,7 @@ legend(x = 1.18,  # Ajustar la posición x
        cex = 1)
 ```
 
-<<<<<<< HEAD
-
-
-
-
 ## **Objetivo 4:** Identificar que plan de telefonía resulta conveniente y el público de este.
-=======
-### **Objetivo 4:** Identificar que plan de telefonía resulta conveniente y el público de este.
->>>>>>> 58180564fda737386848dc9cfff286f7dbe8f9cb
 
 **Gráfico 12: Tiempo de duración de llamadas salientes por sistema operativo por periodo**.
 
