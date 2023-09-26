@@ -160,9 +160,7 @@ Mostrar/Ocultar Contenido
 
 </button>
 
-
 ::: toggle-content
-
 | VARIABLE                   | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
 |----------------------------|-----------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
 | ID                         | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
@@ -212,12 +210,11 @@ El porcentaje de datos nulos en la tabla es `r round(sum(is.na(DF))/(nrow(DF)*nc
 
 # [**Análisis Descriptivo**]{style="color:#1FB0DB"}
 
-
 ## **OBJETIVO 1:** Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
 
 ### **Motivación**
 
-La justificación de este objetivo reside en que latinoamérica es actualmente el continente que en proporción consume más el internet en el [mundo][link-3]. Además, en el año 2019, los peruanos [tenian un consumo considerable de datos][link-1]. 
+La justificación de este objetivo reside en que latinoamérica es actualmente el continente que en proporción consume más el internet en el [mundo](https://www.atlantico.vc "Latin America Digital Transformation Report 2023"). Además, en el año 2019, los peruanos [tenian un consumo considerable de datos](https://m.inei.gob.pe/prensa/noticias/el-668-de-la-poblacion-de-6-y-mas-anos-de-edad-accedio-a-internet-de-enero-a-marzo-del-presente-ano-12954/ "Uso de teléfonos móviles Perú").
 
 En este aspecto, analizar patrones puede permitir un mejor dominio de mercado por cualquier empresa de telefonía móvil actual, esto hace que este análisis se vuelva indispensable para conocer mejor el mercado actual y tomar mejores decisiones basadas en los datos.
 
@@ -225,13 +222,13 @@ En este aspecto, analizar patrones puede permitir un mejor dominio de mercado po
 
 Existen diferentes tipos de tecnología para telecomunicaciones, durante este proyecto analizaremos las de 2G, 3G y 4G; con la intención de dar contexto a los gráficos, mostraremos las diferencias entre cada una de estas tecnologías y daremos una intuición de en que contexto se pueden usar.
 
-![][img-1]
+![](src/chip.jpg "Tecnología de Chips")
 
-- 2G: Permite solamente llamadas y mensajes. Generalmente se utiliza cuando no existe cobertura de otro tipo. Podría ser que se use en zonas alejadas de las grandes ciudades, generalmente en modelos antiguos. No soporta la conexión a internet.
+-   2G: Permite solamente llamadas y mensajes. Generalmente se utiliza cuando no existe cobertura de otro tipo. Podría ser que se use en zonas alejadas de las grandes ciudades, generalmente en modelos antiguos. No soporta la conexión a internet.
 
-- 3G: La velocidad de descarga se aumenta, este aumento [permite visualizar][link-2] contenido de streaming como videos de youtube, aunque no a una muy buena calidad.
+-   3G: La velocidad de descarga se aumenta, este aumento [permite visualizar](https://kenstechtips.com/index.php/download-speeds-2g-3g-and-4g-actual-meaning "Velocidad de descarga con redes 2g, 3g y 4g") contenido de streaming como videos de youtube, aunque no a una muy buena calidad.
 
-- 4G: Como referencia, con esta tecnología es posible ver videos a 4K de resolución, el uso de esto esta más ampliamente distribuido a lo largo de las grandes ciudades y en 2019 fué el tipo de chip más utilizado.
+-   4G: Como referencia, con esta tecnología es posible ver videos a 4K de resolución, el uso de esto esta más ampliamente distribuido a lo largo de las grandes ciudades y en 2019 fué el tipo de chip más utilizado.
 
 Podemos tener una primera suposición de que esto implica que se consuman más datos de 4G que de los demás debido a la diversidad de usos que se le puede dar a este tipo de datos; y además, a la comercialización masiva de esta tecnología.
 
@@ -268,7 +265,6 @@ Ahora que sabemos qué significan los diferentes tipos de tecnología de chip, p
 sort(unique(DF$PERIODO))
 ```
 
-
 ```{r}
 ggplot(DF, aes(x = PERIODO, y = (DATOS_TOTAL / 1000), fill = CHIP)) +
   geom_col(position = "dodge") +
@@ -279,11 +275,10 @@ ggplot(DF, aes(x = PERIODO, y = (DATOS_TOTAL / 1000), fill = CHIP)) +
   scale_y_continuous(breaks = seq(0, max(DF$DATOS_TOTAL / 1000), by = 80))
 ```
 
-Ahora surge la pregunta: ¿Qué significan estos números? Podemos explicar esto dando un ejemplo de [cuánto][link-4] puedes lograr con 1GB de transferencia de datos.
+Ahora surge la pregunta: ¿Qué significan estos números? Podemos explicar esto dando un ejemplo de [cuánto](https://kenstechtips.com/index.php/data-plans/1gb-data "1GB of Data: How Much Is It & How Long Does It Last? Mobile Data Limits") puedes lograr con 1GB de transferencia de datos.
 
-- 1GB: Descargar un video de 30 min en HD
-- 
-
+-   1GB: Descargar un video de 30 min en HD
+-   
 
 **Analisis del gráfico:**
 
@@ -392,7 +387,6 @@ ggplot(DF, aes(x = DF$LLAMADAS_IN_TOT, y = DF$TIEMPO_LLAMADAS_IN_TOT)) +
 
 ```
 
-
 **Analisis del gráfico:**
 
 **Línea Vertical:** Tiempo total de llamadas recibidas durante el periodo, en minutos
@@ -416,8 +410,6 @@ ggplot(DF, aes(x = DF$LLAMADAS_IN_TOT, y = DF$TIEMPO_LLAMADAS_IN_TOT)) +
 ```{r}
 lm(DF$TIEMPO_LLAMADAS_IN_TOT~DF$LLAMADAS_IN_TOT,data=DF)
 ```
-
-
 
 **Ecuación de regresión:**
 
@@ -645,13 +637,3 @@ function toggleContent() {
 </script>
 ```
 # **Bibliografía**
-
-[link-1]: https://m.inei.gob.pe/prensa/noticias/el-668-de-la-poblacion-de-6-y-mas-anos-de-edad-accedio-a-internet-de-enero-a-marzo-del-presente-ano-12954/ "Uso de teléfonos móviles Perú"
-
-[link-2]: https://kenstechtips.com/index.php/download-speeds-2g-3g-and-4g-actual-meaning "Velocidad de descarga con redes 2g, 3g y 4g"
-
-[link-3]: https://www.atlantico.vc "Latin America Digital Transformation Report 2023"
-
-[link-4]: https://kenstechtips.com/index.php/data-plans/1gb-data "1GB of Data: How Much Is It & How Long Does It Last? Mobile Data Limits"
-
-[img-1]: src/chip.jpg "Tecnología de Chips"
