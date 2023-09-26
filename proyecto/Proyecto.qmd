@@ -163,45 +163,41 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 
-
-| VARIABLE              | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|---------------|---------------|---------------|---------------------------|
-| ID                    | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
-| PERIODO               | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
-| CHIP                  | Categórica Ordinal    | 3G, 4G, 5G                    | Tecnología del chip                                                                                                                 |
-| MARCA                 | Categórica Nominal    | LG, SAMSUNG, APPLE, etc.      | Marca del equipo                                                                                                                    |
-| MODELO                | Categórica Nominal    | Galaxy J2, iPhone6, etc.      | Modelo del dispositivo                                                                                                              |
-| OS                    | Categórica Nominal    | Android, iOS, sin tac, otros. | Tipo de sistema operativo                                                                                                           |
-| DATOS_4G              | Cuantitativa Continua | Número positivo               | Tráfico de datos 4G en Mb consumidos durante el periodo                                                                             |
-| DATOS_3G              | Cuantitativa Continua | Número positivo               | Tráfico de datos 3G en Mb consumidos durante el periodo                                                                             |
-| DATOS_2G              | Cuantitativa Continua | Número positivo               | Tráfico de datos 2G en Mb consumidos durante el periodo                                                                             |
-| DATOS_TOTAL           | Cuantitativa Continua | Número positivo               | Tráfico de datos Total en Mb consumidos durante el periodo                                                                          |
-| DURACION_4G           | Cuantitativa Continua | Número positivo               | Trafico de duración 4G consumidos durante el periodo                                                                                |
-| DURACION_3G           | Cuantitativa Continua | Número positivo               | Trafico de duración 3G consumidos durante el periodo                                                                                |
-| DURACION_2G           | Cuantitativa Continua | Número positivo               | Trafico de duración 2G durante el periodo                                                                                           |
-| DPTO_XDR              | Categória Nominal     | LIMA, HUÁNUCO, PIURA, etc.    | Departamento en el cuál se consumió mayor cantidad de Mb's                                                                          |
-| DPTO_CDR              | Categória Nominal     | LIMA, HUÁNUCO, PIURA, etc.    | Departamento en el cuál se consumió mayor cantidad de minutos en llamadas                                                           |
-| TIEMPO_IN_TOT         | Cuantitativa Continua | Número positivo               | Tiempo total llamadas recibidas durante el periodo, en minutos                                                                      |
-| TIEMPO_IN_SEM         | Cuantitativa Continua | Número Positivo               | Tiempo semanal de llamadas recibidas durante el periodo en minutos                                                                  |
-| LLAMADAS_IN_TOT       | Cuantitativa Discreta | Número entero y positivo      | Cantidad de llamadas recibidas durante el periodo                                                                                   |
-| LLAMADAS_IN_SEM       | Cuantitativa Discreta | Número entero y positivo      | Cantidad de llamadas recibidas durante la semana                                                                                    |
-| DIAS_LLAMADAS_IN_TOT  | Cuantitativa Discreta | Número entero y positivo      | Cantidad de días que recibieron llamadas durante el periodo                                                                         |
-| TIEMPO_OUT_TOT        | Cuantitativa Continua | Número positivo               | Tiempo total llamadas realizadas durante el periodo, en minutos                                                                     |
-| LLAMADAS_OUT_TOT      | Cuantitativa Discreta | Número entero y positivo      | Cantidad de llamadas realizadas durante el periodo                                                                                  |
-| DIAS_LLAMADAS_OUT_TOT | Cuantitativa Discreta | Número entero y positivo      | Cantidad de días que realizó llamadas durante el periodo                                                                            |
-| TIEMPO_IN_SEM       | Cuantitativa Continua | Número positivo               | Tiempo total de llamadas recibidas de Lunes a Viernes durante el periodo, en minutos                                                |
-| TIEMPO_IN_FINDE      | Cuantitativa Continua | Número positivo               | Tiempo total de llamadas recibidas de Sábado a Domingo durante el periodo, en minutos                                               |
-| CALLS_IN_WEEK         | Cuantitativa Discreta | Número entero y positivo      | Cantidad de llamadas recibidas de Lunes a Viernes durante el periodo                                                                |
-| CALLS_IN_WEEKD        | Cuantitativa Discreta | Número entero y positivo      | Cantidad de llamadas recibidas de Sábado a Domingo durante el periodo                                                               |
-| ORIG_VOICE_TOT        | Cuantitativa Discreta | Número entero y positivo      | Contactos totales de los que recibió alguna llamada durante el periodo                                                              |
-| DIAS_LLAMADAS_IN_TOT     | Cuantitativa Discreta | Número entero y positivo      | Cantidad de días que recibieron llamadas durante el periodo                                                                         |
-| AIRTIME_OUT_WEEK      | Cuantitativa Continua | Número positivo               | Tiempo total de llamadas realizadas de Lunes a Viernes durante el periodo, en minutos                                               |
-| AIRTIME_OUT_WEEKD     | Cuantitativa Continua | Número positivo               | Tiempo total de llamadas realizadas de Sábado a Domingo durante el periodo, en minutos                                              |
-| CALLS_OUT_WEEK        | Cuantitativa Discreta | Número entero y positivo      | Cantidad de llamadas realizadas de Lunes a Viernes durante el periodo                                                               |
-| CALLS_OUT_WEEKD       | Cuantitativa Discreta | Número entero y positivo      | Cantidad de llamadas realizadas de Sábado a Domingo durante el periodo                                                              |
-| DEST_VOICE            | Cuantitativa Discreta | Número entero y positivo      | Contactos totales a los que llamó durante el periodo                                                                                |
-| CONT_TOT              | Cuantitativa Discreta | Número entero y positivo      | Contactos totales con los que realizó un evento (llamada entrante / saliente o mensaje de texto saliente) durante el periodo        |
-| TOP_CONT_5            | Cuantitativa Discreta | Número entero y positivo      | Contactos totales con los que realizó más de 5 eventos (llamada entrante / saliente o mensaje de texto saliente) durante el periodo |
+| VARIABLE                   | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
+|----------------------------|-----------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| ID                         | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
+| PERIODO                    | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
+| CHIP                       | Categórica Ordinal    | 2G, 3G, 4G                    | Tecnología del chip                                                                                                                 |
+| MARCA                      | Categórica Nominal    | LG, SAMSUNG, APPLE, etc.      | Marca del equipo                                                                                                                    |
+| MODELO                     | Categórica Nominal    | Galaxy J2, iPhone6, etc.      | Modelo del dispositivo                                                                                                              |
+| OS                         | Categórica Nominal    | Android, iOS, sin tac, otros. | Tipo de sistema operativo                                                                                                           |
+| DATOS_4G                   | Cuantitativa Continua | Número positivo               | MB consumidos en 4G                                                                                                                 |
+| DATOS_3G                   | Cuantitativa Continua | Número positivo               | MB consumidos en 3G                                                                                                                 |
+| DATOS_2G                   | Cuantitativa Continua | Número positivo               | MB consumidos en 2G                                                                                                                 |
+| DATOS_TOTAL                | Cuantitativa Continua | Número positivo               | MB consumidos en total                                                                                                              |
+| TIEMPO_4G                  | Cuantitativa Continua | Número positivo               | Tiempo de navegación en 4G                                                                                                          |
+| TIEMPO_3G                  | Cuantitativa Continua | Número positivo               | Tiempo de navegación en 3G                                                                                                          |
+| TIEMPO_2G                  | Cuantitativa Continua | Número positivo               | Tiempo de navegación en 2G                                                                                                          |
+| DPTO_DATOS                 | Categória Nominal     | LIMA, HUÁNUCO, PIURA, etc.    | Departamento en el cuál se consumió mayor cantidad de Mb's                                                                          |
+| DPTO_TIEMPO_LLAMADAS       | Categória Nominal     | LIMA, HUÁNUCO, PIURA, etc.    | Departamento en el cuál se realizó mayor tiempo de llamadas, en minutos                                                             |
+| TIEMPO_LLAMADAS_IN_TOT     | Cuantitativa Continua | Número positivo               | Tiempo total de llamadas recibidas durante el periodo, en minutos                                                                   |
+| TIEMPO_LLAMADAS_IN_SEM     | Cuantitativa Continua | Número Positivo               | Tiempo total de llamadas recibidas de Lunes a Viernes durante el periodo, en minutos                                                |
+| TIEMPO_LLAMADAS_IN_FINDE   | Cuantitativa Continua | Número Positivo               | Tiempo total de llamadas recibidas de Sábado a Domingo durante el periodo, en minutos                                               |
+| LLAMADAS_IN_TOT            | Cuantitativa Discreta | Número entero y positivo      | Cantidad de llamadas recibidas durante el periodo                                                                                   |
+| LLAMADAS_IN_SEM            | Cuantitativa Discreta | Número entero y positivo      | Cantidad de llamadas recibidas de Lunes a Viernes durante el periodo                                                                |
+| LLAMADAS_IN_FINDE          | Cuantitativa Discreta | Número entero y positivo      | Cantidad de llamadas recibidas de Sábado a Domingo durante el periodo                                                               |
+| TIEMPO_LLAMADAS_OUT_TOT    | Cuantitativa Continua | Número positivo               | Tiempo total de llamadas realizadas durante el periodo                                                                              |
+| TIEMPO_LLAMADAS_OUT_SEM    | Cuantitativa Continua | Número positivo               | Tiempo total de llamadas realizadas de Lunes a Viernes durante el periodo, en minutos                                               |
+| TIEMPO_LLAMADAS_OUT_FINDE  | Cuantitativa Continua | Número positivo               | Tiempo total de llamadas realizadas de Sábado a Domingo durante el periodo, en minutos                                              |
+| LLAMADAS_OUT_TOT           | Cuantitativa Discreta | Número entero y positivo      | Cantidad de llamadas realizadas durante el periodo                                                                                  |
+| LLAMADAS_OUT_SEM           | Cuantitativa Discreta | Número entero y positivo      | Cantidad de llamadas realizadas de Lunes a Viernes durante el periodo                                                               |
+| LLAMADAS_OUT_FINDE         | Cuantitativa Discreta | Número entero y positivo      | Cantidad de llamadas realizadas de Sábado a Domingo durante el periodo                                                              |
+| CONTACTOS_LLAMADAS_IN_TOT  | Cuantitativa Discreta | Número entero y positivo      | Contactos totales de los que recibió alguna llamada durante el periodo                                                              |
+| CONTACTOS_LLAMADAS_OUT_TOT | Cuantitativa Discreta | Número entero y positivo      | Contactos totales a los que llamó durante el periodo                                                                                |
+| DIAS_LLAMADAS_IN_TOT       | Cuantitativa Discreta | Número entero y positivo      | Cantidad de días que recibieron llamadas durante el periodo                                                                         |
+| DIAS_LLAMADAS_OUT_TOT      | Cuantitativa Discreta | Número entero y positivo      | Cantidad de días que realizó llamadas durante el periodo                                                                            |
+| CONTACTOS_TOT              | Cuantitativa Discreta | Número entero y positivo      | Contactos totales con los que realizó un evento (llamada entrante / saliente o mensaje de texto saliente) durante el periodo        |
+| CONTACTOS_TOT_5            | Cuantitativa Discreta | Número entero y positivo      | Contactos totales con los que realizó más de 5 eventos (llamada entrante / saliente o mensaje de texto saliente) durante el periodo |
 :::
 
 ## **Política de Limpieza de Datos**
