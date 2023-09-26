@@ -394,34 +394,26 @@ En general, se puede esperar que a mayor cantidad de llamadas entrantes, mayor s
 
 Podemos anticipar que esto implica que los usuarios con chip 4G tengan un mayor tiempo total de llamadas entrantes que los demás debido a la alta velocidad y calidad de conexión a red que este ofrece. Asimismo, debido a que Android tiene una mayor compatibilidad en comparación con otros sistemas operativos, se puede esperar que los usuarios de Android experimenten un mayor tiempo total de llamadas entrantes.
 
-**Gráfico 6: Gráfica de dispersión de cantidad vs tiempo total de llamadas entrantes por usuario**
+En este contexto, utilizando un gráfico de dispersión podremos verificar la linealidad entre la cantidad de llamadas entrantes y el tiempo total de llamadas entrantes por usuario.
+
+**Gráfico 6: Cantidad de llamadas entrantes y Tiempo total de llamadas entrantes por usuario**
 
 ```{r}
 ggplot(DF, aes(x = DF$LLAMADAS_IN_TOT, y = DF$TIEMPO_LLAMADAS_IN_TOT)) +
-  geom_point(shape = 16, color = "pink") +
-  geom_smooth(method = "lm", se = FALSE, color = "red") +
-  labs(x = "Cantidad de llamadas", y = "Tiempo en total",
-       title = "Llamadas entrantes: Cantidad vs tiempo")
+  geom_point(shape = 16, color = "lightgreen") +
+  geom_smooth(method = "lm", se = FALSE, color = "darkgreen") +
+  labs(x = "Cantidad de llamadas entrantes", y = "Tiempo total de llamadas entrantes",
+       title = "Cantidad de llamadas entrantes y Tiempo total de llamadas entrantes") +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+  )
 
 ```
 
 **Analisis del gráfico:**
 
-**Línea Vertical:** Tiempo total de llamadas recibidas durante el periodo, en minutos
-
-**Línea Horizontal:** Cantidad total de llamadas recibidas durante el periodo
-
-**Línea Diagonal:** Representa la relación cantidad y tiempo, y nos permite predecir el tiempo de llamadas recibidas con la cantidad de llamadas recibidas
-
-**Punto en el gráfico:** Representa a cada usuario del servicio telefónico
-
-**Puntos sobre la diagonal:** Representa a los usuarios con una menor cantidad de llamadas a comparación del tiempo total de llamadas recibidas, lo que indica aproximadamente una mayor duración de cada una de estas .
-
-**Puntos debajo de la diagonal:** Representa a los usuarios con una mayor cantidad de llamadas a comparación del tiempo total de llamadas recibidas, lo que indica aproximadamente una menor duración de cada una de estas.
-
-**Puntos en zona superior derecha del gráfico:** Representa a los usuarios con una mayor cantidad de llamadas y de mayor duración en total
-
-**Puntos en zona inferior izquierda del gráfico:** Representa a los usuarios con una menor cantidad de llamadas y de menor duración en total
+La línea de tendencia (en color verde) trazada en el gráfico, nos muestra lo que mencionábamos anteriormente, que a medida que aumenta la cantidad de llamadas entrantes, el tiempo total de llamadas entrantes también tiende a aumentar en promedio.
+Sin embargo, si nos enfocamos en cada usuario, representados por los puntos en el gráfico, vemos que algunos usuarios recibieron una cantidad considerable de llamadas con poco duración mientras que otros estuvieron más tiempo en una menor cantidad de llamadas. Esto demuestra que no siempre una mayor cantidad de llamadas entrantes se traduce en un mayor tiempo total de llamadas entrantes.
 
 **Regresión lineal:**
 
@@ -436,6 +428,50 @@ y = 1.578x + 108.525
 $$
 
 La ecuación de regresión lineal y = 1.589x + 107.891 modela una relación lineal positiva entre la cantidad de llamadas entrantes por usuario (y) y el tiempo total de llamadas entrantes registrado por usuario (x). El coeficiente 1.589 indica que, en promedio, por cada unidad adicional de tiempo total, se esperan 1.589 llamadas entrantes adicionales. El término constante 107.891 representa el valor inicial de llamadas cuando el tiempo total es cero. Esta ecuación proporciona una herramienta para predecir la cantidad de llamadas entrantes en función del tiempo total y entender su relación en un contexto de análisis de datos.
+
+```{r}
+colores <- colorRampPalette(c("lightblue", "darkblue"))(length(unique(DF$CHIP)))
+
+ggplot(DF, aes(x = CHIP, y = TIEMPO_LLAMADAS_IN_TOT, fill = CHIP)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = colores) +
+  labs(
+    x = "Tecnología de Chip",
+    y = "Tiempo total de llamadas recibidas",
+    title = "TIEMPO TOTAL DE LLAMADAS RECIBIDAS Y TECNOLOGÍA DEL CHIP"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    legend.position = "none"
+  )
+```
+
+**Anasilis del gráfico:**
+
+Se puede ver que los usuarios que utilizan la tecnología 4G del chip reciben más llamadas en promedio. Esto se debe a que la tecnología 4G ofrece una conexión más rápida y estable a internet y a la red móvil en comparación con las tecnologías más antiguas, como 2G o 3G. En ese sentido, los usuarios con tecnología 4G están más disponibles y dispuestos a recibir llamadas, ya que experimentan menos problemas de conectividad.
+
+```{r}
+colores <- colorRampPalette(c("lightcoral", "darkred"))(length(unique(DF$OS)))
+
+ggplot(DF, aes(x = OS, y = TIEMPO_LLAMADAS_IN_TOT, fill = OS)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = colores) +
+  labs(
+    x = "Tipo de sistema operativo",
+    y = "Tiempo total de llamadas recibidas",
+    title = "TIEMPO TOTAL DE LLAMADAS RECIBIDAS Y SISTEMA OPERAITVO"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    legend.position = "none"
+  )
+```
+
+**Anasilis del gráfico:**
+
+Se puede ver que los usuarios que tienen el sistema operativo Android reciben más llamadas en promedio en comparación con otros. Esto se debe a que la mayoría de los usuarios tienen Android, por lo que aumenta la probabilidad de que los usuarios de Android se comuniquen entre sí.
 
 **Gráfico 7: Histograma de cantidad de días en los que recibieron llamadas :**
 
@@ -640,8 +676,7 @@ mosaicplot(table(DF$OS,DF$CHIP), col = c("green", "skyblue","red"),cex.axis = 0.
 
 **Analisis del gráfico:**
 
-En este grafico se muestra que la mayoría de clientes Android, sin tac y IOS poseen un chip 4G. Mientras que la mayoría de clientes de otro sistema operativo poseen un chip 2G. Asimismo por gráficos anteriores sabemos que o
-
+En este grafico se muestra que la mayoría de clientes Android, sin tac y IOS poseen un chip 4G. Mientras que la mayoría de clientes de otro sistema operativo poseen un chip 2G.
 ```{=html}
 <script>
 function toggleContent() {
