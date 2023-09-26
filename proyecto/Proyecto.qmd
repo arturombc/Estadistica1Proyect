@@ -118,7 +118,7 @@ ggplot(data, aes(x = inicio, xend = fin, y = Integrantes, yend = Integrantes, co
 
 Los datos utilizados en este análisis fueron recopilados durante el período mencionado de febrero a mayo de 2019. La información se obtuvo de los registros de la empresa de telefonía móvil, que incluye una variedad de variables relacionadas con el equipo, el tráfico de datos, las llamadas y otros aspectos del uso del servicio por parte de los clientes.
 
-## **Población, muestra y muestreo** 
+## **Población, muestra y muestreo**
 
 -   **POBLACIÓN:** Usuarios de telefonía móvil dentro de Perú.
 -   **MUESTRA:** Clientes de una empresa de telefonía móvil en Perú durante el período de febrero a mayo de 2019.
@@ -139,7 +139,7 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 | VARIABLE              | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|------------|------------|------------|--------------------------------------|
+|--------------|--------------|--------------|-------------------------------|
 | ID                    | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO               | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | CHIP                  | Categórica Ordinal    | 3G, 4G, 5G                    | Tecnología del chip                                                                                                                 |
@@ -193,7 +193,6 @@ DF <- read_csv("DataLimpia.csv"
                )
 ```
 
-
 ## **OBJETIVO 1:** Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
 
 Hola `r mode(DF$CHIP)` xd
@@ -203,23 +202,31 @@ Hola `r mode(DF$CHIP)` xd
 Para contextualizar las búsquedas que haremos aquí, pondremos una tabla de cuánto puedes hacer con cierta cantidad de MB.
 
 ```{r}
-ggplot(DF,aes(x=PERIODO,y=DATOS_TOTAL,fill=CHIP)) +
+ggplot(DF,aes(x=PERIODO,y=(DATOS_TOTAL/1000),fill=CHIP)) +
   geom_col(position="dodge") +
   ggtitle("TRAFICO DE DATOS TOTAL Y TECNOLOGIA DEL CHIP") +
   theme(plot.title = element_text(hjust = 0.5)) +
-  labs(fill="TECNOLOGIA DEL CHIP", x="terrible", y="TRAFICO DE DATO(Mb)") +
+  labs(fill="TECNOLOGIA DEL CHIP", x="terrible", y="TRAFICO DE DATO(Gb)") +
   theme(axis.text = element_text(angle = 90))
 ```
 
 **Analisis del gráfico:**
 
-En el gráfico que representa el tráfico de datos en función del periodo, se evidencia una variación significativa en el año 2019, especialmente en el mes de febrero. En este mes, la tecnología 4G, medida en notación científica como 6e+05, mostró una preferencia notable en comparación con el 3G y un uso prácticamente nulo en la tecnología 2G, que registró un tráfico de datos de 0e+00.
+En el gráfico que representa el tráfico de datos en función del periodo, se evidencia una variación significativa en el año 2019 durante el mes de febrero, probablemente debido al aumento de tiempo libre durante las vacaciones. Ademas, se puede observar una gran superioridad por parte de la tecnologia 4G sobre las otras durante los 4 periodos de tiempo, probablemente debido a que la tecnologia 4G se ha vuelto muy usada debido a sus mejoras en velocidad, rendimiento y capacidad de resolver servicios exigentes, lo cual lo hace escencial para la conectividad móvil actual.
 
-Luego, en marzo del mismo año, se observa una disminución de casi el 50% en la utilización de la tecnología 4G, acompañada de un aumento en la tecnología 2G, mientras que el uso de la tecnología 3G se mantiene constante.
 
-En abril, los niveles se mantienen estables tanto en términos de tecnología de chips como en tráfico de datos con respecto a marzo.
+Filtrando la base de datos según la tecnología del chip de cada usuario, se pueden llegar a los siguientes descriptores:
 
-En mayo, se aprecia un crecimiento en la adopción de la tecnología 4G, mientras que se registra una ligera disminución en el uso de las tecnologías 2G y 3G. Este cambio podría estar relacionado con una mayor cobertura de red y la adopción de nuevas tendencias para mejorar los servicios de los usuarios en diferentes regiones, tanto en Perú como en otras partes del mundo.
+```{r}
+cuatroG<-filter(DF, CHIP=="4G")
+tresG<-filter(DF, CHIP=="3G")
+dosG<-filter(DF, CHIP=="2G")
+summary(cuatroG$DATOS_TOTAL)
+summary(tresG$DATOS_TOTAL)
+summary(dosG$DATOS_TOTAL)
+```
+
+Filtrando la base de datos segun la tecnologia del chip de cada usuario, se pueden
 
 **Gráfico 2: Trafico total de datos y tipo de sistema operativo por periodo**
 
@@ -289,6 +296,8 @@ print("Descriptores numéricos del trafico de datos 3G")
 summary(DF$DATOS_3G)
 print("Descriptores numéricos del trafico de datos 4G")
 summary(DF$DATOS_4G)
+cuatroG<-filter(DF, CHIP=="4G")
+summary(cuatroG$DATOS_4G)
 ```
 
 En el caso del tráfico de datos 2G, la mediana de 0.326 Mb significa que la mitad de los usuarios consumió 0.326 Mb o menos, y el tercer cuartil de 2.220 Mb indica que el 75% de los usuarios utilizó 2.220 Mb o menos, mientras que el primer cuartil de 0.009 Mb indica que el 25% de los usuarios consumió 0.009 Mb o menos.
@@ -547,3 +556,8 @@ function toggleContent() {
 }
 </script>
 ```
+
+# **Bibliografía**
+
+[Uso de internet en celular en Perú el primer trimestre del 2019](https://m.inei.gob.pe/prensa/noticias/el-668-de-la-poblacion-de-6-y-mas-anos-de-edad-accedio-a-internet-de-enero-a-marzo-del-presente-ano-12954/)
+
