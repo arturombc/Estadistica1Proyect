@@ -499,7 +499,7 @@ Los valores incluyen el mínimo de 0 días, lo que indica que al menos un client
 
 ```{r}
 # Calculamos el promedio del tiempo total de llamadas en días laborables y no laborables
-promedio_tiempo_week <- mean(DF$TIEMPO_LLAMADAS_IN_FINDE, na.rm = TRUE)
+promedio_tiempo_week <- mean(DF$TIEMPO_LLAMADAS_IN_SEM, na.rm = TRUE)
 promedio_tiempo_weekd <- mean(DF$TIEMPO_LLAMADAS_IN_FINDE, na.rm = TRUE)
 
 # Creamos un gráfico de barras para comparar el tiempo total de llamadas en días laborables y no laborables
