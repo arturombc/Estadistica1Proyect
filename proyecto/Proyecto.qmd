@@ -377,6 +377,23 @@ En el caso del tráfico de datos 4G, la mediana de 6354 Mb significa que la mita
 
 ## **OBJETIVO 2:** Analizar la duración y la cantidad de llamadas entrantes de un usuario.
 
+### **Motivación**
+
+La duración y la cantidad de llamadas entrantes es una forma de conocer las necesidades, preferencias y hábitos de consumo de los usuarios. Por ejemplo, si un usuario recibe muchas llamadas cortas, puede indicar que tiene problemas de conexión, o que prefiere comunicarse por otros medios. Por el contrario, si un usuario recibe pocas llamadas largas, puede indicar que tiene una buena cobertura y un buen servicio, o que le gusta hablar mucho por teléfono.
+
+Por lo tanto, conocer mejor al cliente a través de su comportamiento y preferencias puede ayudar a las empresas de telefonía móvil a ofrecer planes más personalizados y adaptados a cada usuario, esto convierte este análisis en pilar fundamental para optimizar el servicio al cliente.
+
+### **Desarrollo**
+
+En general, se puede esperar que a mayor cantidad de llamadas entrantes, mayor sea el tiempo total de llamadas entrantes por usuario. Esto se debe a que cada llamada implica un tiempo mínimo de conversación, que se suma al tiempo total. Sin embargo, hay otros factores que pueden influir en el tiempo total de llamadas entrantes por usuario, como: 
+
+- Tipo de chip: El tipo de chip determina la velocidad y la calidad de la conexión a internet y a la red móvil. 
+
+- Tipo de sistema operativo: El tipo de sistema operativo influye en las aplicaciones que el usuario puede usar para recibir llamadas
+
+
+Podemos anticipar que esto implica que los usuarios con chip 4G tengan un mayor tiempo total de llamadas entrantes que los demás debido a la alta velocidad y calidad de conexión a red que este ofrece. Asimismo, debido a que Android tiene una mayor compatibilidad en comparación con otros sistemas operativos, se puede esperar que los usuarios de Android experimenten un mayor tiempo total de llamadas entrantes.
+
 **Gráfico 6: Gráfica de dispersión de cantidad vs tiempo total de llamadas entrantes por usuario**
 
 ```{r}
