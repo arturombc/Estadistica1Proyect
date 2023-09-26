@@ -63,6 +63,7 @@ Las conclusiones de estos objetivos nos permitirán tomar decisiones que puedan 
 1.  Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
 2.  Analizar la duración y la cantidad de llamadas entrantes y salientes a un usuario.
 3.  Describir la comunicación del usuario con sus contactos durante el periodo.
+4.  Identificar que plan de telefonía resulta conveniente y el público de este.
 
 ## **Planificación**
 
@@ -162,7 +163,7 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 | VARIABLE                   | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|----------------------------|-----------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+|------------|------------|------------|-------------------------------------|
 | ID                         | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO                    | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | CHIP                       | Categórica Ordinal    | 2G, 3G, 4G                    | Tecnología del chip                                                                                                                 |
