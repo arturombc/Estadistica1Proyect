@@ -162,5 +162,6 @@ frec <- table(xd$PERIODO)
 barplot(frec)
 nrow(data5)
 sum(complete.cases(data5))
+rm(list = ls())
 ```
 
