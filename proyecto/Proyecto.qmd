@@ -441,18 +441,34 @@ Podemos anticipar que esto implica que los usuarios con chip 4G tengan un mayor 
 
 En este contexto, utilizando un gráfico de dispersión podremos verificar la linealidad entre la cantidad de llamadas entrantes y el tiempo total de llamadas entrantes por usuario.
 
-**Gráfico 6: Cantidad de llamadas entrantes y Tiempo total de llamadas entrantes por usuario**
+**Gráfico 6: Cantidad total de llamadas entrantes y Tiempo total de llamadas entrantes por usuario**
 
 ```{r}
-table(DF$PERIODO)
-ggplot(DF, aes(x = DF$LLAMADAS_IN_TOT, y = DF$TIEMPO_LLAMADAS_IN_TOT)) +
-  geom_point(shape = 16, color = "lightgreen") +
-  geom_smooth(method = "lm", se = FALSE, color = "darkgreen") +
-  labs(x = "Cantidad de llamadas entrantes", y = "Tiempo total de llamadas entrantes",
-       title = "Cantidad de llamadas entrantes y Tiempo total de llamadas entrantes") +
-  theme(
-    plot.title = element_text(hjust = 0.5),
-  )
+resultado <- DF %>%
+group_by(ID) %>%
+summarise(TIEMPO_LLAMADAS_IN_TOTAL_PERIODOS = sum(TIEMPO_LLAMADAS_IN_TOT,na.rm=TRUE),LLAMADAS_IN_TOTAL_PERIDOS=sum(LLAMADAS_IN_TOT,na.rm=TRUE))
+print(resultado)
+
+ggplot(resultado, aes(x = resultado$LLAMADAS_IN_TOTAL_PERIDOS, y = resultado$TIEMPO_LLAMADAS_IN_TOTAL_PERIODOS)) +
+  geom_point(shape = 16, color = "lightblue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(x = "Cantidad de llamadas registradas en total de 9 meses ", y = "tiempo de llamadas regitradas en total de 9 meses",
+       title = "Cantidad total de llamadas registradas vs tiempo total de llamadas regitradas")
+```
+
+**Gráfico 7: Cantidad total de llamadas salientes y Tiempo total de llamadas salientes por usuario**
+
+```{r}
+resultado1 <- DF %>%
+group_by(ID) %>%
+summarise(TIEMPO_LLAMADAS_OUT_TOTAL_PERIODOS = sum(TIEMPO_LLAMADAS_OUT_TOT,na.rm=TRUE),LLAMADAS_OUT_TOTAL_PERIDOS=sum(LLAMADAS_OUT_TOT,na.rm=TRUE))
+print(resultado1)
+
+ggplot(resultado1, aes(x = resultado1$LLAMADAS_OUT_TOTAL_PERIDOS, y = resultado1$TIEMPO_LLAMADAS_OUT_TOTAL_PERIODOS)) +
+  geom_point(shape = 16, color = "lightblue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(x = "Cantidad de llamadas salientes en total de 9 meses ", y = "tiempo de llamadas salientes en total de 9 meses",
+       title = "Cantidad total de llamadas salientes vs tiempo total de llamadas salientes")
 
 ```
 
