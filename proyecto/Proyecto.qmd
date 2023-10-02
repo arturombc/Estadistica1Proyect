@@ -264,7 +264,8 @@ Ahora que sabemos qué significan los diferentes tipos de tecnología de chip, p
 
 ```{r}
 ggplot(DF, aes(x = PERIODO, y = (DATOS_TOTAL / 1000), fill = CHIP)) +
-  geom_col(position = "dodge") +
+  geom_col(position = "dodge", na.rm = TRUE) +
+  theme_excel_new() +
   ggtitle("TRAFICO DE DATOS TOTAL Y TECNOLOGIA DEL CHIP") +
   theme(plot.title = element_text(hjust = 0.5),
         axis.text.x = element_text(angle = -90, hjust = 0, vjust = 1)) +
@@ -295,15 +296,16 @@ ggplot(DF, aes(CHIP, DATOS_TOTAL/1000, fill = CHIP)) +
   xlim(c("2G","3G","4G")) +
   ylim(ylim_min, ylim_max) +  # Establecer los límites del eje y
   geom_hline(data = media_per
-             , aes(yintercept = DATOS_TOTAL / 1000)
-             , color = "orange"
+             , aes(yintercept = DATOS_TOTAL / 1000, color="Media")
              , linetype = "dashed") +
   geom_hline(data = mediana_per
-             , aes(yintercept = DATOS_TOTAL / 1000)
-             , color = "purple"
+             , aes(yintercept = DATOS_TOTAL / 1000, color="Mediana")
              , linetype = "dashed") +
+  theme_solarized() +
   ggtitle("Uso de red de usuarios 4G por periodo") +
-  labs(x = NULL, y = "DATOS EN GB")
+  labs(x = NULL
+       , y = "DATOS EN GB"
+       , color = "Media y mediana")
 ```
 
 En esta gráfica se utilizó el límite en el eje _y_ como el tercer cuartíl más 1.5 veces la IQR de `DF$DATOS_TOTAL`, además se eliminó la visualización de datos atípicos para una visualización más limpia. Esto se realizó porque los valores atípicos son extremadamente diferentes en escala al compararlos con los datos más comunes; por ejemplo, el máximo valor en GB que se gastó en un periodo es `r round(max(DF$DATOS_TOTAL/1000), 2)`, a comparación del valor de la mediana que es `r round(median(DF$DATOS_TOTAL/1000), 2)`. Debido a que este comportamiento, en algunos de los gráficos futuros se tomarán los valores dentro de un intervalo razonable (1.5 veces IQR).
