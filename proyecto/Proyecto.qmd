@@ -163,7 +163,7 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 | VARIABLE                   | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|------------|------------|------------|-------------------------------------|
+|--------------|--------------|--------------|-------------------------------|
 | ID                         | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO                    | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | CHIP                       | Categórica Ordinal    | 2G, 3G, 4G                    | Tecnología del chip                                                                                                                 |
@@ -437,7 +437,6 @@ En el caso del tráfico de datos 4G, la mediana de 6354 Mb significa que la mita
 
 La duración y la cantidad de llamadas entrantes es una forma de conocer las necesidades, preferencias y hábitos de consumo de los usuarios. Por ejemplo, si un usuario recibe muchas llamadas cortas, puede indicar que tiene problemas de conexión, o que prefiere comunicarse por otros medios. Por el contrario, si recibe pocas llamadas largas, puede indicar que tiene una buena cobertura y un buen servicio, o que le gusta hablar mucho por teléfono.
 
-
 ### **Desarrollo**
 
 En general, se puede esperar que a mayor cantidad de llamadas entrantes, mayor sea el tiempo total de llamadas entrantes por usuario. Esto se debe a que cada llamada implica un tiempo mínimo de conversación, que se suma al tiempo total. Sin embargo, hay otros factores que pueden influir en el tiempo total de llamadas entrantes por usuario, como:
@@ -448,32 +447,34 @@ En general, se puede esperar que a mayor cantidad de llamadas entrantes, mayor s
 
 Podemos anticipar que esto implica que los usuarios con chip 4G tengan un mayor tiempo total de llamadas entrantes que los demás debido a la alta velocidad y calidad de conexión a red que este ofrece. Asimismo, debido a que Android tiene una mayor compatibilidad en comparación con otros sistemas operativos, se puede esperar que los usuarios de Android experimenten un mayor tiempo total de llamadas entrantes.
 
-En este contexto, utilizando un gráfico de dispersión podremos verificar la linealidad entre la cantidad de llamadas entrantes y el tiempo total de llamadas entrantes por usuario.
+En este contexto, utilizando un gráfico de dispersión podremos verificar la linealidad entre la cantidad de llamadas entrantes y el tiempo total de llamadas entrantes por usuario. Sin embargo, ya que dentro de nuestro data frame los usuarios se repiten debido a la cantidad de periodos, decidimos comparar la cantidad de llamadas en total durante los 9 periodos, con el tiempo total de llamadas durante los 9 periodos; para ello se creó una nueva base de datos donde se agrupó el data frame según un mismo ID y se sumaron las respectivas variables de cantidad de llamadas y tiempo de llamadas.
 
-**Gráfico 6: Cantidad total de llamadas entrantes y Tiempo total de llamadas entrantes por usuario**
+**Gráfico 6: Cantidad total de llamadas entrantes y Tiempo total de llamadas entrantes por usuario(Durante los 9 periodos en total)**
 
 ```{r}
 resultado <- DF %>%
 group_by(ID) %>%
-summarise(TIEMPO_LLAMADAS_IN_TOTAL_PERIODOS = sum(TIEMPO_LLAMADAS_IN_TOT,na.rm=TRUE),LLAMADAS_IN_TOTAL_PERIDOS=sum(LLAMADAS_IN_TOT,na.rm=TRUE))
+summarise(TIEMPO_LLAMADAS_IN_TOTAL_PERIODOS = sum(TIEMPO_LLAMADAS_IN_TOT,na.rm=TRUE),LLAMADAS_IN_TOTAL_PERIODOS=sum(LLAMADAS_IN_TOT,na.rm=TRUE))
 print(resultado)
 
-ggplot(resultado, aes(x = resultado$LLAMADAS_IN_TOTAL_PERIDOS, y = resultado$TIEMPO_LLAMADAS_IN_TOTAL_PERIODOS)) +
+ggplot(resultado, aes(x = resultado$LLAMADAS_IN_TOTAL_PERIODOS, y = resultado$TIEMPO_LLAMADAS_IN_TOTAL_PERIODOS)) +
   geom_point(shape = 16, color = "pink") +
   geom_smooth(method = "lm", se = FALSE, color = "red") +
   labs(x = "Cantidad de llamadas registradas en total de 9 meses ", y = "tiempo de llamadas regitradas en total de 9 meses",
-       title = "Cantidad total de llamadas registradas vs tiempo total de llamadas regitradas")
+       title = "Cantidad total de llamadas registradas vs tiempo total de llamadas registradas")
 ```
 
-**Gráfico 7: Cantidad total de llamadas salientes y Tiempo total de llamadas salientes por usuario**
+Lo mismo sucede al utilizar un gráfico de dispersión entre la cantidad de llamadas salientes y el tiempo total de llamadas salientes por usuario.
+
+**Gráfico 7: Cantidad total de llamadas salientes y Tiempo total de llamadas salientes por usuario(Durante los 9 periodos en total)**
 
 ```{r}
 resultado1 <- DF %>%
 group_by(ID) %>%
-summarise(TIEMPO_LLAMADAS_OUT_TOTAL_PERIODOS = sum(TIEMPO_LLAMADAS_OUT_TOT,na.rm=TRUE),LLAMADAS_OUT_TOTAL_PERIDOS=sum(LLAMADAS_OUT_TOT,na.rm=TRUE))
+summarise(TIEMPO_LLAMADAS_OUT_TOTAL_PERIODOS = sum(TIEMPO_LLAMADAS_OUT_TOT,na.rm=TRUE),LLAMADAS_OUT_TOTAL_PERIODOS=sum(LLAMADAS_OUT_TOT,na.rm=TRUE))
 print(resultado1)
 
-ggplot(resultado1, aes(x = resultado1$LLAMADAS_OUT_TOTAL_PERIDOS, y = resultado1$TIEMPO_LLAMADAS_OUT_TOTAL_PERIODOS)) +
+ggplot(resultado1, aes(x = resultado1$LLAMADAS_OUT_TOTAL_PERIODOS, y = resultado1$TIEMPO_LLAMADAS_OUT_TOTAL_PERIODOS)) +
   geom_point(shape = 16, color = "lightblue") +
   geom_smooth(method = "lm", se = FALSE, color = "blue") +
   labs(x = "Cantidad de llamadas salientes en total de 9 meses ", y = "tiempo de llamadas salientes en total de 9 meses",
@@ -592,8 +593,8 @@ legend(x = 1.4,  # Ajustar la posición x
        fill = bar_colors,
        cex = 1)
 ```
-**Anasilis del gráfico:**
-Podemos observar que la duración promedio de las llamadas recibidas es mayor de Lunes a Viernes que de Sábado a Domingo. Esto puede deberse a que son días laborables, en los que los usuarios hacen mayor uso de sus dispositivos móviles para realizar y recibir llamadas con fines personales o de trabajo.
+
+**Anasilis del gráfico:** Podemos observar que la duración promedio de las llamadas recibidas es mayor de Lunes a Viernes que de Sábado a Domingo. Esto puede deberse a que son días laborables, en los que los usuarios hacen mayor uso de sus dispositivos móviles para realizar y recibir llamadas con fines personales o de trabajo.
 
 **Descriptores:**
 
@@ -604,7 +605,6 @@ summary(DF$DIAS_LLAMADAS_IN_TOT)
 ```
 
 Los valores incluyen el mínimo de 0 días, lo que indica que al menos un cliente no recibió llamadas en ningún día, un primer cuartil de 24, lo que significa que el 25% de los clientes recibieron llamadas en 24 días o menos, una mediana de 28, que representa el valor medio de los días de recepción de llamadas, una media de 25.56, que es el promedio de la cantidad de días en que los clientes recibieron llamadas, un tercer cuartil de 30, indicando que el 75% de los clientes recibieron llamadas en 30 días o menos, y un máximo de 31, lo que implica que al menos un cliente recibió llamadas durante todos los días del período considerado. En resumen, esta información proporciona una visión general de la distribución de la frecuencia de las llamadas entre los clientes, desde aquellos que no recibieron llamadas en absoluto hasta aquellos que lo hicieron durante la mayoría de los días.
-
 
 ## **OBJETIVO 3: Analizar la duración y la cantidad de llamadas salientes de un usuario.**
 
