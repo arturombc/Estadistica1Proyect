@@ -11,7 +11,6 @@ library(dplyr)
 ```
 
 ```{r charge-databases, message=FALSE}
-rm(list = ls())
 DF1 <- read_delim("data/EQUIPOS.txt","|")
 DF2 <- read_delim("data/CONSULTAS_PORTA.txt","|")
 DF3 <- read_delim("data/FACTURACION.txt","|")
@@ -162,6 +161,6 @@ frec <- table(xd$PERIODO)
 barplot(frec)
 nrow(data5)
 sum(complete.cases(data5))
-rm(list = ls())
+
 ```
 

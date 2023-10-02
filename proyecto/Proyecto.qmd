@@ -71,7 +71,6 @@ Después de limpiar los datos iniciales, juntar los datos que nos son relevantes
 ### **Librerías y setup**
 
 ```{r, liberías, message=FALSE}
-rm(list = ls())
 if (!require(readr)){install.packages("readr");library(readr)}
 if (!require(dplyr)){install.packages("dplyr");library(dplyr)}
 if (!require(ggplot2)){install.packages("ggplot2");library(ggplot2)}
@@ -163,7 +162,7 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 | VARIABLE                   | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|--------------|--------------|--------------|-------------------------------|
+|----------------|----------------|----------------|------------------------|
 | ID                         | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO                    | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | CHIP                       | Categórica Ordinal    | 2G, 3G, 4G                    | Tecnología del chip                                                                                                                 |
@@ -282,7 +281,6 @@ Ahora surge la pregunta: ¿Qué significan estos números? Podemos explicar esto
 
 Ya que tenemos estas primeras impresiones, podemos intentar entender cómo es que se comporta el consumo de datos 4G, 3G y 2G por cada equipo, además podemos dividir esta vista en periodos para tener una interpretación holística.
 
-
 ```{r}
 ylim_min <- 0
 ylim_max <- (1.5*quantile(DF$DATOS_TOTAL, 0.75) + IQR(DF$DATOS_TOTAL, na.rm = TRUE))/1000
@@ -308,7 +306,7 @@ ggplot(DF, aes(CHIP, DATOS_TOTAL/1000, fill = CHIP)) +
        , color = "Media y mediana")
 ```
 
-En esta gráfica se utilizó el límite en el eje _y_ como el tercer cuartíl más 1.5 veces la IQR de `DF$DATOS_TOTAL`, además se eliminó la visualización de datos atípicos para una visualización más limpia. Esto se realizó porque los valores atípicos son extremadamente diferentes en escala al compararlos con los datos más comunes; por ejemplo, el máximo valor en GB que se gastó en un periodo es `r round(max(DF$DATOS_TOTAL/1000), 2)`, a comparación del valor de la mediana que es `r round(median(DF$DATOS_TOTAL/1000), 2)`. Debido a que este comportamiento, en algunos de los gráficos futuros se tomarán los valores dentro de un intervalo razonable (1.5 veces IQR).
+En esta gráfica se utilizó el límite en el eje *y* como el tercer cuartíl más 1.5 veces la IQR de `DF$DATOS_TOTAL`, además se eliminó la visualización de datos atípicos para una visualización más limpia. Esto se realizó porque los valores atípicos son extremadamente diferentes en escala al compararlos con los datos más comunes; por ejemplo, el máximo valor en GB que se gastó en un periodo es `r round(max(DF$DATOS_TOTAL/1000), 2)`, a comparación del valor de la mediana que es `r round(median(DF$DATOS_TOTAL/1000), 2)`. Debido a que este comportamiento, en algunos de los gráficos futuros se tomarán los valores dentro de un intervalo razonable (1.5 veces IQR).
 
 ```{r}
 Q1 <- quantile(DF$DATOS_TOTAL, 0.25)/1000
@@ -317,7 +315,6 @@ IQ <- IQR(DF$DATOS_TOTAL) / 1000
 dat_tot_atipicos <- sum(DF$DATOS_TOTAL/1000 < (Q1 - 1.5 * IQ) | DF$DATOS_TOTAL/1000 > (Q3 + 1.5 * IQ))
 dat_tot_atipicos
 ```
-
 
 ```{r}
 cuatroG<-filter(DF, CHIP=="4G")
