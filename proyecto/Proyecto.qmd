@@ -163,7 +163,7 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 | VARIABLE                   | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|-----------------|-----------------|-----------------|----------------------|
+|----------------------------|-----------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
 | ID                         | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO                    | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | CHIP                       | Categórica Ordinal    | 2G, 3G, 4G                    | Tecnología del chip                                                                                                                 |
@@ -699,6 +699,34 @@ legend(x = 1.18,  # Ajustar la posición x
        cex = 1)
 ```
 
+
+**Grafico x:**
+
+```{r}
+
+ylim_min1 <- 0
+ylim_max1 <- (1.5*quantile(DF$CONTACTOS_LLAMADAS_OUT_TOT, 0.75,na.rm = T) + IQR(DF$CONTACTOS_LLAMADAS_OUT_TOT, na.rm =T))
+
+media_per1 <- aggregate(CONTACTOS_LLAMADAS_OUT_TOT~ PERIODO, data = DF, FUN = mean)
+mediana_per1 <- aggregate(CONTACTOS_LLAMADAS_OUT_TOT ~ PERIODO, data = DF, FUN = median)
+
+ggplot(DF, aes(CHIP, CONTACTOS_LLAMADAS_OUT_TOT, fill = CHIP)) + 
+  geom_boxplot(na.rm = TRUE, outlier.shape = NA) +
+  facet_wrap(vars(PERIODO), ncol = 3) +
+  xlim(c("2G","3G","4G")) +
+  ylim(ylim_min1, ylim_max1) +  # Establecer los límites del eje y
+  geom_hline(data = media_per1
+             , aes(yintercept = CONTACTOS_LLAMADAS_OUT_TOT, color="Media")
+             , linetype = "dashed") +
+  geom_hline(data = mediana_per1
+             , aes(yintercept = CONTACTOS_LLAMADAS_OUT_TOT, color="Mediana")
+             , linetype = "dashed") +
+  theme_solarized() +
+  ggtitle("Contactos a los que se les realizó llamadas") +
+  labs(x = NULLx
+       , y = "Número de llamadas"
+       , color = "Media y mediana")
+```
 
 ```{=html}
 <script>
