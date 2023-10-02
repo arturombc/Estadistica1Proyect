@@ -394,6 +394,12 @@ cuatroG<-filter(DF, CHIP=="4G")
 summary(cuatroG$DATOS_4G)
 ```
 
+En el caso del tráfico de datos 2G, la mediana de 0.326 Mb significa que la mitad de los usuarios consumió 0.326 Mb o menos, y el tercer cuartil de 2.220 Mb indica que el 75% de los usuarios utilizó 2.220 Mb o menos, mientras que el primer cuartil de 0.009 Mb indica que el 25% de los usuarios consumió 0.009 Mb o menos.
+
+En el caso del tráfico de datos 3G, la mediana de 120.89 Mb significa que la mitad de los usuarios consumió 120.89 Mb o menos, y el tercer cuartil de 367.70 Mb indica que el 75% de los usuarios utilizó 367.70 Mb o menos, mientras que el primer cuartil de 36.95 Mb indica que el 25% de los usuarios consumió 36.95 Mb o menos.
+
+En el caso del tráfico de datos 4G, la mediana de 6354 Mb significa que la mitad de los usuarios consumió 6354 Mb o menos, y el tercer cuartil de 12964 Mb indica que el 75% de los usuarios utilizó 12964 Mb o menos, mientras que el primer cuartil de 2173 Mb indica que el 25% de los usuarios consumió 2173 Mb o menos.
+
 ## **OBJETIVO 2:** Analizar la duración y la cantidad de llamadas entrantes y salientes de un usuario.
 
 ### **Motivación**
@@ -704,6 +710,8 @@ legend(x = 1.18,  # Ajustar la posición x
        fill = bar_colors,
        cex = 1)
 ```
+
+## OBJETIVO 3:Describir la comunicación del usuario con sus contactos durante el periodo.
 
 ```{=html}
 <script>
