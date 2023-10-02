@@ -570,7 +570,9 @@ legend(x = 1.18,  # Ajustar la posición x
 
 **Descriptores:**
 
-```{r} print("Descriptores numéricos de los días en la que los clientes recibieron llamadas ") summary(DF$DIAS_LLAMADAS_OUT_TOT)}
+```{r}
+print("Descriptores numéricos de los días en la que los clientes recibieron llamadas ") 
+summary(DF$DIAS_LLAMADAS_OUT_TOT)
 ```
 
 Los valores incluyen el mínimo de 0 días, lo que indica que al menos un cliente no recibió llamadas en ningún día, un primer cuartil de 24 días, lo que significa que el 25% de los clientes recibieron llamadas en 24 días o menos, una mediana de 28 días, que es el valor central de la distribución, una media de 25.69 días, que es el promedio de días de recepción de llamadas, un tercer cuartil de 30 días, indicando que el 75% de los clientes recibieron llamadas en 30 días o menos, y un máximo de 31 días, lo que implica que al menos un cliente recibió llamadas todos los días. En resumen, esta información proporciona una visión general de la distribución de la frecuencia de las llamadas entre los clientes, desde aquellos que no recibieron llamadas en absoluto hasta aquellos que lo hicieron durante la mayoría de los días.
@@ -580,51 +582,6 @@ Los valores incluyen el mínimo de 0 días, lo que indica que al menos un client
 **Motivación:**
 
 El análisis de la duración y la cantidad de llamadas salientes de un usuario es una ventana a sus necesidades, preferencias y patrones de comunicación. Si un usuario realiza numerosas llamadas breves, esto podría indicar posibles problemas de conexión o una preferencia por otros medios de comunicación. Por otro lado, si las llamadas son menos pero más largas, podría señalar una experiencia de servicio sólida o la inclinación del usuario por conversaciones más extensas. Comprender a fondo a nuestros clientes a través de este análisis no solo nos permite ofrecer planes de telefonía móvil más personalizados, sino que también nos brinda la oportunidad de optimizar la satisfacción del cliente y garantizar que nuestros servicios se adapten a sus necesidades individuales. En última instancia, este enfoque no solo fortalece nuestra relación con los usuarios, sino que también solidifica nuestro compromiso de ofrecer un servicio excepcional en la industria de las telecomunicaciones.
-
-**Descriptores:**
-
-```{r}
-print("Descriptores numéricos de los días en la que los clientes recibieron llamadas ")
-summary(DF$DIAS_LLAMADAS_OUT_TOT)
-```
-
-Los valores incluyen el mínimo de 0 días, lo que indica que al menos un cliente no recibió llamadas en ningún día, un primer cuartil de 24 días, lo que significa que el 25% de los clientes recibieron llamadas en 24 días o menos, una mediana de 28 días, que es el valor central de la distribución, una media de 25.69 días, que es el promedio de días de recepción de llamadas, un tercer cuartil de 30 días, indicando que el 75% de los clientes recibieron llamadas en 30 días o menos, y un máximo de 31 días, lo que implica que al menos un cliente recibió llamadas todos los días. En resumen, esta información proporciona una visión general de la distribución de la frecuencia de las llamadas entre los clientes, desde aquellos que no recibieron llamadas en absoluto hasta aquellos que lo hicieron durante la mayoría de los días.
-
-**Grafico 11:Comparación del tiempo llamadas salientes en días laborables y no laborales :**
-
-```{r}
-# Calculamos el promedio del tiempo total de llamadas en días laborables y no laborables
-promedio_tiempo_week <- mean(DF$LLAMADAS_OUT_SEM, na.rm = TRUE)
-promedio_tiempo_weekd <- mean(DF$LLAMADAS_OUT_FINDE, na.rm = TRUE)
-
-# Creamos un gráfico de barras para comparar el tiempo total de llamadas en días laborables y no laborables
-bar_heights <- c(promedio_tiempo_week, promedio_tiempo_weekd)
-bar_names <- c("Días Laborables", "Días No Laborables")
-bar_colors <- c("lightblue", "lightcoral")
-
-barplot(bar_heights, 
-        names.arg = bar_names,
-        main = "Promedio del duración Total de Llamadas realizadas",
-        xlab= "Tipo de día",
-        ylab = "Duración",
-        col = bar_colors)
-
-# Agregamos etiquetas de porcentaje a las barras
-porcentajes <- c(round((promedio_tiempo_week / sum(bar_heights)) * 100, 2),
-                 round((promedio_tiempo_weekd / sum(bar_heights)) * 100, 2))
-
-
-# Imprimimos el promedio del tiempo total de llamadas en días laborables y no laborables
-cat("Promedio del Tiempo Total de Llamadas recibidas en Días Laborables:", promedio_tiempo_week, "\n")
-cat("Promedio del Tiempo Total de Llamadas recibidas en Días No Laborables:", promedio_tiempo_weekd, "\n")
-
-# Creamos una leyenda con porcentajes
-legend(x = 1.18,  # Ajustar la posición x
-       y = max(bar_heights) - 3,  # Ajustar la posición y
-       legend = paste0(bar_names, "   ", porcentajes, "%"), 
-       fill = bar_colors,
-       cex = 1)
-```
 
 **Grafico x:**
 
@@ -649,7 +606,7 @@ ggplot(DF, aes(CHIP, CONTACTOS_LLAMADAS_OUT_TOT, fill = CHIP)) +
              , linetype = "dashed") +
   theme_solarized() +
   ggtitle("Contactos a los que se les realizó llamadas") +
-  labs(x = NULLx
+  labs(x = NULL
        , y = "Número de llamadas"
        , color = "Media y mediana")
 ```
