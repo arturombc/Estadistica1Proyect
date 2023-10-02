@@ -330,31 +330,6 @@ dat_tot_atipicos <- sum(DF$DATOS_TOTAL/1000 < (Q1 - 1.5 * IQ) | DF$DATOS_TOTAL/1
 Además podemos ver que la media y la mediana no estan tan alineadas, podemos declarar con cierta confianza que se debe a los `r dat_tot_atipicos` datos atípicos, aunque estos representen un `r (dat_tot_atipicos/nrow(DF$DATOS_TOTAL))*100`% de los datos
 
 ```{r}
-cuatroG<-filter(DF, CHIP=="4G")
-boxplot(cuatroG$DATOS_TOTAL~cuatroG$PERIODO,data=cuatroG,col="green",horizontal=FALSE,Notch=TRUE,outline=F)
-```
-
-```{r}
-tresG<-filter(DF, CHIP=="3G")
-boxplot(tresG$DATOS_TOTAL~tresG$PERIODO,data=tresG,col="green",horizontal=FALSE,Notch=TRUE,outline=F)
-```
-
-```{r}
-dosG<-filter(DF, CHIP=="2G")
-boxplot(dosG$DATOS_TOTAL~dosG$PERIODO,data=dosG,col="green",horizontal=FALSE,Notch=TRUE,outline=F)
-```
-
-```{r}
-DF$DATOS_4G %>% median() / 1000
-```
-
-```{r}
-DF %>% filter(DATOS_TOTAL == 0)
-```
-
-Podemos decir entonces que durante un mes, el promedio de uso de datos 4G, 3G y 2G son `r mean(DF$DATOS_TOTAL[DF$CHIP == "4G"])`
-
-```{r}
 mean(DF$DATOS_TOTAL[DF$CHIP == "4G"], na.rm = TRUE) / 1000
 median(DF$DATOS_TOTAL[DF$CHIP == "4G"], na.rm = TRUE) / 1000
 table(DF$CHIP)
@@ -724,7 +699,6 @@ legend(x = 1.18,  # Ajustar la posición x
        cex = 1)
 ```
 
-## OBJETIVO 3:Describir la comunicación del usuario con sus contactos durante el periodo.
 
 ```{=html}
 <script>
