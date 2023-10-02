@@ -416,9 +416,7 @@ En general, se puede esperar que a mayor cantidad de llamadas entrantes, mayor s
 
 -   Tipo de sistema operativo: El tipo de sistema operativo influye en las aplicaciones que el usuario puede usar para recibir llamadas
 
-Podemos anticipar que esto implica que los usuarios con chip 4G tengan un mayor tiempo total de llamadas entrantes que los demás debido a la alta velocidad y calidad de conexión a red que este ofrece. Asimismo, debido a que Android tiene una mayor compatibilidad en comparación con otros sistemas operativos, se puede esperar que los usuarios de Android experimenten un mayor tiempo total de llamadas entrantes.
-
-En este contexto, utilizando un gráfico de dispersión podremos verificar la linealidad entre la cantidad de llamadas entrantes y el tiempo total de llamadas entrantes por usuario. Sin embargo, ya que dentro de nuestro data frame los usuarios se repiten debido a la cantidad de periodos, decidimos comparar la cantidad de llamadas en total durante los 9 periodos, con el tiempo total de llamadas durante los 9 periodos; para ello se creó una nueva base de datos donde se agrupó el data frame según un mismo ID y se sumaron las respectivas variables de cantidad de llamadas y tiempo de llamadas.
+Anticipamos que los usuarios con chips 4G tendrán un mayor tiempo total de llamadas entrantes debido a la alta calidad de conexión, mientras que los usuarios de Android experimentarán un tiempo total de llamadas entrantes más alto debido a la mayor compatibilidad de su sistema operativo con aplicaciones de llamadas. Para verificar esta relación, utilizamos un gráfico de dispersión, pero dado que nuestros datos tenían usuarios repetidos en múltiples períodos, optamos por comparar la cantidad total de llamadas realizadas y el tiempo total de llamadas durante 9 períodos mediante la creación de una nueva base de datos donde agrupamos los datos por el mismo ID de usuario y sumamos las cantidades y tiempos de llamadas correspondientes. Esto nos permitió tener una visión más completa del comportamiento a lo largo del tiempo y considerar la acumulación total de datos en lugar de analizar cada período de forma individual.
 
 **Gráfico 6: Cantidad total de llamadas entrantes y Tiempo total de llamadas entrantes por usuario(Durante los 9 periodos en total)**
 
@@ -488,82 +486,6 @@ ggplot(DF_NEW11, aes(x = DF_NEW11$LLAMADAS_OUT_TOTAL_PERIODOS, y = DF_NEW11$TIEM
 
 $$ y = 1.718x + 192.645 $$
 
-**Analisis del gráfico:**
-
-**Línea Vertical:** Tiempo total de llamadas realizadas durante el periodo, en minutos
-
-**Línea Horizontal:** Cantidad total de llamadas realizadas durante el periodo
-
-**Línea Diagonal:** Representa la relación cantidad y duración de llamadas realizadas , y nos permite predecir el tiempo de llamadas recibidas con la cantidad de llamadas realizadas.
-
-**Punto en el gráfico:** Representa a cada usuario del servicio telefónico
-
-**Puntos sobre la diagonal:** Representa a los usuarios con una menor cantidad de llamadas a comparación del tiempo total de llamadas recibidas, lo que indica aproximadamente una mayor duración de cada una de estas .
-
-**Puntos debajo de la diagonal:** Representa a los usuarios con una mayor cantidad de llamadas a comparación del tiempo total de llamadas recibidas, lo que indica aproximadamente una menor duración de cada una de estas.
-
-**Puntos en zona superior derecha del gráfico:** Representa a los usuarios con una mayor cantidad de llamadas y de mayor duración en total
-
-**Puntos en zona inferior izquierda del gráfico:** Representa a los usuarios con una menor cantidad de llamadas y de menor duración en total
-
-```{r}
-colores <- colorRampPalette(c("lightblue", "darkblue"))(length(unique(DF$CHIP)))
-
-ggplot(DF, aes(x = CHIP, y = TIEMPO_LLAMADAS_IN_TOT, fill = CHIP)) +
-  geom_bar(stat = "identity") +
-  scale_fill_manual(values = colores) +
-  labs(
-    x = "Tecnología de Chip",
-    y = "Tiempo total de llamadas recibidas",
-    title = "TIEMPO TOTAL DE LLAMADAS RECIBIDAS Y TECNOLOGÍA DEL CHIP"
-  ) +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(hjust = 0.5),
-    legend.position = "none"
-  )
-```
-
-**Anasilis del gráfico:**
-
-Se puede ver que los usuarios que utilizan la tecnología 4G del chip reciben más llamadas en promedio. Esto se debe a que la tecnología 4G ofrece una conexión más rápida y estable a internet y a la red móvil en comparación con las tecnologías más antiguas, como 2G o 3G. En ese sentido, los usuarios con tecnología 4G están más disponibles y dispuestos a recibir llamadas, ya que experimentan menos problemas de conectividad.
-
-```{r}
-colores <- colorRampPalette(c("lightcoral", "darkred"))(length(unique(DF$OS)))
-
-ggplot(DF, aes(x = OS, y = TIEMPO_LLAMADAS_IN_TOT, fill = OS)) +
-  geom_bar(stat = "identity") +
-  scale_fill_manual(values = colores) +
-  labs(
-    x = "Tipo de sistema operativo",
-    y = "Tiempo total de llamadas recibidas",
-    title = "TIEMPO TOTAL DE LLAMADAS RECIBIDAS Y SISTEMA OPERAITVO"
-  ) +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(hjust = 0.5),
-    legend.position = "none"
-  )
-```
-
-**Anasilis del gráfico:**
-
-Se puede ver que los usuarios que tienen el sistema operativo Android reciben más llamadas en promedio en comparación con otros. Esto se debe a que la mayoría de los usuarios tienen Android, por lo que aumenta la probabilidad de que los usuarios de Android se comuniquen entre sí.
-
-**Gráfico 7: Histograma de cantidad de días en los que recibieron llamadas :**
-
-```{r}
-hist(DF$DIAS_LLAMADAS_IN_TOT,breaks= 6, col = "lightblue", xlab = "Dias", ylab = "Clientes", main = "Cantidad de dias en los que recibieron llamadas")
-# Agregar la media y la mediana al histograma
-abline(v = mean(DF$DIAS_LLAMADAS_IN_TOT, na.rm =T), col="blue")
-abline(v = median(DF$DIAS_LLAMADAS_IN_TOT, na.rm =T), col="red")
-
-# Añadir leyenda
-legend("topright", legend = c("Media", "Mediana"), col = c("blue", "red"), lty = 1)
-```
-
-El histograma representa la distribución de la cantidad de días en los que los clientes recibieron llamadas, abarcando un rango de 0 a 31 días. Esto significa que hay clientes que no recibieron llamadas en absoluto, mientras que otros fueron contactados todos los días del mes. Se destaca un grupo particular en el intervalo de 25 a 30 días, lo que indica un conjunto de clientes que recibieron llamadas de manera consistente durante la mayoría de los días. Además, la diferencia entre la media y la mediana sugiere una posible asimetría en la distribución, con una inclinación hacia el lado izquierdo.
-
 **Grafico 8:Comparación del tiempo llamadas entrantes de días laborables y no laborales:**
 
 ```{r}
@@ -612,27 +534,52 @@ summary(DF$DIAS_LLAMADAS_IN_TOT)
 
 Los valores incluyen el mínimo de 0 días, lo que indica que al menos un cliente no recibió llamadas en ningún día, un primer cuartil de 24, lo que significa que el 25% de los clientes recibieron llamadas en 24 días o menos, una mediana de 28, que representa el valor medio de los días de recepción de llamadas, una media de 25.56, que es el promedio de la cantidad de días en que los clientes recibieron llamadas, un tercer cuartil de 30, indicando que el 75% de los clientes recibieron llamadas en 30 días o menos, y un máximo de 31, lo que implica que al menos un cliente recibió llamadas durante todos los días del período considerado. En resumen, esta información proporciona una visión general de la distribución de la frecuencia de las llamadas entre los clientes, desde aquellos que no recibieron llamadas en absoluto hasta aquellos que lo hicieron durante la mayoría de los días.
 
+```{r}
+# Calculamos el promedio del tiempo total de llamadas en días laborables y no laborables
+promedio_tiempo_week <- mean(DF$LLAMADAS_OUT_SEM, na.rm = TRUE)
+promedio_tiempo_weekd <- mean(DF$LLAMADAS_OUT_FINDE, na.rm = TRUE)
+
+# Creamos un gráfico de barras para comparar el tiempo total de llamadas en días laborables y no laborables
+bar_heights <- c(promedio_tiempo_week, promedio_tiempo_weekd)
+bar_names <- c("Días Laborables", "Días No Laborables")
+bar_colors <- c("lightblue", "lightcoral")
+
+barplot(bar_heights, 
+        names.arg = bar_names,
+        main = "Promedio del duración Total de Llamadas realizadas",
+        xlab= "Tipo de día",
+        ylab = "Duración",
+        col = bar_colors)
+
+# Agregamos etiquetas de porcentaje a las barras
+porcentajes <- c(round((promedio_tiempo_week / sum(bar_heights)) * 100, 2),
+                 round((promedio_tiempo_weekd / sum(bar_heights)) * 100, 2))
+
+
+# Imprimimos el promedio del tiempo total de llamadas en días laborables y no laborables
+cat("Promedio del Tiempo Total de Llamadas recibidas en Días Laborables:", promedio_tiempo_week, "\n")
+cat("Promedio del Tiempo Total de Llamadas recibidas en Días No Laborables:", promedio_tiempo_weekd, "\n")
+
+# Creamos una leyenda con porcentajes
+legend(x = 1.18,  # Ajustar la posición x
+       y = max(bar_heights) - 3,  # Ajustar la posición y
+       legend = paste0(bar_names, "   ", porcentajes, "%"), 
+       fill = bar_colors,
+       cex = 1)
+```
+
+**Descriptores:**
+
+```{r} print("Descriptores numéricos de los días en la que los clientes recibieron llamadas ") summary(DF$DIAS_LLAMADAS_OUT_TOT)}
+```
+
+Los valores incluyen el mínimo de 0 días, lo que indica que al menos un cliente no recibió llamadas en ningún día, un primer cuartil de 24 días, lo que significa que el 25% de los clientes recibieron llamadas en 24 días o menos, una mediana de 28 días, que es el valor central de la distribución, una media de 25.69 días, que es el promedio de días de recepción de llamadas, un tercer cuartil de 30 días, indicando que el 75% de los clientes recibieron llamadas en 30 días o menos, y un máximo de 31 días, lo que implica que al menos un cliente recibió llamadas todos los días. En resumen, esta información proporciona una visión general de la distribución de la frecuencia de las llamadas entre los clientes, desde aquellos que no recibieron llamadas en absoluto hasta aquellos que lo hicieron durante la mayoría de los días.
+
 ## **OBJETIVO 3:** Describir la comunicación del usuario con sus contactos durante el periodo.
 
 **Motivación:**
 
 El análisis de la duración y la cantidad de llamadas salientes de un usuario es una ventana a sus necesidades, preferencias y patrones de comunicación. Si un usuario realiza numerosas llamadas breves, esto podría indicar posibles problemas de conexión o una preferencia por otros medios de comunicación. Por otro lado, si las llamadas son menos pero más largas, podría señalar una experiencia de servicio sólida o la inclinación del usuario por conversaciones más extensas. Comprender a fondo a nuestros clientes a través de este análisis no solo nos permite ofrecer planes de telefonía móvil más personalizados, sino que también nos brinda la oportunidad de optimizar la satisfacción del cliente y garantizar que nuestros servicios se adapten a sus necesidades individuales. En última instancia, este enfoque no solo fortalece nuestra relación con los usuarios, sino que también solidifica nuestro compromiso de ofrecer un servicio excepcional en la industria de las telecomunicaciones.
-
-**Gráfico 10: Histograma de cantidad de días que se realizaron llamadas :**
-
-```{r}
-hist(DF$DIAS_LLAMADAS_OUT_TOT,breaks= 6, col = "lightblue", xlab = "Clientes", ylab = "Frecuencia", main = "Cantidad de dias en los que realizaron llamadas")
-# Agregar la media y la mediana al histograma
-abline(v = mean(DF$DIAS_LLAMADAS_IN_TOT), col="blue")
-abline(v = median(DF$DIAS_LLAMADAS_IN_TOT), col="red")
-
-# Añadir leyenda
-legend("topright", legend = c("Media", "Mediana"), col = c("blue", "red"), lty = 1)
-```
-
-**Analisis:**
-
-El histograma representa la distribución de la cantidad de días en los que los clientes realizaron llamadas, abarcando un rango de 0 a 31 días. Esto significa que hay clientes que no realizaron llamadas en absoluto, mientras que otros realizaron llamadas todos los días del mes. Se destaca un grupo particular en el intervalo de 25 a 30 días, lo que indica un conjunto de clientes que realizaron llamadas de manera consistente durante la mayoría de los días. Además, la diferencia entre la media y la mediana sugiere una posible asimetría en la distribución, con una inclinación hacia el lado izquierdo.
 
 **Descriptores:**
 
