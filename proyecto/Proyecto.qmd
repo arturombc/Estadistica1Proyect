@@ -162,7 +162,7 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 | VARIABLE                   | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|----------------|----------------|----------------|------------------------|
+|-----------------|-----------------|-----------------|----------------------|
 | ID                         | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO                    | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | CHIP                       | Categórica Ordinal    | 2G, 3G, 4G                    | Tecnología del chip                                                                                                                 |
@@ -467,12 +467,25 @@ En este contexto, utilizando un gráfico de dispersión podremos verificar la li
 resultado <- DF %>%
 group_by(ID) %>%
 summarise(TIEMPO_LLAMADAS_IN_TOTAL_PERIODOS = sum(TIEMPO_LLAMADAS_IN_TOT,na.rm=TRUE),LLAMADAS_IN_TOTAL_PERIODOS=sum(LLAMADAS_IN_TOT,na.rm=TRUE))
-print(resultado)
 
-ggplot(resultado, aes(x = resultado$LLAMADAS_IN_TOTAL_PERIODOS, y = resultado$TIEMPO_LLAMADAS_IN_TOTAL_PERIODOS)) +
+modelo <- lm(TIEMPO_LLAMADAS_IN_TOTAL_PERIODOS  ~ LLAMADAS_IN_TOTAL_PERIODOS, data = resultado)
+
+# Calcular los residuos del modelo
+residuos <- residuals(modelo)
+
+# Calcular los valores atípicos basados en residuos
+valores_atipicos <- boxplot.stats(residuos)$out
+
+# Crear un nuevo data frame sin los valores atípicos
+DF_NEW <- resultado[!(residuos %in% valores_atipicos), ]
+
+# Volver a ajustar el modelo sin valores atípicos
+nuevo_modelo <- lm(TIEMPO_LLAMADAS_IN_TOTAL_PERIODOS  ~ LLAMADAS_IN_TOTAL_PERIODOS, data = DF_NEW)
+
+ggplot(DF_NEW, aes(x = DF_NEW$LLAMADAS_IN_TOTAL_PERIODOS, y = DF_NEW$TIEMPO_LLAMADAS_IN_TOTAL_PERIODOS)) +
   geom_point(shape = 16, color = "pink") +
   geom_smooth(method = "lm", se = FALSE, color = "red") +
-  labs(x = "Cantidad de llamadas registradas en total de 9 meses ", y = "tiempo de llamadas regitradas en total de 9 meses",
+  labs(x = "Cantidad de llamadas registradas en total de 9 meses ", y = "tiempo de llamadas registradas en total de 9 meses",
        title = "Cantidad total de llamadas registradas vs tiempo total de llamadas registradas")
 ```
 
@@ -481,16 +494,32 @@ Lo mismo sucede al utilizar un gráfico de dispersión entre la cantidad de llam
 **Gráfico 7: Cantidad total de llamadas salientes y Tiempo total de llamadas salientes por usuario(Durante los 9 periodos en total)**
 
 ```{r}
-resultado1 <- DF %>%
+resultado11 <- DF %>%
 group_by(ID) %>%
 summarise(TIEMPO_LLAMADAS_OUT_TOTAL_PERIODOS = sum(TIEMPO_LLAMADAS_OUT_TOT,na.rm=TRUE),LLAMADAS_OUT_TOTAL_PERIODOS=sum(LLAMADAS_OUT_TOT,na.rm=TRUE))
-print(resultado1)
 
-ggplot(resultado1, aes(x = resultado1$LLAMADAS_OUT_TOTAL_PERIODOS, y = resultado1$TIEMPO_LLAMADAS_OUT_TOTAL_PERIODOS)) +
+
+modelo11 <- lm(TIEMPO_LLAMADAS_OUT_TOTAL_PERIODOS  ~ LLAMADAS_OUT_TOTAL_PERIODOS, data = resultado11)
+
+# Calcular los residuos del modelo
+residuos11 <- residuals(modelo11)
+
+# Calcular los valores atípicos basados en residuos
+valores_atipicos11 <- boxplot.stats(residuos11)$out
+
+# Crear un nuevo data frame sin los valores atípicos
+DF_NEW11 <- resultado11[!(residuos11 %in% valores_atipicos11), ]
+
+# Volver a ajustar el modelo sin valores atípicos
+nuevo_modelo11 <- lm(TIEMPO_LLAMADAS_OUT_TOTAL_PERIODOS  ~LLAMADAS_OUT_TOTAL_PERIODOS, data = DF_NEW11)
+
+ggplot(DF_NEW11, aes(x = DF_NEW11$LLAMADAS_OUT_TOTAL_PERIODOS, y = DF_NEW11$TIEMPO_LLAMADAS_OUT_TOTAL_PERIODOS)) +
   geom_point(shape = 16, color = "lightblue") +
   geom_smooth(method = "lm", se = FALSE, color = "blue") +
   labs(x = "Cantidad de llamadas salientes en total de 9 meses ", y = "tiempo de llamadas salientes en total de 9 meses",
        title = "Cantidad total de llamadas salientes vs tiempo total de llamadas salientes")
+
+
 
 ```
 
