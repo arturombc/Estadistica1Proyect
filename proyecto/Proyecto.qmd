@@ -320,7 +320,7 @@ ggplot(DF, aes(CHIP, DATOS_TOTAL/1000, fill = CHIP)) +
 
 En esta gráfica se utilizó el límite en el eje *y* como el tercer cuartíl más 1.5 veces la IQR de `DF$DATOS_TOTAL`, además se eliminó la visualización de datos atípicos para una visualización más limpia. Esto se realizó porque los valores atípicos son extremadamente diferentes en escala al compararlos con los datos más comunes; por ejemplo, el máximo valor en GB que se gastó en un periodo es `r round(max(DF$DATOS_TOTAL/1000), 2)`, a comparación del valor de la mediana que es `r round(median(DF$DATOS_TOTAL/1000), 2)`. Debido a este comportamiento, en algunos de los gráficos futuros se tomarán los valores dentro de un intervalo razonable (1.5 veces IQR).
 
-Ya que en el gráfico anterior podemos ver las diferencias entre el consumo de datos por `CHIP`, podemos tomar de forma razonable a la variable `DATOS_4G` y analizarla.
+Ya que en el gráfico anterior pudimos ver el comportamiento entre entre el consumo de datos por `CHIP` en cada `PERIODO` y no vimos nada inusual, podemos decidir tomar de forma razonable a la variable `DATOS_4G` y analizarla.
 
 ```{r}
 Q1 <- quantile(DF$DATOS_4G, 0.25)/1000
