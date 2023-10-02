@@ -329,7 +329,7 @@ IQ <- IQR(DF$DATOS_4G) / 1000
 dat_4g_atipicos <- sum(DF$DATOS_4G/1000 < (Q1 - 1.5 * IQ) | DF$DATOS_4G/1000 > (Q3 + 1.5 * IQ))
 ```
 
-Podemos ver de la anterior gráfica que la media y la mediana no están alineadas, podemos declarar con cierta confianza que se debe a los `r dat_4g_atipicos` datos atípicos, aunque estos representen un `r (dat_4g_atipicos/length(DF$DATOS_4G))*100`% de los datos. Podemos analizar la desviación estándar para ver cómo es que se comportan estos outliers.
+Podemos ver de la anterior gráfica que la media y la mediana no están alineadas, podemos declarar con cierta confianza que se debe a los `r dat_4g_atipicos` datos atípicos, aunque estos representen un `r (dat_4g_atipicos/length(DF$DATOS_4G))*100`% de los datos. Podemos analizar la desviación estándar para ver cómo es que se comportan estos _outliers_.
 
 ```{r}
 sd(DF$DATOS_4G, na.rm = TRUE) / 1000
@@ -345,7 +345,7 @@ coef_var_DATOS_4G
 
 Tenemos un coeficiente de variación de `r round(coef_var_DATOS_4G*100,2)`%, que según las convenciones establecidas, es considerado bastante alto, además confirma nuestras sospechas de que era el número de observaciones lo que hacía que la desviación estándar parezca pequeña. El coeficiente de variación indica que la dispersión de los datos es bastante grande; también, describir la variable con la media puede no ser adecuado, la mediana es un mejor descriptor en este caso. 
 
-Podemos decir que los usuarios usan aproximadamente `r round(median(DF$DATOS_4G)/1000,2)`GB por mes (mediana). Esto equivale aproximadamente a descargar una película en HD y llamar a tus amigos durante 3 horas al día durante todo el mes usando Whatsapp.
+Podemos decir que los usuarios usan aproximadamente `r round(median(DF$DATOS_4G)/1000,2)`GB por mes (mediana). Esto equivale aproximadamente a descargar una película en HD y llamar a tus amigos por Whatsapp durante 3 horas al día durante todo el mes.
 
 
 **Analisis del gráfico:**
