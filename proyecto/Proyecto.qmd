@@ -381,49 +381,6 @@ ggplot(DF,aes(x=PERIODO,y=(DATOS_TOTAL/1000),fill=OS))+
 
 Al analizar la relación entre el tráfico de datos y el periodo de tiempo, se evidencia una disparidad considerable en el año 2019 entre las barras de color rosa, que corresponden a dispositivos con sistema operativo Android, y las barras de Apple, que son significativamente más altas. También se observa un nivel muy bajo de tráfico asociado a otros sistemas operativos y la categoría "sin sistema operativo". En los meses de marzo, abril y mayo, se observa una marcada disminución en el tráfico de datos de dispositivos Apple. Sin embargo, se nota que los niveles de tráfico de datos de dispositivos Android se mantienen constantes en marzo y abril de 2019, experimentando un aumento significativo en mayo de ese año. Esto sugiere una tendencia a la estabilidad en la adopción de sistemas operativos "otros" y la presencia de dispositivos "sin sistema operativo".
 
-**Grafico 3: Boxplot del trafico de datos 2g**
-
-```{r}
-# Crear un boxplot estándar
-boxplot(DF$DATOS_2G, horizontal = T, col = "green",
-        main = "Boxplot del trafico de datos 2g")
-
-# Crear un boxplot visible 
-boxplot(DF$DATOS_2G, horizontal = T, col = "green",
-        main = "Boxplot del trafico de datos 2g",
-        notch = TRUE, outline = F)
-
-axis(side = 1, at =c(0, 3, 1200))
-
-```
-
-**Grafico 4: Boxplot del trafico de datos 3g**
-
-```{r}
-# Crear un boxplot estándar
-boxplot(DF$DATOS_3G, horizontal = T, col = "pink",
-        main = "Boxplot del trafico de datos 3g")
-
-boxplot(DF$DATOS_3G, horizontal = T, col = "pink",
-        main = "Boxplot del trafico de datos 3g",
-        notch = TRUE, outline = F)
-```
-
-**Grafico 5:Boxplot del trafico de datos 4g**
-
-```{r}
-# Crear un boxplot estándar
-boxplot(DF$DATOS_4G, horizontal = T, col = "lightblue",
-        main = "Boxplot del trafico de datos 4g")
-
-boxplot(DF$DATOS_4G, horizontal = T, col = "lightblue",
-        main = "Boxplot del trafico de datos 4g",
-        notch = TRUE, outline = F)
-
-
-
-```
-
 **Descriptores númericos:**
 
 ```{r}
@@ -436,12 +393,6 @@ summary(DF$DATOS_4G)
 cuatroG<-filter(DF, CHIP=="4G")
 summary(cuatroG$DATOS_4G)
 ```
-
-En el caso del tráfico de datos 2G, la mediana de 0.326 Mb significa que la mitad de los usuarios consumió 0.326 Mb o menos, y el tercer cuartil de 2.220 Mb indica que el 75% de los usuarios utilizó 2.220 Mb o menos, mientras que el primer cuartil de 0.009 Mb indica que el 25% de los usuarios consumió 0.009 Mb o menos.
-
-En el caso del tráfico de datos 3G, la mediana de 120.89 Mb significa que la mitad de los usuarios consumió 120.89 Mb o menos, y el tercer cuartil de 367.70 Mb indica que el 75% de los usuarios utilizó 367.70 Mb o menos, mientras que el primer cuartil de 36.95 Mb indica que el 25% de los usuarios consumió 36.95 Mb o menos.
-
-En el caso del tráfico de datos 4G, la mediana de 6354 Mb significa que la mitad de los usuarios consumió 6354 Mb o menos, y el tercer cuartil de 12964 Mb indica que el 75% de los usuarios utilizó 12964 Mb o menos, mientras que el primer cuartil de 2173 Mb indica que el 25% de los usuarios consumió 2173 Mb o menos.
 
 ## **OBJETIVO 2:** Analizar la duración y la cantidad de llamadas entrantes y salientes de un usuario.
 
@@ -590,8 +541,8 @@ Se puede ver que los usuarios que tienen el sistema operativo Android reciben m�
 ```{r}
 hist(DF$DIAS_LLAMADAS_IN_TOT,breaks= 6, col = "lightblue", xlab = "Dias", ylab = "Clientes", main = "Cantidad de dias en los que recibieron llamadas")
 # Agregar la media y la mediana al histograma
-abline(v = mean(DF$DIAS_LLAMADAS_IN_TOT), col="blue")
-abline(v = median(DF$DIAS_LLAMADAS_IN_TOT), col="red")
+abline(v = mean(DF$DIAS_LLAMADAS_IN_TOT, na.rm =T), col="blue")
+abline(v = median(DF$DIAS_LLAMADAS_IN_TOT, na.rm =T), col="red")
 
 # Añadir leyenda
 legend("topright", legend = c("Media", "Mediana"), col = c("blue", "red"), lty = 1)
