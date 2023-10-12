@@ -214,13 +214,11 @@ El porcentaje de datos nulos en la tabla es `r round(sum(is.na(DF))/(nrow(DF)*nc
 
 ## **OBJETIVO 1:** Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
 
-### **Motivación**
+### **Motivación y desarrollo**
 
 La justificación de este objetivo reside en que latinoamérica es actualmente el continente que en proporción consume más el internet en el [mundo](https://www.atlantico.vc "Latin America Digital Transformation Report 2023"). Además, en el año 2019, los peruanos [tenian un consumo considerable de datos](https://m.inei.gob.pe/prensa/noticias/el-668-de-la-poblacion-de-6-y-mas-anos-de-edad-accedio-a-internet-de-enero-a-marzo-del-presente-ano-12954/ "Uso de teléfonos móviles Perú").
 
 En este aspecto, analizar patrones puede permitir un mejor dominio de mercado por cualquier empresa de telefonía móvil actual, esto hace que este análisis se vuelva indispensable para conocer mejor el mercado actual y tomar mejores decisiones basadas en los datos.
-
-### **Desarrollo**
 
 Existen diferentes tipos de tecnología para telecomunicaciones, durante este proyecto analizaremos las de 2G, 3G y 4G; con la intención de dar contexto a los gráficos, mostraremos las diferencias entre cada una de estas tecnologías y daremos una intuición de en que contexto se pueden usar.
 
@@ -380,22 +378,15 @@ Podemos concluir que el `CHIP` tiene una relación con el `OS` ya que las propor
 
 ## **OBJETIVO 2:** Analizar la duración y la cantidad de llamadas entrantes y salientes de un usuario.
 
-### **Motivación**
+### **Motivación y desarrollo**
 
 La duración y la cantidad de llamadas entrantes es una forma de conocer las necesidades, preferencias y hábitos de consumo de los usuarios. Por ejemplo, si un usuario recibe muchas llamadas cortas, puede indicar que tiene problemas de conexión, o que prefiere comunicarse por otros medios. Por el contrario, si recibe pocas llamadas largas, puede indicar que tiene una buena cobertura y un buen servicio, o que le gusta hablar mucho por teléfono.
 
-### **Desarrollo**
+### **Gráfico 4**
 
-En general, se puede esperar que a mayor cantidad de llamadas entrantes, mayor sea el tiempo total de llamadas entrantes por usuario. Esto se debe a que cada llamada implica un tiempo mínimo de conversación, que se suma al tiempo total. Sin embargo, hay otros factores que pueden influir en el tiempo total de llamadas entrantes por usuario, como:
+Gráfico de variable numérica vs numérica
 
--   Tipo de chip: El tipo de chip determina la velocidad y la calidad de la conexión a internet y a la red móvil.
-
--   Tipo de sistema operativo: El tipo de sistema operativo influye en las aplicaciones que el usuario puede usar para recibir llamadas
-
-Anticipamos que los usuarios con chips 4G tendrán un mayor tiempo total de llamadas entrantes debido a la alta calidad de conexión, mientras que los usuarios de Android experimentarán un tiempo total de llamadas entrantes más alto debido a la mayor compatibilidad de su sistema operativo con aplicaciones de llamadas. Para verificar esta relación, utilizamos un gráfico de dispersión, pero dado que nuestros datos tenían usuarios repetidos en múltiples períodos, optamos por comparar la cantidad total de llamadas realizadas y el tiempo total de llamadas durante 9 períodos mediante la creación de una nueva base de datos donde agrupamos los datos por el mismo ID de usuario y sumamos las cantidades y tiempos de llamadas correspondientes. Esto nos permitió tener una visión más completa del comportamiento a lo largo del tiempo y considerar la acumulación total de datos en lugar de analizar cada período de forma individual.
-
-**Gráfico 6: Cantidad total de llamadas entrantes y Tiempo total de llamadas entrantes por usuario(Durante los 9 periodos en total)**
-
+Cantidad total de llamadas entrantes y Tiempo total de llamadas entrantes por usuario(Durante los 9 periodos en total)
 ```{r llamadas_salientes, warning=FALSE, message=FALSE}
 DF %>%
   group_by(ID) %>%
@@ -408,7 +399,6 @@ residuos <- residuals(modelo)
 valores_atipicos <- boxplot.stats(residuos)$out
 DF_NEW <- resultado[!(residuos %in% valores_atipicos), ]
 nuevo_modelo <- lm(TIEMPO_LLAMADAS_IN_TOTAL_PERIODOS  ~ LLAMADAS_IN_TOTAL_PERIODOS, data = DF_NEW)
-print(nuevo_modelo)
 
 ggplot(DF_NEW, aes(x = DF_NEW$LLAMADAS_IN_TOTAL_PERIODOS, y = DF_NEW$TIEMPO_LLAMADAS_IN_TOTAL_PERIODOS)) +
   geom_point(shape = 16, color = "pink") +
@@ -421,47 +411,51 @@ ggplot(DF_NEW, aes(x = DF_NEW$LLAMADAS_IN_TOTAL_PERIODOS, y = DF_NEW$TIEMPO_LLAM
 
 $$ y = 1.501x + 189.201  $$
 
-**Gráfico 7: Cantidad total de llamadas salientes y Tiempo total de llamadas salientes por usuario(Durante los 9 periodos en total)**
-
+### **Gráfico 5**
+Cantidad total de llamadas salientes y Tiempo total de llamadas salientes por usuario(Durante los 9 periodos en total)
 ```{r llamadas_entrantes, warning=FALSE, message=FALSE}
 resultado11 <- DF %>%
 group_by(ID) %>%
 summarise(TIEMPO_LLAMADAS_OUT_TOTAL_PERIODOS = sum(TIEMPO_LLAMADAS_OUT_TOT,na.rm=TRUE),LLAMADAS_OUT_TOTAL_PERIODOS=sum(LLAMADAS_OUT_TOT,na.rm=TRUE))
-
-
 modelo11 <- lm(TIEMPO_LLAMADAS_OUT_TOTAL_PERIODOS  ~ LLAMADAS_OUT_TOTAL_PERIODOS, data = resultado11)
-
-# Calcular los residuos del modelo
 residuos11 <- residuals(modelo11)
-
-# Calcular los valores atípicos basados en residuos
 valores_atipicos11 <- boxplot.stats(residuos11)$out
-
-# Crear un nuevo data frame sin los valores atípicos
 DF_NEW11 <- resultado11[!(residuos11 %in% valores_atipicos11), ]
-
-# Volver a ajustar el modelo sin valores atípicos
 nuevo_modelo11 <- lm(TIEMPO_LLAMADAS_OUT_TOTAL_PERIODOS  ~LLAMADAS_OUT_TOTAL_PERIODOS, data = DF_NEW11)
-print(nuevo_modelo11)
+
 ggplot(DF_NEW11, aes(x = DF_NEW11$LLAMADAS_OUT_TOTAL_PERIODOS, y = DF_NEW11$TIEMPO_LLAMADAS_OUT_TOTAL_PERIODOS)) +
   geom_point(shape = 16, color = "lightblue") +
   geom_smooth(method = "lm", se = FALSE, color = "blue") +
   labs(x = "Cantidad de llamadas salientes en total de 9 meses ", y = "tiempo de llamadas salientes en total de 9 meses",
        title = "Cantidad total de llamadas salientes vs tiempo total de llamadas salientes")
-
-
-
 ```
 
 **Ecuación de regresión lineal:**
 
 $$ y = 1.718x + 192.645 $$
 
-## **Objetivo 3**
+## **OBJETIVO 3**
+
+```{r}
+resumen <- DF %>%
+   group_by(PERIODO) %>%
+   summarise(
+      Min = min(DIAS_LLAMADAS_IN_TOT, na.rm = TRUE),
+      `1st Qu.` = quantile(DIAS_LLAMADAS_IN_TOT, 0.25, na.rm = TRUE),
+      Median = median(DIAS_LLAMADAS_IN_TOT, na.rm = TRUE),
+      Mean = mean(DIAS_LLAMADAS_IN_TOT, na.rm = TRUE),
+      `3rd Qu.` = quantile(DIAS_LLAMADAS_IN_TOT, 0.75, na.rm = TRUE),
+      Max = max(DIAS_LLAMADAS_IN_TOT, na.rm = TRUE),
+      Sd = sd(DIAS_LLAMADAS_IN_TOT, na.rm = TRUE),
+      IQR = IQR(DIAS_LLAMADAS_IN_TOT, na.rm=TRUE),
+      `Coef. Variation` = (sd(DIAS_LLAMADAS_IN_TOT, na.rm = TRUE) / Mean)
+     )
+resumen
+```
 
 
-### **Grafico 8:Comparación del tiempo llamadas entrantes de días laborables y no laborales:**
-
+### **Grafico 6**
+:Comparación del tiempo llamadas entrantes de días laborables y no laborales:
 ```{r}
 # Calculamos el promedio del tiempo total de llamadas en días laborables y no laborables
 promedio_tiempo_week <- mean(DF$TIEMPO_LLAMADAS_IN_SEM, na.rm = TRUE)
@@ -515,6 +509,7 @@ summary(DF$DIAS_LLAMADAS_IN_TOT)
 
 Los valores incluyen el mínimo de 0 días, lo que indica que al menos un cliente no recibió llamadas en ningún día, un primer cuartil de 24, lo que significa que el 25% de los clientes recibieron llamadas en 24 días o menos, una mediana de 28, que representa el valor medio de los días de recepción de llamadas, una media de 25.56, que es el promedio de la cantidad de días en que los clientes recibieron llamadas, un tercer cuartil de 30, indicando que el 75% de los clientes recibieron llamadas en 30 días o menos, y un máximo de 31, lo que implica que al menos un cliente recibió llamadas durante todos los días del período considerado. En resumen, esta información proporciona una visión general de la distribución de la frecuencia de las llamadas entre los clientes, desde aquellos que no recibieron llamadas en absoluto hasta aquellos que lo hicieron durante la mayoría de los días.
 
+### **Grafico 7**
 ```{r}
 # Calculamos el promedio del tiempo total de llamadas en días laborables y no laborables
 promedio_tiempo_week <- mean(DF$LLAMADAS_OUT_SEM, na.rm = TRUE)
@@ -556,6 +551,8 @@ summary(DF$DIAS_LLAMADAS_OUT_TOT)
 ```
 
 Los valores incluyen el mínimo de 0 días, lo que indica que al menos un cliente no recibió llamadas en ningún día, un primer cuartil de 24 días, lo que significa que el 25% de los clientes recibieron llamadas en 24 días o menos, una mediana de 28 días, que es el valor central de la distribución, una media de 25.69 días, que es el promedio de días de recepción de llamadas, un tercer cuartil de 30 días, indicando que el 75% de los clientes recibieron llamadas en 30 días o menos, y un máximo de 31 días, lo que implica que al menos un cliente recibió llamadas todos los días. En resumen, esta información proporciona una visión general de la distribución de la frecuencia de las llamadas entre los clientes, desde aquellos que no recibieron llamadas en absoluto hasta aquellos que lo hicieron durante la mayoría de los días.
+
+
 
 ```{=html}
 <script>
