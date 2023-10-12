@@ -261,31 +261,11 @@ DF %>%
 
 A pesar de no ser intuitivo, podemos decir que aunque la tecnología del chip sea inferior, aún es posible recurrir a la transferencia de datos mediante otras redes.
 
-Ahora que sabemos qué significan los diferentes tipos de tecnología de chip, podemos ver cómo es que se comporta esta variable a lo largo de estos `r length(sort(DF$PERIODO))` meses y cuánta es la transferencia de datos para cada tipo de chip. Usaremos unidades de GB, por lo tanto dividiremos `DATOS_TOTAL`(MB) entre 1000 para apreciar una mejor escala.
+Ahora que sabemos qué significan los diferentes tipos de tecnología de chip, podemos ver cómo es que se comporta esta variable a lo largo de estos `r length(DF$PERIODO)` meses y cuánta es la transferencia de datos para cada tipo de chip. Usaremos unidades de GB, por lo tanto dividiremos `DATOS_TOTAL`(MB) entre 1000 para apreciar una mejor escala.
 
 ### **Gráfico 1**
 
-```{r}
-ggplot(DF, aes(x = PERIODO, y = (DATOS_TOTAL / 1000), fill = CHIP)) +
-  geom_col(position = "dodge", na.rm = TRUE) +
-  theme_excel_new() +
-  ggtitle("TRAFICO DE DATOS TOTAL Y TECNOLOGIA DEL CHIP") +
-  theme(plot.title = element_text(hjust = 0.5),
-        axis.text.x = element_text(angle = -90, hjust = 0, vjust = 1)) +
-  labs(fill = "TECNOLOGIA DEL CHIP", x = "PERIODO", y = "TRAFICO DE DATO(Gb)") +
-  scale_y_continuous(breaks = seq(0, max(DF$DATOS_TOTAL / 1000), by = 80)) +
-  scale_x_date(date_breaks = "1 month", date_labels = "%b %Y")
-```
-
-Ahora surge la pregunta: ¿Qué significan estos números? Podemos explicar esto dando un ejemplo de [cuánto](https://kenstechtips.com/index.php/data-plans/1gb-data "1GB of Data: How Much Is It & How Long Does It Last? Mobile Data Limits") puedes lograr con 1GB de transferencia de datos.
-
--   1GB: Descargar un video de 30 min en HD
--   10GB: 300 horas de llamada de voz por Whatsapp
--   100GB: Descargar 250 aplicaciones
-
-Ya que tenemos estas primeras impresiones, podemos intentar entender cómo es que se comporta el consumo de datos 4G, 3G y 2G por cada tecnología de equipo (CHIP), además podemos dividir esta vista en periodos para tener una interpretación holística y así decidir que variable podemos analizar a continuación.
-
-### **Gráfico 2**
+Gráfico de variable categórica vs numérica.
 
 ```{r}
 nombres_personalizados <- c("2018-09-01" = "Septiembre 2018", 
@@ -325,7 +305,20 @@ ggplot(DF, aes(CHIP, DATOS_TOTAL/1000, fill = CHIP)) +
 
 En esta gráfica se utilizó el límite en el eje *y* como el tercer cuartíl más 1.5 veces la IQR de `DF$DATOS_TOTAL`, además se eliminó la visualización de datos atípicos para una visualización más limpia. Esto se realizó porque los valores atípicos son extremadamente diferentes en escala al compararlos con los datos más comunes; por ejemplo, el máximo valor en GB que se gastó en un periodo es `r round(max(DF$DATOS_TOTAL/1000), 2)`, a comparación del valor de la mediana que es `r round(median(DF$DATOS_TOTAL/1000), 2)`. Debido a este comportamiento, en algunos de los gráficos futuros se tomarán los valores dentro de un intervalo razonable (1.5 veces IQR).
 
+Ahora surge la pregunta: ¿Qué significan estos números? Podemos explicar esto dando un ejemplo de [cuánto](https://kenstechtips.com/index.php/data-plans/1gb-data "1GB of Data: How Much Is It & How Long Does It Last? Mobile Data Limits") puedes lograr con 1GB de transferencia de datos.
+
+-   1GB: Descargar un video de 30 min en HD
+-   10GB: 300 horas de llamada de voz por Whatsapp
+-   100GB: Descargar 250 aplicaciones
+
+Podemos decir que una persona con un chip 4G, al mes, consume 8GB lo que equivale a 30 horas de llamadas por Whatsapp(1GB), descargar una película de 2h(4GB) y descarga 5 apps (2GB).
+
+
 Ya que en el gráfico anterior pudimos ver el comportamiento entre entre el consumo de datos por `CHIP` en cada `PERIODO` y no vimos nada inusual, podemos decidir tomar de forma razonable a la variable `DATOS_4G` y analizarla.
+
+### **Análisis 1**
+
+Análisis univariado de variable numérica continua.
 
 ```{r}
 Q1 <- quantile(DF$DATOS_4G, 0.25)/1000
@@ -334,7 +327,7 @@ IQ <- IQR(DF$DATOS_4G) / 1000
 dat_4g_atipicos <- sum(DF$DATOS_4G/1000 < (Q1 - 1.5 * IQ) | DF$DATOS_4G/1000 > (Q3 + 1.5 * IQ))
 ```
 
-Podemos ver de la anterior gráfica que la media y la mediana no están alineadas, podemos declarar con cierta confianza que se debe a los `r dat_4g_atipicos` datos atípicos, aunque estos representen un `r (dat_4g_atipicos/length(DF$DATOS_4G))*100`% de los datos. Podemos analizar la desviación estándar para ver cómo es que se comportan estos _outliers_.
+Podemos ver de la anterior gráfica que la media y la mediana no están alineadas, podemos declarar con cierta confianza que se debe a los `r dat_4g_atipicos` datos atípicos, aunque estos representen un `r (dat_4g_atipicos/length(DF$DATOS_4G))*100`% de los datos. Podemos analizar la desviación estándar para ver cómo es que se comportan estos *outliers*.
 
 ```{r}
 sd(DF$DATOS_4G, na.rm = TRUE) / 1000
@@ -353,11 +346,9 @@ Tenemos un coeficiente de variación de `r round(coef_var_DATOS_4G*100,2)`%, que
 
 Podemos decir que los usuarios usan aproximadamente `r round(median(DF$DATOS_4G)/1000,2)`GB por mes (mediana). Esto equivale aproximadamente a descargar una película en HD y llamar a tus amigos por Whatsapp durante 3 horas al día durante todo el mes.
 
-
-###**Gráfico 3**
+\###**Gráfico 3**
 
 Trafico total de datos y tipo de sistema operativo por periodo
-
 
 ```{r}
 ggplot(DF,aes(x=PERIODO,y=(DATOS_TOTAL/1000),fill=OS))+
@@ -525,7 +516,6 @@ cor(DF[, c("TIEMPO_LLAMADAS_IN_FINDE","TIEMPO_LLAMADAS_IN_SEM")], use = "pairwis
 
 Podemos decir de esta matriz de correlación indica que tenemos un valor alto que relaciona a las variables `TIEMPO_LLAMADAS_IN_FINDE` y `TIEMPO_LLAMADAS_IN_SEM` de manera directa; es decir, a más tiempo de llamadas en el fin de semana, más tiempo de llamadas durante la semana.
 
-
 **Descriptores:**
 
 ```{r}
@@ -581,7 +571,6 @@ Los valores incluyen el mínimo de 0 días, lo que indica que al menos un client
 
 ## [**OBJETIVO 3:**]{style="color:#D1D3AA"} Analizar las preferencias del usuario con respecto a la tecnología del chip y os.
 
-
 ```{r}
 ggplot(data = DF) +
   geom_mosaic(aes(x = product(OS), fill = CHIP)) +
@@ -592,10 +581,6 @@ ggplot(data = DF) +
 ```
 
 Podemos ver que en su mayoría los usuarios con un `OS` que esta calificado como "Otros" usan en su mayoria CHIPS 2G. Esto podría deberse a que son equipos antiguos que se usan principalmente para la comunicación sin acceso a internet. Pero sin más datos no podemos concluir nada.
-
-
-
-
 
 ```{=html}
 <script>
