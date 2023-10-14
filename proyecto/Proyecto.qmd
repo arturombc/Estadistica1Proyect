@@ -164,7 +164,7 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 | VARIABLE                   | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|-----------------|-----------------|-----------------|----------------------|
+|-----------------|-----------------|-----------------|--------------------|
 | ID                         | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO                    | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | CHIP                       | Categórica Ordinal    | 2G, 3G, 4G                    | Tecnología del chip                                                                                                                 |
@@ -381,18 +381,33 @@ Podemos concluir que el `CHIP` tiene una relación con el `OS` ya que las propor
 Análisis univariado de variable categórica nominal.
 
 ```{r}
-Fi <- table(DF$MARCA)
-porcentajes <- round(prop.table(Fi)*100, digits = 2)
-marcas_preferidas <- names(Fi[porcentajes > 3])
-frec <- porcentajes[marcas_preferidas]
+# Condicion: hi% > 3 
+# Contamos las marcas únicas excluyendo las que cumplen la condición (398)
+cant_marcas_f <- length(unique(DF$MARCA)[!(unique(DF$MARCA) %in% c("APPLE", "HUAWEI", "LG", "MOTOROLA", "SAMSUNG"))])
 
-etiqueta <- paste(frec,"%", sep = " ")
-colores <-c("purple", "orange", "blue", "green", "pink")
-pie(frec, labels = etiqueta, clockwise = TRUE, col = colores,
+# Calculamos las hi% de cada marca y si es < 3 renombrar por OTROS
+Fi <- table(DF$MARCA)
+hi <- round(prop.table(Fi)*100, digits = 2)
+DF_temp <- DF
+DF_temp$MARCA <- ifelse(hi[DF_temp$MARCA] > 3, DF_temp$MARCA, "OTRA")
+frec <- round(prop.table(table(DF_temp$MARCA))*100, digits = 2)
+
+# Agrupamos las variables de interés
+DF_temp <- data.frame(
+  Marca = names(table(DF_temp$MARCA)),
+  Frec = as.numeric(frec)
+)
+#DF_temp$Frec[DF_temp$Marca == "OTRA"] <- round(DF_temp$Frec[DF_temp$Marca == "OTRA"] / cant_marcas_f, digits = 2)
+
+# Gráfico circular
+etiqueta <- paste(DF_temp$Frec,"%", sep = " ")
+colores <-c("#F4D03F", "#5DADE2", "#F5B041", "#58D68D", "#AF7AC5", "#EC7063")
+pie(DF_temp$Frec, labels = etiqueta, clockwise = TRUE, col = colores,
     main = "Marcas de teléfonos preferidas por los usuarios")
-legend("topright", c("APPLE", "HUAWEI", "LG", "MOTOROLA", "SAMSUNG"), cex = 0.5, fill = colores)
+legend("topright", c("APPLE", "HUAWEI", "LG", "MOTOROLA", "OTRAS", "SAMSUNG"), cex = 0.75, fill = colores)
 ```
 
+Se registraron un total de 403 `MARCAS` diferentes de celulares, de las cuales únicamente 5 fueron las elegidas por un porcentaje considerable de usuarios. En ese sentido, se utilizó un gráfico circular para representar las 5 `MARCAS` y las demás agrupadas en base a sus `hi%` (cantidad de usuarios que usa cierta marca de celular respecto al total de usuarios expresada en forma porcentual) y al promedio de las `hi%` de cada una de las marcas reunidas en la categoría *OTRAS*. A partir de ello, se puede concluir que *SAMSUNG* y *HUAWEI* son las marcas más utilizadas.
 
 ## **OBJETIVO 2:** Analizar la duración y la cantidad de llamadas entrantes y salientes de un usuario.
 
@@ -476,7 +491,7 @@ resumen
 
 ### **Grafico 6**
 
-:Comparación del tiempo llamadas entrantes de días laborables y no laborales:
+Comparación del tiempo llamadas entrantes de días laborables y no laborales:
 
 ```{r}
 # Calculamos el promedio del tiempo total de llamadas en días laborables y no laborables
