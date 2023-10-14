@@ -376,6 +376,24 @@ También vemos que en proporción, los que tienen `CHIP` 4G son principalmente l
 
 Podemos concluir que el `CHIP` tiene una relación con el `OS` ya que las proporciones no son las mismas en el *mosaicplot*.
 
+### **Gráfico 4**
+
+Análisis univariado de variable categórica nominal.
+
+```{r}
+Fi <- table(DF$MARCA)
+porcentajes <- round(prop.table(Fi)*100, digits = 2)
+marcas_preferidas <- names(Fi[porcentajes > 3])
+frec <- porcentajes[marcas_preferidas]
+
+etiqueta <- paste(frec,"%", sep = " ")
+colores <-c("purple", "orange", "blue", "green", "pink")
+pie(frec, labels = etiqueta, clockwise = TRUE, col = colores,
+    main = "Marcas de teléfonos preferidas por los usuarios")
+legend("topright", c("APPLE", "HUAWEI", "LG", "MOTOROLA", "SAMSUNG"), cex = 0.5, fill = colores)
+```
+
+
 ## **OBJETIVO 2:** Analizar la duración y la cantidad de llamadas entrantes y salientes de un usuario.
 
 ### **Motivación y desarrollo**
