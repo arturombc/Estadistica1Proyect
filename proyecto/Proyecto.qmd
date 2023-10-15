@@ -164,7 +164,7 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 | VARIABLE                   | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|-----------------|-----------------|-----------------|--------------------|
+|------------------|------------------|------------------|--------------------|
 | ID                         | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO                    | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | CHIP                       | Categórica Ordinal    | 2G, 3G, 4G                    | Tecnología del chip                                                                                                                 |
@@ -488,6 +488,14 @@ resumen <- DF %>%
      )
 resumen
 ```
+
+Los datos estadísticos proporcionados se centran en la variable "DIAS_LLAMADAS_IN_TOT," que representa la cantidad de días en que se realizaron llamadas a lo largo de varios períodos. La información revela una falta de datos o valores inusuales en los tres primeros meses de 2018, lo que podría indicar problemas en la recopilación de datos durante ese tiempo.
+
+A partir de diciembre de 2018 y hasta mayo de 2019, se observa una relativa estabilidad en la cantidad de días de llamadas, con una mediana constante de 29 días y una mínima variación en los cuartiles. La media cercana a la mediana sugiere una distribución que se asemeja a una normal, y la baja desviación estándar y coeficiente de variación indican que la dispersión en los datos es limitada en comparación con la media.
+
+A pesar de las fluctuaciones en los valores máximos y mínimos, el rango intercuartil de 6 días señala que la mayor parte de los períodos tuvo una cantidad de días de llamadas muy similar, lo que respalda la idea de estabilidad. La baja desviación estándar y el coeficiente de variación cercano a cero confirman una dispersión limitada en comparación con la media, lo que indica que los datos están relativamente concentrados alrededor de la media.
+
+No obstante, es fundamental recordar que estos patrones de estabilidad pueden ser influenciados por factores externos no reflejados en los datos estadísticos. Para una interpretación completa, es esencial considerar el propósito de las llamadas y el contexto detrás de la falta de datos en los primeros tres meses de 2018, que podría estar relacionada con problemas de registro o cambios en la recopilación de datos en ese período.
 
 ### **Grafico 6**
 
