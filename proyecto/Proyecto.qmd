@@ -164,7 +164,7 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 | VARIABLE                   | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|------------------|------------------|------------------|--------------------|
+|------------------|------------------|------------------|-------------------|
 | ID                         | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO                    | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | CHIP                       | Categórica Ordinal    | 2G, 3G, 4G                    | Tecnología del chip                                                                                                                 |
@@ -326,7 +326,8 @@ ggplot(DF, aes(DATOS_4G/1000)) +
   xlim(xlim_min,xlim_max) +
   xlab("Datos en GB") +
   ylab("Cantidad de usuarios") +
-  scale_fill_gradient(low = "red", high = "yellow")
+  scale_fill_gradient(low = "red", high = "yellow") +
+  theme_solarized()
 ```
 
 Podemos ver que la clase modal es de \[0,0.5\] lo que significa que generalmente las personas no gastan datos.
@@ -364,7 +365,7 @@ Gráfico de variable categórica vs categórica.
 ```{r mosaic1,warning=FALSE}
 ggplot(data = DF) +
   geom_mosaic(aes(x = product(OS), fill = CHIP)) +
-  theme_minimal() +
+  theme_mosaic() +
   theme(plot.title = element_text(hjust = 0.5),
         axis.text.x = element_text(angle = -90, hjust = 0, vjust = 1)) +
   labs(title = "Tabla de Chip vs Sistema Operativo")
@@ -415,7 +416,7 @@ Se registraron un total de 403 `MARCAS` diferentes de celulares, de las cuales �
 
 La duración y la cantidad de llamadas entrantes es una forma de conocer las necesidades, preferencias y hábitos de consumo de los usuarios. Por ejemplo, si un usuario recibe muchas llamadas cortas, puede indicar que tiene problemas de conexión, o que prefiere comunicarse por otros medios. Por el contrario, si recibe pocas llamadas largas, puede indicar que tiene una buena cobertura y un buen servicio, o que le gusta hablar mucho por teléfono.
 
-### **Gráfico 4**
+### **Gráfico 5**
 
 Gráfico de variable numérica vs numérica
 
@@ -438,14 +439,17 @@ ggplot(DF_NEW, aes(x = DF_NEW$LLAMADAS_IN_TOTAL_PERIODOS, y = DF_NEW$TIEMPO_LLAM
   geom_point(shape = 16, color = "pink") +
   geom_smooth(method = "lm", se = FALSE, color = "red") +
   labs(x = "Cantidad de llamadas salientes en total de 9 meses ", y = "tiempo de llamadas salientes en total de 9 meses",
-       title = "Cantidad total de llamadas salientes vs tiempo total de llamadas salientes")
+       title = "Cantidad total de llamadas salientes vs tiempo total de llamadas salientes") + 
+  theme_economist()
 ```
 
 **Ecuación de regresión lineal:**
 
 $$ y = 1.501x + 189.201  $$
 
-### **Gráfico 5**
+### **Gráfico 6**
+
+Gráfico de variable numérica vs numérica
 
 Cantidad total de llamadas salientes y Tiempo total de llamadas salientes por usuario(Durante los 9 periodos en total)
 
@@ -463,7 +467,8 @@ ggplot(DF_NEW11, aes(x = DF_NEW11$LLAMADAS_OUT_TOTAL_PERIODOS, y = DF_NEW11$TIEM
   geom_point(shape = 16, color = "lightblue") +
   geom_smooth(method = "lm", se = FALSE, color = "blue") +
   labs(x = "Cantidad de llamadas salientes en total de 9 meses ", y = "tiempo de llamadas salientes en total de 9 meses",
-       title = "Cantidad total de llamadas salientes vs tiempo total de llamadas salientes")
+       title = "Cantidad total de llamadas salientes vs tiempo total de llamadas salientes") + 
+  theme_economist()
 ```
 
 **Ecuación de regresión lineal:**
@@ -489,7 +494,7 @@ resumen <- DF %>%
 resumen
 ```
 
-Los datos estadísticos proporcionados se centran en la variable "DIAS_LLAMADAS_IN_TOT," que representa la cantidad de días en que se realizaron llamadas a lo largo de varios períodos. La información revela una falta de datos o valores inusuales en los tres primeros meses de 2018, lo que podría indicar problemas en la recopilación de datos durante ese tiempo.
+Los datos estadísticos proporcionados se centran en la variable `DIAS_LLAMADAS_IN_TOT` que representa la cantidad de días en que se realizaron llamadas a lo largo de varios períodos. La información revela una falta de datos o valores inusuales en los tres primeros meses de 2018, lo que podría indicar problemas en la recopilación de datos durante ese tiempo.
 
 A partir de diciembre de 2018 y hasta mayo de 2019, se observa una relativa estabilidad en la cantidad de días de llamadas, con una mediana constante de 29 días y una mínima variación en los cuartiles. La media cercana a la mediana sugiere una distribución que se asemeja a una normal, y la baja desviación estándar y coeficiente de variación indican que la dispersión en los datos es limitada en comparación con la media.
 
@@ -497,7 +502,7 @@ A pesar de las fluctuaciones en los valores máximos y mínimos, el rango interc
 
 No obstante, es fundamental recordar que estos patrones de estabilidad pueden ser influenciados por factores externos no reflejados en los datos estadísticos. Para una interpretación completa, es esencial considerar el propósito de las llamadas y el contexto detrás de la falta de datos en los primeros tres meses de 2018, que podría estar relacionada con problemas de registro o cambios en la recopilación de datos en ese período.
 
-### **Grafico 6**
+### **Grafico 7**
 
 Comparación del tiempo llamadas entrantes de días laborables y no laborales:
 
@@ -553,7 +558,7 @@ summary(DF$DIAS_LLAMADAS_IN_TOT)
 
 Los valores incluyen el mínimo de 0 días, lo que indica que al menos un cliente no recibió llamadas en ningún día, un primer cuartil de 24, lo que significa que el 25% de los clientes recibieron llamadas en 24 días o menos, una mediana de 28, que representa el valor medio de los días de recepción de llamadas, una media de 25.56, que es el promedio de la cantidad de días en que los clientes recibieron llamadas, un tercer cuartil de 30, indicando que el 75% de los clientes recibieron llamadas en 30 días o menos, y un máximo de 31, lo que implica que al menos un cliente recibió llamadas durante todos los días del período considerado. En resumen, esta información proporciona una visión general de la distribución de la frecuencia de las llamadas entre los clientes, desde aquellos que no recibieron llamadas en absoluto hasta aquellos que lo hicieron durante la mayoría de los días.
 
-### **Grafico 7**
+### **Grafico 8**
 
 ```{r}
 # Calculamos el promedio del tiempo total de llamadas en días laborables y no laborables
@@ -596,10 +601,37 @@ summary(DF$DIAS_LLAMADAS_OUT_TOT)
 
 Los valores incluyen el mínimo de 0 días, lo que indica que al menos un cliente no recibió llamadas en ningún día, un primer cuartil de 24 días, lo que significa que el 25% de los clientes recibieron llamadas en 24 días o menos, una mediana de 28 días, que es el valor central de la distribución, una media de 25.69 días, que es el promedio de días de recepción de llamadas, un tercer cuartil de 30 días, indicando que el 75% de los clientes recibieron llamadas en 30 días o menos, y un máximo de 31 días, lo que implica que al menos un cliente recibió llamadas todos los días. En resumen, esta información proporciona una visión general de la distribución de la frecuencia de las llamadas entre los clientes, desde aquellos que no recibieron llamadas en absoluto hasta aquellos que lo hicieron durante la mayoría de los días.
 
+
+### **Gráfico 9**
+
+Análisis de una variable categórica ordinal
+
+```{r}
+ggplot(DF, aes(DF$PERIODO)) +
+  geom_bar(color = "black", fill = "skyblue") +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.text.x = element_text(angle = -90, hjust = 0, vjust = 1)) +
+  ylab("Cantidad de registros") +
+  xlab("Periodo") +
+  labs(title = "Distribución de registros por período"
+       )
+```
+
+Podemos ver que la mayoria de las observaciones que tenemos estan en los meses de diciembre, enero y febrero con una cantidad bastante similar de usuarios; siendo septiembre de 2018 el periodo con menos observaciones.
+
+```{r}
+table(DF$PERIODO)
+which.max(table(DF$PERIODO))
+median(DF$PERIODO)
+```
+
+Podemos ver que la moda se encuentra en el mes de diciembre de 2018 con un total de `r table(DF$PERIODO)[which.max(table(DF$PERIODO))]` observaciones. Además la media esta en el mes de enero del 2019. Esto podría indicar que hubo un mayor consumo en esos meses, probablemente debido a navidad y año nuevo.
+
 ```{=html}
 <script>
 function toggleContent() {
-  var content = document.querySelector(".toggle-content");
+  let content = document.querySelector(".toggle-content");
   if (content.style.display === "none" || content.style.display === "") {
     content.style.display = "block";
   } else {
