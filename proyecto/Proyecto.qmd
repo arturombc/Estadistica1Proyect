@@ -164,7 +164,7 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 | VARIABLE                   | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|------------------|------------------|------------------|--------------------|
+|------------|------------|------------|-------------------------------------|
 | ID                         | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO                    | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | CHIP                       | Categórica Ordinal    | 2G, 3G, 4G                    | Tecnología del chip                                                                                                                 |
@@ -466,14 +466,26 @@ ggplot(DF_NEW11, aes(x = DF_NEW11$LLAMADAS_OUT_TOTAL_PERIODOS, y = DF_NEW11$TIEM
        title = "Cantidad total de llamadas salientes vs tiempo total de llamadas salientes")
 ```
 
+**Correlación:**
+
+```{r}
+cor(DF$LLAMADAS_OUT_TOT, DF$TIEMPO_LLAMADAS_OUT_TOT,use = "complete.obs")
+```
+
+El coeficiente de correlación de 0.5590268 indica una correlación positiva moderada entre la cantidad total de llamadas salientes y el tiempo total de llamadas salientes. Esto significa que, en promedio, un aumento en las llamadas salientes está asociado con un aumento en el tiempo total de esas llamadas, pero la relación no es extremadamente fuerte ni perfecta.
+
 **Ecuación de regresión lineal:**
+
+```{r}
+lm(TIEMPO_LLAMADAS_OUT_TOTAL_PERIODOS  ~LLAMADAS_OUT_TOTAL_PERIODOS, data = DF_NEW11)
+```
 
 $$ y = 1.718x + 192.645 $$
 
 ## **OBJETIVO 3**
 
 ```{r}
-resumen <- DF %>%
+Descriptores_Dias <- DF %>%
    group_by(PERIODO) %>%
    summarise(
       Min = min(DIAS_LLAMADAS_IN_TOT, na.rm = TRUE),
@@ -486,16 +498,37 @@ resumen <- DF %>%
       IQR = IQR(DIAS_LLAMADAS_IN_TOT, na.rm=TRUE),
       `Coef. Variation` = (sd(DIAS_LLAMADAS_IN_TOT, na.rm = TRUE) / Mean)
      )
-resumen
+Descriptores_Dias
 ```
 
-Los datos estadísticos proporcionados se centran en la variable "DIAS_LLAMADAS_IN_TOT," que representa la cantidad de días en que se realizaron llamadas a lo largo de varios períodos. La información revela una falta de datos o valores inusuales en los tres primeros meses de 2018, lo que podría indicar problemas en la recopilación de datos durante ese tiempo.
+La información revela una falta de datos o valores inusuales en los tres primeros meses de 2018, lo que podría indicar problemas en la recopilación de datos durante ese tiempo.
 
 A partir de diciembre de 2018 y hasta mayo de 2019, se observa una relativa estabilidad en la cantidad de días de llamadas, con una mediana constante de 29 días y una mínima variación en los cuartiles. La media cercana a la mediana sugiere una distribución que se asemeja a una normal, y la baja desviación estándar y coeficiente de variación indican que la dispersión en los datos es limitada en comparación con la media.
 
 A pesar de las fluctuaciones en los valores máximos y mínimos, el rango intercuartil de 6 días señala que la mayor parte de los períodos tuvo una cantidad de días de llamadas muy similar, lo que respalda la idea de estabilidad. La baja desviación estándar y el coeficiente de variación cercano a cero confirman una dispersión limitada en comparación con la media, lo que indica que los datos están relativamente concentrados alrededor de la media.
 
 No obstante, es fundamental recordar que estos patrones de estabilidad pueden ser influenciados por factores externos no reflejados en los datos estadísticos. Para una interpretación completa, es esencial considerar el propósito de las llamadas y el contexto detrás de la falta de datos en los primeros tres meses de 2018, que podría estar relacionada con problemas de registro o cambios en la recopilación de datos en ese período.
+
+```{r}
+Descriptores_Datos <- DF %>%
+   group_by(PERIODO) %>%
+   summarise(
+      Min = min(DATOS_TOTAL, na.rm = TRUE),
+      `1st Qu.` = quantile(DATOS_TOTAL, 0.25, na.rm = TRUE),
+      Median = median(DATOS_TOTAL, na.rm = TRUE),
+      Mean = mean(DATOS_TOTAL, na.rm = TRUE),
+      `3rd Qu.` = quantile(DATOS_TOTAL, 0.75, na.rm = TRUE),
+      Max = max(DATOS_TOTAL, na.rm = TRUE),
+      Sd = sd(DATOS_TOTAL, na.rm = TRUE),
+      IQR = IQR(DATOS_TOTAL, na.rm=TRUE),
+      `Coef. Variation` = (sd(DATOS_TOTAL, na.rm = TRUE) / Mean)
+     )
+Descriptores_Datos
+```
+
+En general, se observa un patrón de aumento constante en el consumo de datos móviles durante este período. Tanto la mediana como la media exhiben un crecimiento gradual en el consumo, pasando de 5845.112 MB en septiembre de 2018 a 7288.248 MB en mayo de 2019, lo que sugiere que los usuarios están utilizando cada vez más datos móviles. A pesar de esta tendencia alcista, el coeficiente de variación se mantiene cerca de 1, lo que indica una variabilidad relativamente constante en relación con la media. Esta consistencia en la variabilidad podría reflejar cierta previsibilidad en los patrones de consumo de datos.
+
+Sin embargo, para una interpretación completa, es esencial considerar el contexto detrás de este aumento en el consumo de datos. Diversos factores podrían influir en esta tendencia, como el lanzamiento de nuevas aplicaciones, cambios en los planes de datos, eventos estacionales o modificaciones en el comportamiento de los usuarios. Comprender la razón detrás de este incremento y cualquier evento o circunstancia que pueda explicarlo es crucial para una interpretación más precisa. En resumen, los datos sugieren un incremento constante en el consumo de datos móviles, pero para una comprensión completa, es esencial analizar el contexto y los factores adicionales que pueden estar contribuyendo a este aumento en el uso de datos móviles.
 
 ### **Grafico 6**
 
