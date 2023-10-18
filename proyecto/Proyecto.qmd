@@ -486,6 +486,47 @@ lm(TIEMPO_LLAMADAS_OUT_TOTAL_PERIODOS  ~LLAMADAS_OUT_TOTAL_PERIODOS, data = DF_N
 ```
 
 $$ y = 1.718x + 192.645 $$
+### **Gráfico 7**
+
+Gráfico de variable numérica vs numérica
+
+Cantidad total de llamadas entrantes y salientes por usuario(Durante los 9 periodos en total)
+```{r}
+DF %>%
+  group_by(ID) %>%
+  summarise(LLAMADAS_IN_TOTAL_PERIODOS=sum(LLAMADAS_IN_TOT,na.rm=TRUE),
+            LLAMADAS_OUT_TOTAL_PERIODOS=sum(LLAMADAS_OUT_TOT,na.rm=TRUE)
+            ) -> resultado_final
+
+modelo <- lm(LLAMADAS_OUT_TOTAL_PERIODOS  ~ LLAMADAS_IN_TOTAL_PERIODOS, data = resultado_final)
+residuos <- residuals(modelo)
+valores_atipicos <- boxplot.stats(residuos)$out
+DF_LLAMADAS<- resultado_final[!(residuos %in% valores_atipicos), ]
+nuevo_modelo <- lm(LLAMADAS_OUT_TOTAL_PERIODOS  ~ LLAMADAS_IN_TOTAL_PERIODOS, data = DF_LLAMADAS)
+
+ggplot(DF_LLAMADAS, aes(x = DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, y = DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS)) +
+  geom_point(shape = 16, color = "lightgreen") +
+  geom_smooth(method = "lm", se = FALSE, color = "green") +
+  labs(x = "Cantidad de llamadas entrantes en total de 9 meses ", y = "Cantidad de llamadas salientes en total de 9 meses",
+       title = "Cantidad total de llamadas entrantes vs salientes") + 
+  theme_economist()
+```
+**Correlación:**
+
+```{r}
+#DF_LLAMADAS
+cor(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS,use = "complete.obs")
+```
+
+El coeficiente de correlación de 0.8480228 indica una correlación positiva moderada entre la cantidad total de llamadas entrantes y salientes. Esto significa que, en promedio, un aumento en las llamadas entrantes del usuario está asociado con un aumento en el total de llamadas salientes de este,siendo una relación considerablemente fuerte.
+
+**Ecuación de regresión lineal:**
+
+```{r}
+lm(LLAMADAS_OUT_TOTAL_PERIODOS  ~LLAMADAS_IN_TOTAL_PERIODOS, data = DF_LLAMADAS)
+```
+
+$$ y = 0.9681x + 127.7461 $$
 
 ## **OBJETIVO 3**
 
