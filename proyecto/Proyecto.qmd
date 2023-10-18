@@ -511,6 +511,11 @@ ggplot(DF_LLAMADAS, aes(x = DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, y = DF_LLAMA
        title = "Cantidad total de llamadas entrantes vs salientes") + 
   theme_economist()
 ```
+**Covarianza:**
+```{r}
+cov(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS,use = "complete.obs")
+```
+
 **Correlación:**
 
 ```{r}
