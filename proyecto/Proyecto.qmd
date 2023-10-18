@@ -62,7 +62,7 @@ Las conclusiones de estos objetivos nos permitirán tomar decisiones que puedan 
 
 1.  Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
 2.  Analizar la duración y la cantidad de llamadas entrantes y salientes a un usuario.
-3.  Analizar los días de llamadas entrantes y salientes a lo largo de la semana y por periodo.
+3.  Analizar la duración de las llamadas durante periodos específicos de la semana y cómo se relacionan las variables involucradas.
 
 ## **Planificación**
 
@@ -215,7 +215,9 @@ El porcentaje de datos nulos en la tabla es `r round(sum(is.na(DF))/(nrow(DF)*nc
 
 # [**Análisis Descriptivo**]{style="color:#1FB0DB"}
 
-## **OBJETIVO 1:** Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
+## [**OBJETIVO 1:**]{style="color:#1F2CDB"}
+
+Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
 
 ### **Motivación y desarrollo**
 
@@ -413,7 +415,9 @@ legend("topright", c("APPLE", "HUAWEI", "LG", "MOTOROLA", "OTRAS", "SAMSUNG"), c
 
 Se registraron un total de 403 `MARCAS` diferentes de celulares, de las cuales únicamente 5 fueron las elegidas por un porcentaje considerable de usuarios. En ese sentido, se utilizó un gráfico circular para representar las 5 `MARCAS` y las demás agrupadas en base a sus `hi%` (cantidad de usuarios que usa cierta marca de celular respecto al total de usuarios expresada en forma porcentual) y al promedio de las `hi%` de cada una de las marcas reunidas en la categoría *OTRAS*. A partir de ello, se puede concluir que *SAMSUNG* y *HUAWEI* son las marcas más utilizadas.
 
-## **OBJETIVO 2:** Analizar la duración y la cantidad de llamadas entrantes y salientes de un usuario.
+## [**OBJETIVO 2:**]{style="color:#1F2CDB"}
+
+Analizar la cantidad de llamadas entrantes y salientes de un usuario.
 
 ### **Motivación y desarrollo**
 
@@ -456,19 +460,39 @@ cov(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIO
 cor(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS,use = "complete.obs")
 ```
 
-El coeficiente de correlación de 0.8480228 indica una correlación positiva moderada entre la cantidad total de llamadas entrantes y salientes. Esto significa que, en promedio, un aumento en las llamadas entrantes del usuario está asociado con un aumento en el total de llamadas salientes de este, siendo una relación considerablemente fuerte.
+El coeficiente de correlación de 84% indica una correlación positiva fuerte entre la cantidad total de llamadas entrantes y salientes. Esto significa que, en promedio, un aumento en las llamadas entrantes del usuario está asociado con un aumento en el total de llamadas salientes de este, siendo una relación considerablemente fuerte.
 
 **Ecuación de regresión lineal:**
 
 ```{r echo=FALSE}
-lm(LLAMADAS_OUT_TOTAL_PERIODOS  ~LLAMADAS_IN_TOTAL_PERIODOS, data = DF_LLAMADAS)
+lm(LLAMADAS_OUT_TOTAL_PERIODOS ~ LLAMADAS_IN_TOTAL_PERIODOS, data = DF_LLAMADAS)
 ```
 
 $$ y = 0.9681x + 127.7461 $$
 
-## **OBJETIVO 3**
+```{r, results='hold'}
+summary(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS/9)
+summary(DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS/9)
+sd(DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS/9, na.rm = T) / mean(DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS/9, na.rm = T)
+sd(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS/9, na.rm = T) / mean(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS/9, na.rm = T)
+```
 
-Análisis univariado de variable numérica discreta:
+Se dividió entre 9 ya que tenemos un total de 9 periodos para que las llamadas totales den una cifra significativa. Ya que vemos que el coeficiente de variación es mayor a 60%, podemos decir que los datos están dispersos.
+
+Ahora usaremos la mediana para describir la muestra.
+
+De media te llaman 40 veces en el mes y llamas 52 veces en el mes.
+
+## [**OBJETIVO 3:**]{style="color:#1F2CDB"}
+
+Analizar la duración de las llamadas durante periodos específicos de la semana y cómo se relacionan las variables relacionadas a esto.
+
+### **Motivación y desarrollo**
+
+Analizar cómo es que las personas utilizan el servicio de llamadas permite un mejor entendimiento del cliente y eso nos puede generar ganancias si encontramos las métricas adecuadas. Con este fin, analizaremos las llamadas entrantes y salientes por semana. Además veremos como es que nuestra muestra se comporta analizando la variable `PERIODO`.
+
+
+**Análisis univariado de variable numérica discreta**
 
 ```{r}
 DF %>%
@@ -649,9 +673,9 @@ ggplot(correlation_data, aes(Variable1, Variable2, fill = Correlation)) +
 ```
 
 
-De los 2 gráficos anteriores, podemos decir que en general, las llamadas que tu haces duran más que las llamadas que recibes.
+De los gráficos **6** y **8** anteriores, podemos decir que en general, las llamadas que tu haces duran más que las llamadas que recibes.
 
-### **Gráfico 8**
+### **Gráfico 10**
 
 Análisis de una variable categórica ordinal
 
@@ -677,6 +701,24 @@ median(DF$PERIODO)
 
 Podemos ver que la moda se encuentra en el mes de diciembre de 2018 con un total de `r table(DF$PERIODO)[which.max(table(DF$PERIODO))]` observaciones. Además la media esta en el mes de enero del 2019. Esto podría indicar que hubo un mayor consumo en esos meses, probablemente debido a navidad y año nuevo.
 
+
+# **Conclusiones**
+
+A lo largo de este estudio hemos analizado diferentes tipos de variables relacionadas con el comportamiento de un usuario, encontramos información relevante.
+
++ La mayoría de usuarios no usan internet.
++ Si usas internet, consumes 7GB al mes.
++ Llamas más de lo que te llaman.
++ Probablemente seas Android.
++ Probablemente usas Samsung.
++ Llamas y te llaman en una proporción similar.
++ Tus llamadas duran menos de dos minutos.
++ Llamas y te llaman más durante la semana.
+
+Aunque esta información no se aplica para todas las personas, este sería el perfil del cliente más común para esta empresa de telefonía, sabiendo esto. Podemos decidir cosas como, que equipos vender, o cuándo hacer promociones.
+
+Gracias.
+
 ```{=html}
 <script>
 function toggleContent() {
@@ -691,3 +733,7 @@ function toggleContent() {
 ```
 # [**Bibliografía**]{style="color:#1FB0DB"}
 
++ https://www.atlantico.vc "Latin America Digital Transformation Report 2023"
++ https://m.inei.gob.pe/prensa/noticias/el-668-de-la-poblacion-de-6-y-mas-anos-de-edad-accedio-a-internet-de-enero-a-marzo-del-presente-ano-12954/ "Uso de teléfonos móviles Perú"
++ https://kenstechtips.com/index.php/download-speeds-2g-3g-and-4g-actual-meaning "Velocidad de descarga con redes 2g, 3g y 4g"
++ https://kenstechtips.com/index.php/data-plans/1gb-data "1GB of Data: How Much Is It & How Long Does It Last? Mobile Data Limits"
