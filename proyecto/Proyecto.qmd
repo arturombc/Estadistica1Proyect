@@ -84,6 +84,9 @@ if(!require(ggmosaic)){install.packages("ggmosaic");library(ggmosaic)}
 ```{r, setup, message=FALSE}
 knitr::opts_chunk$set(
   #comment = '', fig.width = 14, fig.height = 9
+  warning = FALSE,
+  message = FALSE,
+  error = FALSE
 )
 ```
 
@@ -457,7 +460,7 @@ El coeficiente de correlación de 0.8480228 indica una correlación positiva mod
 
 **Ecuación de regresión lineal:**
 
-```{r}
+```{r echo=FALSE}
 lm(LLAMADAS_OUT_TOTAL_PERIODOS  ~LLAMADAS_IN_TOTAL_PERIODOS, data = DF_LLAMADAS)
 ```
 
@@ -468,7 +471,7 @@ $$ y = 0.9681x + 127.7461 $$
 Análisis univariado de variable numérica discreta:
 
 ```{r}
-Descriptores_Dias <- DF %>%
+DF %>%
    group_by(PERIODO) %>%
    summarise(
       Min = min(DIAS_LLAMADAS_IN_TOT, na.rm = TRUE),
@@ -479,20 +482,18 @@ Descriptores_Dias <- DF %>%
       Max = max(DIAS_LLAMADAS_IN_TOT, na.rm = TRUE),
       Sd = sd(DIAS_LLAMADAS_IN_TOT, na.rm = TRUE),
       IQR = IQR(DIAS_LLAMADAS_IN_TOT, na.rm=TRUE),
-      `Coef. Variation` = (sd(DIAS_LLAMADAS_IN_TOT, na.rm = TRUE) / Mean)
-     )
+      `CV` = (sd(DIAS_LLAMADAS_IN_TOT, na.rm = TRUE) / Mean)
+     ) %>% arrange(desc(PERIODO)) -> Descriptores_Dias
 Descriptores_Dias
 ```
 
 Los datos estadísticos proporcionados se centran en la variable `DIAS_LLAMADAS_IN_TOT` que representa la cantidad de días en que se recibieron llamadas a lo largo de varios períodos. La información revela una falta de datos o valores inusuales en los tres primeros meses de 2018, lo que podría indicar problemas en la recopilación de datos durante ese tiempo.
 
+A partir de diciembre de 2018 y hasta mayo de 2019, se observa una relativa estabilidad en la cantidad de días de llamadas, con una mediana constante de 29 días y una mínima variación en los cuartiles. La media cercana a la mediana sugiere una distribución que se asemeja a una normal.
 
-A partir de diciembre de 2018 y hasta mayo de 2019, se observa una relativa estabilidad en la cantidad de días de llamadas, con una mediana constante de 29 días y una mínima variación en los cuartiles. La media cercana a la mediana sugiere una distribución que se asemeja a una normal, y la baja desviación estándar y coeficiente de variación indican que la dispersión en los datos es limitada en comparación con la media.
+A pesar de las fluctuaciones en los valores máximos y mínimos, el rango intercuartil de 6 días señala que la mayor parte de los períodos tuvo una cantidad de días de llamadas muy similar, lo que respalda la idea de estabilidad. La baja desviación estándar y el coeficiente de variación menor a un 30% confirman una dispersión baja en comparación con la media, lo que indica que los datos están simétricamente distribuidos.
 
-A pesar de las fluctuaciones en los valores máximos y mínimos, el rango intercuartil de 6 días señala que la mayor parte de los períodos tuvo una cantidad de días de llamadas muy similar, lo que respalda la idea de estabilidad. La baja desviación estándar y el coeficiente de variación cercano a cero confirman una dispersión limitada en comparación con la media, lo que indica que los datos están relativamente concentrados alrededor de la media.
-
-No obstante, es fundamental recordar que estos patrones de estabilidad pueden ser influenciados por factores externos no reflejados en los datos estadísticos. Para una interpretación completa, es esencial considerar el propósito de las llamadas y el contexto detrás de la falta de datos en los primeros tres meses de 2018, que podría estar relacionada con problemas de registro o cambios en la recopilación de datos en ese período.
-
+De este análisis podemos decir que las personas en promedio hacen llamadas 26 días del mes.
 
 ```{r}
 Descriptores_Datos <- DF %>%
@@ -513,18 +514,16 @@ Descriptores_Datos
 
 En general, se observa un patrón de aumento constante en el consumo de datos móviles durante este período. Tanto la mediana como la media exhiben un crecimiento gradual en el consumo, pasando de 5845.112 MB en septiembre de 2018 a 7288.248 MB en mayo de 2019, lo que sugiere que los usuarios están utilizando cada vez más datos móviles. A pesar de esta tendencia alcista, el coeficiente de variación se mantiene cerca de 1, lo que indica una variabilidad relativamente constante en relación con la media. Esta consistencia en la variabilidad podría reflejar cierta previsibilidad en los patrones de consumo de datos.
 
-Sin embargo, para una interpretación completa, es esencial considerar el contexto detrás de este aumento en el consumo de datos. Diversos factores podrían influir en esta tendencia, como el lanzamiento de nuevas aplicaciones, cambios en los planes de datos, eventos estacionales o modificaciones en el comportamiento de los usuarios. Comprender la razón detrás de este incremento y cualquier evento o circunstancia que pueda explicarlo es crucial para una interpretación más precisa. En resumen, los datos sugieren un incremento constante en el consumo de datos móviles, pero para una comprensión completa, es esencial analizar el contexto y los factores adicionales que pueden estar contribuyendo a este aumento en el uso de datos móviles.
+Además podemos ver que en el mes de enero es donde más se consumen datos lo cual puede decir que en las vacaciones las personas tienden a consumir más datos móviles probablemente por la cantidad de actividades fuera de casa que realizan.
 
 ### **Grafico 6**
 
 Comparación del tiempo llamadas entrantes de días laborables y no laborales:
 
 ```{r}
-# Calculamos el promedio del tiempo total de llamadas en días laborables y no laborables
 promedio_tiempo_week <- mean(DF$TIEMPO_LLAMADAS_IN_SEM, na.rm = TRUE)
 promedio_tiempo_weekd <- mean(DF$TIEMPO_LLAMADAS_IN_FINDE, na.rm = TRUE)
 
-# Creamos un gráfico de barras para comparar el tiempo total de llamadas en días laborables y no laborables
 bar_heights <- c(promedio_tiempo_week, promedio_tiempo_weekd)
 bar_names <- c("Días Laborables", "Días No Laborables")
 bar_colors <- c("lightblue", "lightcoral")
@@ -533,27 +532,24 @@ barplot(bar_heights,
         names.arg = bar_names,
         main = "Promedio del duración Total de Llamadas recibidas",
         xlab= "Tipo de día",
-        ylab = "Duración",
+        ylab = "Duración en minutos",
         col = bar_colors)
 
-# Agregamos etiquetas de porcentaje a las barras
 porcentajes <- c(round((promedio_tiempo_week / sum(bar_heights)) * 100, 2),
                  round((promedio_tiempo_weekd / sum(bar_heights)) * 100, 2))
 
 
-# Imprimimos el promedio del tiempo total de llamadas en días laborables y no laborables
 cat("Promedio del Tiempo Total de Llamadas realizadas en Días Laborables:", promedio_tiempo_week, "\n")
 cat("Promedio del Tiempo Total de Llamadas realizadas en Días No Laborables:", promedio_tiempo_weekd, "\n")
 
-# Creamos una leyenda con porcentajes
-legend(x = 1.4,  # Ajustar la posición x
-       y = max(bar_heights) - 2,  # Ajustar la posición y
+legend(x = 1.4,
+       y = max(bar_heights) - 2,
        legend = paste0(bar_names, "   ", porcentajes, "%"), 
        fill = bar_colors,
        cex = 1)
 ```
 
-Podemos observar que la duración promedio de las llamadas recibidas es mayor de Lunes a Viernes que de Sábado a Domingo. Esto puede deberse a que son días laborables, en los que los usuarios hacen mayor uso de sus dispositivos móviles para realizar y recibir llamadas con fines personales o de trabajo.
+Podemos observar que la duración promedio de las llamadas recibidas es mayor de Lunes a Viernes que de Sábado a Domingo. Esto puede deberse a que las llamadas por trabajo podrían tender a durar más que las llamadas, por ejemplo, a familiares ya que estas ocurren en los días no laborales.
 
 Podemos intentar encontrar la correlación entres estas 2 variables.
 
