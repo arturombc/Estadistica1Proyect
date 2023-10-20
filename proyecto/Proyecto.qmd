@@ -167,7 +167,7 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 | VARIABLE                   | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|------------|------------|------------|-------------------------------------|
+|----------------------------|-----------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
 | ID                         | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO                    | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | CHIP                       | Categórica Ordinal    | 2G, 3G, 4G                    | Tecnología del chip                                                                                                                 |
@@ -428,6 +428,7 @@ La duración y la cantidad de llamadas entrantes es una forma de conocer las nec
 Gráfico de variable numérica vs numérica
 
 Cantidad total de llamadas entrantes y salientes por usuario(Durante los 9 periodos en total)
+
 ```{r}
 DF %>%
   group_by(ID) %>%
@@ -448,7 +449,9 @@ ggplot(DF_LLAMADAS, aes(x = DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, y = DF_LLAMA
        title = "Cantidad total de llamadas entrantes vs salientes") + 
   theme_economist()
 ```
+
 **Covarianza:**
+
 ```{r}
 cov(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS,use = "complete.obs")
 ```
@@ -491,7 +494,6 @@ Analizar la duración de las llamadas durante periodos específicos de la semana
 
 Analizar cómo es que las personas utilizan el servicio de llamadas permite un mejor entendimiento del cliente y eso nos puede generar ganancias si encontramos las métricas adecuadas. Con este fin, analizaremos las llamadas entrantes y salientes por semana. Además veremos como es que nuestra muestra se comporta analizando la variable `PERIODO`.
 
-
 **Análisis univariado de variable numérica discreta**
 
 ```{r}
@@ -511,11 +513,7 @@ DF %>%
 Descriptores_Dias
 ```
 
-
-
 La información revela una falta de datos o valores inusuales en los tres primeros meses de 2018, lo que podría indicar problemas en la recopilación de datos durante ese tiempo.
-
-
 
 Los datos estadísticos proporcionados se centran en la variable `DIAS_LLAMADAS_IN_TOT` que representa la cantidad de días en que se recibieron llamadas a lo largo de varios períodos. La información revela una falta de datos o valores inusuales en los tres primeros meses de 2018, lo que podría indicar problemas en la recopilación de datos durante ese tiempo.
 
@@ -548,11 +546,9 @@ Además podemos ver que en el mes de enero es donde más se consumen datos lo cu
 
 ### **Grafico 6**
 
-
 ### **Grafico 7**
 
 =======
-
 
 Comparación del tiempo llamadas entrantes de días laborables y no laborales:
 
@@ -562,6 +558,7 @@ summary(DF$TIEMPO_LLAMADAS_IN_SEM)
 sd(DF$TIEMPO_LLAMADAS_IN_FINDE, na.rm = T) / mean(DF$TIEMPO_LLAMADAS_IN_FINDE, na.rm = T)
 sd(DF$TIEMPO_LLAMADAS_IN_SEM, na.rm = T) / mean(DF$TIEMPO_LLAMADAS_IN_SEM, na.rm = T)
 ```
+
 Ya que vemos que la desviación estándar es alta para ambas variables, usaremos la mediana como medida de centralidad.
 
 ```{r}
@@ -618,7 +615,6 @@ ggplot(correlation_data, aes(Variable1, Variable2, fill = Correlation)) +
 Podemos decir de esta matriz de correlación indica que tenemos un valor alto que relaciona a las variables `TIEMPO_LLAMADAS_IN_FINDE` y `TIEMPO_LLAMADAS_IN_SEM` de manera directa; es decir, a más tiempo de llamadas en el fin de semana, más tiempo de llamadas durante la semana.
 
 Además se ve que la correlación entre el `TIEMPO_LLAMADAS_IN_TOT` es mayor en las llamadas dentro de la semana, esto confirma la hipótesis de que las llamdas en la semana duran más tiempo.
-
 
 ### **Grafico 8**
 
@@ -684,7 +680,6 @@ ggplot(correlation_data, aes(Variable1, Variable2, fill = Correlation)) +
   theme_minimal()
 ```
 
-
 De los gráficos **6** y **8** anteriores, podemos decir que en general, las llamadas que tu haces duran más que las llamadas que recibes.
 
 ### **Gráfico 10**
@@ -713,19 +708,18 @@ median(DF$PERIODO)
 
 Podemos ver que la moda se encuentra en el mes de diciembre de 2018 con un total de `r table(DF$PERIODO)[which.max(table(DF$PERIODO))]` observaciones. Además la media esta en el mes de enero del 2019. Esto podría indicar que hubo un mayor consumo en esos meses, probablemente debido a navidad y año nuevo.
 
-
 # **Conclusiones**
 
 A lo largo de este estudio hemos analizado diferentes tipos de variables relacionadas con el comportamiento de un usuario, encontramos información relevante.
 
-+ La mayoría de usuarios no usan internet.
-+ Si usas internet, consumes 7GB al mes.
-+ Llamas más de lo que te llaman.
-+ Probablemente seas Android.
-+ Probablemente usas Samsung.
-+ Llamas y te llaman en una proporción similar.
-+ Tus llamadas duran menos de dos minutos.
-+ Llamas y te llaman más durante la semana.
+-   La mayoría de usuarios no usan internet.
+-   Si usas internet, consumes 7GB al mes.
+-   Llamas más de lo que te llaman.
+-   Probablemente seas Android.
+-   Probablemente usas Samsung.
+-   Llamas y te llaman en una proporción similar.
+-   Tus llamadas duran menos de dos minutos.
+-   Llamas y te llaman más durante la semana.
 
 Aunque esta información no se aplica para todas las personas, este sería el perfil del cliente más común para esta empresa de telefonía, sabiendo esto. Podemos decidir cosas como, que equipos vender, o cuándo hacer promociones.
 
@@ -745,7 +739,7 @@ function toggleContent() {
 ```
 # [**Bibliografía**]{style="color:#1FB0DB"}
 
-+ https://www.atlantico.vc "Latin America Digital Transformation Report 2023"
-+ https://m.inei.gob.pe/prensa/noticias/el-668-de-la-poblacion-de-6-y-mas-anos-de-edad-accedio-a-internet-de-enero-a-marzo-del-presente-ano-12954/ "Uso de teléfonos móviles Perú"
-+ https://kenstechtips.com/index.php/download-speeds-2g-3g-and-4g-actual-meaning "Velocidad de descarga con redes 2g, 3g y 4g"
-+ https://kenstechtips.com/index.php/data-plans/1gb-data "1GB of Data: How Much Is It & How Long Does It Last? Mobile Data Limits"
+-   https://www.atlantico.vc "Latin America Digital Transformation Report 2023"
+-   https://m.inei.gob.pe/prensa/noticias/el-668-de-la-poblacion-de-6-y-mas-anos-de-edad-accedio-a-internet-de-enero-a-marzo-del-presente-ano-12954/ "Uso de teléfonos móviles Perú"
+-   https://kenstechtips.com/index.php/download-speeds-2g-3g-and-4g-actual-meaning "Velocidad de descarga con redes 2g, 3g y 4g"
+-   https://kenstechtips.com/index.php/data-plans/1gb-data "1GB of Data: How Much Is It & How Long Does It Last? Mobile Data Limits"
