@@ -167,7 +167,7 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 | VARIABLE                   | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|----------------------------|-----------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+|------------|------------|------------|-------------------------------------|
 | ID                         | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO                    | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | CHIP                       | Categórica Ordinal    | 2G, 3G, 4G                    | Tecnología del chip                                                                                                                 |
@@ -421,13 +421,11 @@ Analizar la cantidad de llamadas entrantes y salientes de un usuario.
 
 ### **Motivación y desarrollo**
 
-La duración y la cantidad de llamadas entrantes es una forma de conocer las necesidades, preferencias y hábitos de consumo de los usuarios. Por ejemplo, si un usuario recibe muchas llamadas cortas, puede indicar que tiene problemas de conexión, o que prefiere comunicarse por otros medios. Por el contrario, si recibe pocas llamadas largas, puede indicar que tiene una buena cobertura y un buen servicio, o que le gusta hablar mucho por teléfono.
+Analizar la cantidad de llamadas entrantes y salientes de un usuario puede, ya que brinda información valiosa para tomar decisiones, gestionar recursos, optimizar costos y garantizar la seguridad. Sin embargo, es importante hacerlo con respeto a la privacidad y cumplir con las regulaciones aplicables en cuanto a la recopilación y el almacenamiento de datos de llamadas.
 
 ### **Gráfico 5**
 
-Gráfico de variable numérica vs numérica
-
-Cantidad total de llamadas entrantes y salientes por usuario(Durante los 9 periodos en total)
+Gráfico de variable numérica discreta vs numérica discreta
 
 ```{r}
 DF %>%
@@ -444,7 +442,7 @@ nuevo_modelo <- lm(LLAMADAS_OUT_TOTAL_PERIODOS  ~ LLAMADAS_IN_TOTAL_PERIODOS, da
 
 ggplot(DF_LLAMADAS, aes(x = DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, y = DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS)) +
   geom_point(shape = 16, color = "lightgreen") +
-  geom_smooth(method = "lm", se = FALSE, color = "green") +
+  geom_smooth(method = "lm", se = FALSE, color = "darkgreen") +
   labs(x = "Cantidad de llamadas entrantes en total de 9 meses ", y = "Cantidad de llamadas salientes en total de 9 meses",
        title = "Cantidad total de llamadas entrantes vs salientes") + 
   theme_economist()
@@ -453,14 +451,14 @@ ggplot(DF_LLAMADAS, aes(x = DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, y = DF_LLAMA
 **Covarianza:**
 
 ```{r}
-cov(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS,use = "complete.obs")
+cov(DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS, DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, use = "complete.obs")
 ```
 
 **Correlación:**
 
 ```{r}
 #DF_LLAMADAS
-cor(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS,use = "complete.obs")
+cor(DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS, DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, use = "complete.obs")
 ```
 
 El coeficiente de correlación de 84% indica una correlación positiva fuerte entre la cantidad total de llamadas entrantes y salientes. Esto significa que, en promedio, un aumento en las llamadas entrantes del usuario está asociado con un aumento en el total de llamadas salientes de este, siendo una relación considerablemente fuerte.
@@ -468,10 +466,13 @@ El coeficiente de correlación de 84% indica una correlación positiva fuerte en
 **Ecuación de regresión lineal:**
 
 ```{r echo=FALSE}
-lm(LLAMADAS_OUT_TOTAL_PERIODOS ~ LLAMADAS_IN_TOTAL_PERIODOS, data = DF_LLAMADAS)
+lm(LLAMADAS_OUT_TOTAL_PERIODOS  ~ LLAMADAS_IN_TOTAL_PERIODOS, data = DF_LLAMADAS)
+
 ```
 
 $$ y = 0.9681x + 127.7461 $$
+
+**Descriptores de variable numerica discreta**
 
 ```{r, results='hold'}
 summary(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS/9)
@@ -545,10 +546,6 @@ En general, se observa un patrón de aumento constante en el consumo de datos m�
 Además podemos ver que en el mes de enero es donde más se consumen datos lo cual puede decir que en las vacaciones las personas tienden a consumir más datos móviles probablemente por la cantidad de actividades fuera de casa que realizan.
 
 ### **Grafico 6**
-
-### **Grafico 7**
-
-=======
 
 Comparación del tiempo llamadas entrantes de días laborables y no laborales:
 
