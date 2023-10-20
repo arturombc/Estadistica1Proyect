@@ -524,6 +524,8 @@ A pesar de las fluctuaciones en los valores máximos y mínimos, el rango interc
 
 De este análisis podemos decir que las personas en promedio hacen llamadas 26 días del mes.
 
+**Análisis univariado de variable numérica continua**
+
 ```{r}
 Descriptores_Datos <- DF %>%
    group_by(PERIODO) %>%
