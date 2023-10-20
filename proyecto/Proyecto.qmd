@@ -508,11 +508,10 @@ Descriptores_Dias <- DF %>%
 Descriptores_Dias
 ```
 
-<<<<<<< HEAD
+
 La información revela una falta de datos o valores inusuales en los tres primeros meses de 2018, lo que podría indicar problemas en la recopilación de datos durante ese tiempo.
-=======
+
 Los datos estadísticos proporcionados se centran en la variable `DIAS_LLAMADAS_IN_TOT` que representa la cantidad de días en que se recibieron llamadas a lo largo de varios períodos. La información revela una falta de datos o valores inusuales en los tres primeros meses de 2018, lo que podría indicar problemas en la recopilación de datos durante ese tiempo.
->>>>>>> ccd11319933fa2793ec699d7f1ec732bb560807c
 
 A partir de diciembre de 2018 y hasta mayo de 2019, se observa una relativa estabilidad en la cantidad de días de llamadas, con una mediana constante de 29 días y una mínima variación en los cuartiles. La media cercana a la mediana sugiere una distribución que se asemeja a una normal, y la baja desviación estándar y coeficiente de variación indican que la dispersión en los datos es limitada en comparación con la media.
 
@@ -543,9 +542,9 @@ En general, se observa un patrón de aumento constante en el consumo de datos m�
 Sin embargo, para una interpretación completa, es esencial considerar el contexto detrás de este aumento en el consumo de datos. Diversos factores podrían influir en esta tendencia, como el lanzamiento de nuevas aplicaciones, cambios en los planes de datos, eventos estacionales o modificaciones en el comportamiento de los usuarios. Comprender la razón detrás de este incremento y cualquier evento o circunstancia que pueda explicarlo es crucial para una interpretación más precisa. En resumen, los datos sugieren un incremento constante en el consumo de datos móviles, pero para una comprensión completa, es esencial analizar el contexto y los factores adicionales que pueden estar contribuyendo a este aumento en el uso de datos móviles.
 
 ### **Grafico 6**
-=======
+
 ### **Grafico 7**
->>>>>>> ccd11319933fa2793ec699d7f1ec732bb560807c
+
 
 Comparación del tiempo llamadas entrantes de días laborables y no laborales:
 
