@@ -167,7 +167,7 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 | VARIABLE                   | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|----------------------------|-----------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+|------------|------------|------------|-------------------------------------|
 | ID                         | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO                    | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | CHIP                       | Categórica Ordinal    | 2G, 3G, 4G                    | Tecnología del chip                                                                                                                 |
@@ -523,6 +523,8 @@ A pesar de las fluctuaciones en los valores máximos y mínimos, el rango interc
 
 De este análisis podemos decir que las personas en promedio hacen llamadas 26 días del mes.
 
+**Análisis univariado de variable numérica continua**
+
 ```{r}
 Descriptores_Datos <- DF %>%
    group_by(PERIODO) %>%
@@ -545,10 +547,6 @@ En general, se observa un patrón de aumento constante en el consumo de datos m�
 Además podemos ver que en el mes de enero es donde más se consumen datos lo cual puede decir que en las vacaciones las personas tienden a consumir más datos móviles probablemente por la cantidad de actividades fuera de casa que realizan.
 
 ### **Grafico 6**
-
-### **Grafico 7**
-
-=======
 
 Comparación del tiempo llamadas entrantes de días laborables y no laborales:
 
