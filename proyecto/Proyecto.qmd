@@ -167,7 +167,7 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 | VARIABLE                   | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|------------|------------|------------|-------------------------------------|
+|----------------------------|-----------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
 | ID                         | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO                    | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | CHIP                       | Categórica Ordinal    | 2G, 3G, 4G                    | Tecnología del chip                                                                                                                 |
@@ -421,11 +421,11 @@ Analizar la cantidad de llamadas entrantes y salientes de un usuario.
 
 ### **Motivación y desarrollo**
 
-Analizar la cantidad de llamadas entrantes y salientes de un usuario puede, ya que brinda información valiosa para tomar decisiones, gestionar recursos, optimizar costos y garantizar la seguridad. Sin embargo, es importante hacerlo con respeto a la privacidad y cumplir con las regulaciones aplicables en cuanto a la recopilación y el almacenamiento de datos de llamadas.
+Analizar la cantidad de llamadas entrantes y salientes de un usuario puede ser muy útil, ya que brinda información valiosa para tomar decisiones, gestionar recursos, optimizar costos y garantizar la seguridad. Sin embargo, es importante hacerlo con respeto a la privacidad y cumplir con las regulaciones aplicables en cuanto a la recopilación y el almacenamiento de datos de llamadas.
 
 ### **Gráfico 5**
 
-Gráfico de variable numérica discreta vs numérica discreta
+Gráfico de variable numérica vs numérica
 
 ```{r}
 DF %>%
@@ -448,13 +448,15 @@ ggplot(DF_LLAMADAS, aes(x = DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, y = DF_LLAMA
   theme_economist()
 ```
 
-**Covarianza:**
+Covarianza:
 
 ```{r}
 cov(DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS, DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, use = "complete.obs")
 ```
 
-**Correlación:**
+En este caso, un valor positivo como 110178.5 sugiere que hay una relación positiva entre las variables **`LLAMADAS_OUT_TOTAL_PERIODOS`** y **`LLAMADAS_IN_TOTAL_PERIODOS`**. Esto significa que, en general, cuando el valor de una variable aumenta, el valor de la otra también tiende a aumentar, y viceversa.
+
+Correlación:
 
 ```{r}
 #DF_LLAMADAS
@@ -471,6 +473,8 @@ lm(LLAMADAS_OUT_TOTAL_PERIODOS  ~ LLAMADAS_IN_TOTAL_PERIODOS, data = DF_LLAMADAS
 ```
 
 $$ y = 0.9681x + 127.7461 $$
+
+En esta regresion lineal y representa la variable **`LLAMADAS_OUT_TOTAL_PERIODOS`** y x representa **`LLAMADAS_IN_TOTAL_PERIODOS`** . Se observa que el valor del coeficiente de la pendiente indica que por cada llamada entrante, la variable de cantidad de llamadas salientes aumente en un 0.9681 unidades. Finalmente, el valor de 127.7461 representa la cantidad de llamadas salientes cuando la cantidad de llamadas entrantes es 0, lo cual puede deberse a algunos valores iniciales significativos.
 
 **Descriptores de variable numerica discreta**
 
@@ -530,22 +534,20 @@ De este análisis podemos decir que las personas en promedio hacen llamadas 26 d
 Descriptores_Datos <- DF %>%
    group_by(PERIODO) %>%
    summarise(
-      Min = min(DATOS_TOTAL, na.rm = TRUE),
-      `1st Qu.` = quantile(DATOS_TOTAL, 0.25, na.rm = TRUE),
-      Median = median(DATOS_TOTAL, na.rm = TRUE),
-      Mean = mean(DATOS_TOTAL, na.rm = TRUE),
-      `3rd Qu.` = quantile(DATOS_TOTAL, 0.75, na.rm = TRUE),
-      Max = max(DATOS_TOTAL, na.rm = TRUE),
-      Sd = sd(DATOS_TOTAL, na.rm = TRUE),
-      IQR = IQR(DATOS_TOTAL, na.rm=TRUE),
-      `Coef. Variation` = (sd(DATOS_TOTAL, na.rm = TRUE) / Mean)
+      Min = min(TIEMPO_LLAMADAS_OUT_TOT, na.rm = TRUE),
+      `1st Qu.` = quantile(TIEMPO_LLAMADAS_OUT_TOT, 0.25, na.rm = TRUE),
+      Median = median(TIEMPO_LLAMADAS_OUT_TOT, na.rm = TRUE),
+      Mean = mean(TIEMPO_LLAMADAS_OUT_TOT, na.rm = TRUE),
+      `3rd Qu.` = quantile(TIEMPO_LLAMADAS_OUT_TOT, 0.75, na.rm = TRUE),
+      Max = max(TIEMPO_LLAMADAS_OUT_TOT, na.rm = TRUE),
+      Sd = sd(TIEMPO_LLAMADAS_OUT_TOT, na.rm = TRUE),
+      IQR = IQR(TIEMPO_LLAMADAS_OUT_TOT, na.rm=TRUE),
+      `Coef. Variation` = (sd(TIEMPO_LLAMADAS_OUT_TOT, na.rm = TRUE) / Mean)
      )
 Descriptores_Datos
 ```
 
-En general, se observa un patrón de aumento constante en el consumo de datos móviles durante este período. Tanto la mediana como la media exhiben un crecimiento gradual en el consumo, pasando de 5845.112 MB en septiembre de 2018 a 7288.248 MB en mayo de 2019, lo que sugiere que los usuarios están utilizando cada vez más datos móviles. A pesar de esta tendencia alcista, el coeficiente de variación se mantiene cerca de 1, lo que indica una variabilidad relativamente constante en relación con la media. Esta consistencia en la variabilidad podría reflejar cierta previsibilidad en los patrones de consumo de datos.
-
-Además podemos ver que en el mes de enero es donde más se consumen datos lo cual puede decir que en las vacaciones las personas tienden a consumir más datos móviles probablemente por la cantidad de actividades fuera de casa que realizan.
+A lo largo de varios meses, se ha observado un aumento en la duración promedio de las llamadas salientes, con valores máximos significativamente altos en algunos casos. En diciembre de 2018, la duración promedio de las llamadas salientes fue de 546.12 minutos, y enero de 2019 registró una media de 531.40 minutos. Febrero mostró una disminución a 473.63 minutos, seguido de un aumento en marzo (516.67 minutos) y una disminución nuevamente en abril (496.64 minutos). Mayo mostró un aumento a 510.33 minutos. La variabilidad y la presencia de valores extremos sugieren que es importante investigar más a fondo las causas de estos cambios en la duración de las llamadas para tomar decisiones informadas en el contexto de las comunicaciones salientes.
 
 ### **Grafico 6**
 
@@ -683,7 +685,7 @@ De los gráficos **6** y **8** anteriores, podemos decir que en general, las lla
 
 ### **Gráfico 10**
 
-Análisis de una variable categórica ordinal
+Análisis univariado de una variable categórica ordinal
 
 ```{r}
 ggplot(DF, aes(DF$PERIODO)) +
@@ -712,13 +714,13 @@ Podemos ver que la moda se encuentra en el mes de diciembre de 2018 con un total
 A lo largo de este estudio hemos analizado diferentes tipos de variables relacionadas con el comportamiento de un usuario, encontramos información relevante.
 
 -   La mayoría de usuarios no usan internet.
--   Si usas internet, consumes 7GB al mes.
+-   Si usas internet, consumes aproximadamente 7GB al mes.
 -   Llamas más de lo que te llaman.
 -   Probablemente seas Android.
 -   Probablemente usas Samsung.
 -   Llamas y te llaman en una proporción similar.
--   Tus llamadas duran menos de dos minutos.
--   Llamas y te llaman más durante la semana.
+-   Tus llamadas duran menos de dos minutos aproximadamente.
+-   Llamas y recibes mas llamadas durante los dias laborables.
 
 Aunque esta información no se aplica para todas las personas, este sería el perfil del cliente más común para esta empresa de telefonía, sabiendo esto. Podemos decidir cosas como, que equipos vender, o cuándo hacer promociones.
 
