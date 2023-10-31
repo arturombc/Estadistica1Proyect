@@ -16,15 +16,15 @@ format:
     author-title: Autores
 
 author: 
-  - Arturo Barrantes Chuquimia (Líder)
-  - Sheyla Sanchez Arauco 
-  - Andrea Maricielo Pérez Castro 
-  - Alejandro Rojas Alvarez
-  - Luis David Acedo Lopez
+  - E_1rturo E_2arrantes Chuquimia (Líder)
+  - Sheyla Sanchez E_1rauco 
+  - E_1ndrea Maricielo Pérez Castro 
+  - E_1lejandro Rojas E_1lvarez
+  - Luis David E_1cedo Lopez
 editor: visual
 ---
 
-```{r, liberías, message=FALSE}
+```{r, liberías, message=FE_1LSE}
 if(!require(readr)){install.packages("readr");library(readr)}
 if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
 if(!require(ggplot2)){install.packages("ggplot2");library(ggplot2)}
@@ -34,7 +34,6 @@ if(!require(tidyverse)){install.packages("tidyverse");library(tidyverse)}
 if(!require(forcats)){install.packages("forcats");library(forcats)}
 if(!require(ggmosaic)){install.packages("ggmosaic");library(ggmosaic)}
 ```
-
 
 ```{r, carga-DF}
 DF <- read_csv("DataLimpia.csv"
@@ -48,9 +47,205 @@ DF <- read_csv("DataLimpia.csv"
 # Evento 1
 
 ```{r}
-summary(DF$LLAMADAS_IN_FINDE / 30)
-summary(DF$LLAMADAS_IN_SEM / 30)
+summary(DF$LLAMADAS_IN_TOT)
+summary(DF$LLAMADAS_OUT_TOT)
+```
+
+# **Parte 1**
+
+## **Variable 1**
+
+La variable 1 será una forma de referirnos a la variable `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
+
+### **Definición de experimento aleatorio para la variable 1**
+
+Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que lo llamaron durante el mes.
+
+### **Espacio de resultados teórico para la variable 1**
+
+Dado que esta es una variable cuantitativa discreta con valores enteros positivos, el espacio de resultados teóricos para esta variable es:
+
+$$\Omega_1 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 6820\}$$
+
+### **Cálculo de la probabilidad empírica de todos los eventos atómicos de la variable 1**
+
+```{r}
+DF %>%
+  select(ID,LLAMADAS_IN_TOT) %>%
+  group_by(LLAMADAS_IN_TOT) %>%
+  summarise(n = n()) -> E_1
+```
+
+```{r}
+tail(E_1)
+E_1
+sum(E_1$P)
+```
+
+Seleccionar una persona de mi estudio que ha recibido 0 llamadas durante el mes.
+
+E_n el evento de atomico de que lo hayan llamado n veces al mes.
+
+
+
+```{r}
+E_1 <- E_1[-nrow(E_1), ]
+```
+
+```{r}
+tail(E_1)
+```
+
+```{r}
+Tot1 <- sum(E_1$n)
+E_1$P <- E_1$n / Tot1
+```
+
+```{r}
+head(E_1)
+```
+
+```{r}
+E_1
+sum(E_1$P)
 ```
 
 
+En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio.
 
+## **Variable 2**
+
+La variable 2 será una forma de referirnos a la variable `LLAMADAS_OUT_TOT` que es la cantidad de llamadas que un usuario realiza a lo largo de un mes.
+
+### **Definición de experimento aleatorio para la variable LLAMADAS_OUT_TOT**
+
+Definimos un experimento $\{\Omega_2, \mathcal{F}_2, \mathbb{P}_2\}$.
+
+### **Espacio de resultados teórico para LLAMADAS_IN_TOT**
+
+De la misma forma que la anterior variable, esta también es una variable nuḿerica discreta, el espacio de resultados teóricos para esta variable es:
+
+$$\Omega_2 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 8308\}$$
+
+### **Cálculo de la probabilidad empírica de todos los eventos atómicos de la variable 2**
+
+```{r}
+DF %>%
+  select(ID,LLAMADAS_OUT_TOT) %>%
+  group_by(LLAMADAS_OUT_TOT) %>%
+  summarise(n = n()) -> E_2
+```
+
+```{r}
+E_2 <- E_2[-nrow(E_2), ]
+```
+
+```{r}
+tail(E_2)
+```
+
+```{r}
+Tot2 <- sum(E_2$n)
+E_2$P <- E_2$n / Tot2
+```
+
+```{r}
+head(E_2)
+```
+
+En el DataFrame `E_2` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio.
+
+# **Parte 2**
+
+## **Definición de eventos**
+
+Definiremos 2 eventos, $E_1$ y $E_2$.
+
+$E_1$: De $\mathcal{F}_1$, consideramos el evento $E_1$ que consiste en elegir un usuario al azar y que lo hayan llamado menos de 50 veces durante el mes.
+
+$E_2$: De $\mathcal{F}_2$, consideramos el evento $E_2$ que consiste en elegir un usuario al azar y que el usuario haya llamado menos de 50 veces durante el mes.
+
+## **Análisis de independencia**
+
+Podemos calcular $|E_1|$ como la cantidad de usuarios a los que llamaron 0, 1, 2, 3, ...,49 o 50 veces durante el mes.
+
+Similarmente, calcular $|E_2|$ como la cantidad de usuarios que realizaron llamadas 0, 1, 2, 3, ...,49 o 50 veces durante el mes.
+
+Dados los eventos $E_1$ y $E_2$, diremos que son *independientes* si se cumple cualquiera de las siguientes tres igualdades.
+
+1.  $\mathbb{P}(E_1 \cap E_2) = \mathbb{P}(E_1)*\mathbb{P}(E_2)$
+
+2.  $\mathbb{P}(E_1 | E_2) = \mathbb{P}(E_1)$
+
+3.  $\mathbb{P}(E_2 | E_1) = \mathbb{P}(E_2)$
+
+### **Cálculo de probabilidades**
+
+Primero calcularemos las probabilidades de los eventos.
+
+Podemos entonces calcular $\mathbb{P}_{E_1}$ como $\tfrac{|E_1|}{|\Omega_1|}$.
+
+```{r}
+P.E_1 <- sum(E_1$P[E_1$LLAMADAS_IN_TOT %in% 0:50])
+P.E_1
+```
+
+De la misma manera, podemos calcular $\mathbb{P}_{E_2}$ como $\tfrac{|E_2|}{|\Omega_2|}$.
+
+```{r}
+P.E_2 <- sum(E_2$P[E_2$LLAMADAS_OUT_TOT %in% 0:50])
+P.E_2
+```
+
+Ahora que tenemos $\mathbb{P}_{E_1}$ y $\mathbb{P}_{E_2}$. Podemos utilizar las igualdades de arriba para verificar la independencia de los eventos.
+
+### **Cálculo de independencia**
+
+Empezaremos con la igualdad 1.
+
+$$\mathbb{P}(E_1 \cap E_2) = \mathbb{P}(E_1)*\mathbb{P}(E_2)$$
+
+```{r}
+nrow(DF[DF$LLAMADAS_IN_TOT %in% 0:50 & DF$LLAMADAS_OUT_TOT %in% 0:50, ]) / nrow(DF) == P.E_1 * P.E_2
+nrow(DF[DF$LLAMADAS_IN_TOT %in% 0:50 & DF$LLAMADAS_OUT_TOT %in% 0:50, ]) / nrow(DF) 
+P.E_1 * P.E_2
+```
+
+Entonces los eventos no son independientes
+
+Igualdad 2:
+
+$$\mathbb{P}(E_1 | E_2) = \mathbb{P}(E_1)$$
+
+```{r}
+inte <- nrow(DF[DF$LLAMADAS_IN_TOT %in% 0:50 & DF$LLAMADAS_OUT_TOT %in% 0:50, ]) / nrow(DF)
+inte / P.E_2 == P.E_1
+inte / P.E_2
+P.E_1
+```
+
+Igualdad 3:
+
+$$\mathbb{P}(E_2 | E_1) = \mathbb{P}(E_2)$$
+
+```{r}
+inte / P.E_1 == P.E_2
+inte / P.E_1
+P.E_2
+```
+
+Mediante las 3 igualdades pudimos verificar que los eventos son relacionadas.
+
+Esto significa que existe una relación entre que te llamen menos de 50 veces con que llames menos de 50 veces.
+
+### **Verificación extra**
+
+Podemos verificar también usando chi cuadrado.
+
+```{r, warning=FALSE}
+contingency_table <- table(DF$LLAMADAS_IN_TOT, DF$LLAMADAS_OUT_TOT)
+chi_test <- chisq.test(contingency_table)
+chi_test
+```
+
+Ya que vemos que el p-value es menor que un nivel de significancia 0.05 se puede decir que las variables están relacionadas.
