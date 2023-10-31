@@ -1,0 +1,56 @@
+---
+title: <center><span>Minería de Datos en la Industria de Telefonía Móvil<span>:</span> Análisis de clientes peruanos entre septiembre del 2018 y mayo del 2019.</span></center>
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    toc-title: Contenido
+    anchor_sections: TRUE # Mostrar anclaje de la sección al pasar el mouse
+    code_download: TRUE # Permite a los lectores descargar el qmd
+    code_folding: TRUE # Permite a los lectores cambiar a none, hide or show
+    fig_caption: TRUE # Las imagenes se renderizan con caption
+    theme: journal  #superhero cyborg, darkly, journal, vapor. Library "bslib"
+    # runtime: shiny # sirve para que la librería shiny interactiva funcione. library("shiny")
+    number-sections: true
+    embed-resources: true
+    author-title: Autores
+
+author: 
+  - Arturo Barrantes Chuquimia (Líder)
+  - Sheyla Sanchez Arauco 
+  - Andrea Maricielo Pérez Castro 
+  - Alejandro Rojas Alvarez
+  - Luis David Acedo Lopez
+editor: visual
+---
+
+```{r, liberías, message=FALSE}
+if(!require(readr)){install.packages("readr");library(readr)}
+if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
+if(!require(ggplot2)){install.packages("ggplot2");library(ggplot2)}
+if(!require(ggthemes)){install.packages("ggthemes");library(ggthemes)}
+if(!require(ggrepel)){install.packages("ggrepel");library(ggrepel)}
+if(!require(tidyverse)){install.packages("tidyverse");library(tidyverse)}
+if(!require(forcats)){install.packages("forcats");library(forcats)}
+if(!require(ggmosaic)){install.packages("ggmosaic");library(ggmosaic)}
+```
+
+
+```{r, carga-DF}
+DF <- read_csv("DataLimpia.csv"
+               , col_types = cols(.default = col_guess()
+                                  , CHIP=col_factor(levels = c("2G","3G","4G"))
+                                  , PERIODO=col_date(format = "%Y%m")
+                                  )
+               )
+```
+
+# Evento 1
+
+```{r}
+summary(DF$LLAMADAS_IN_FINDE / 30)
+summary(DF$LLAMADAS_IN_SEM / 30)
+```
+
+
+
