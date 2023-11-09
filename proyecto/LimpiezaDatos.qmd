@@ -3,7 +3,7 @@ title: "LimpiezaDatos"
 format: html
 ---
 
-## sCargando los datos
+## Cargando los datos
 
 ```{r}
 library(readr)

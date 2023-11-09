@@ -16,7 +16,7 @@ format:
     author-title: Autores
 
 author: 
-  - Arturo Barrantes Chuquimia
+  - Arturo Barrantes Chuquimia (Líder)
   - Sheyla Sanchez Arauco 
   - Andrea Maricielo Pérez Castro 
   - Alejandro Rojas Alvarez
@@ -448,33 +448,28 @@ ggplot(DF_LLAMADAS, aes(x = DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, y = DF_LLAMA
   theme_economist()
 ```
 
-Covarianza:
-
 ```{r}
 cov(DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS, DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, use = "complete.obs")
 ```
 
-En este caso, un valor positivo como 110178.5 sugiere que hay una relación positiva entre las variables **`LLAMADAS_OUT_TOTAL_PERIODOS`** y **`LLAMADAS_IN_TOTAL_PERIODOS`**. Esto significa que, en general, cuando el valor de una variable aumenta, el valor de la otra también tiende a aumentar, y viceversa.
-
-Correlación:
+En este caso, un valor positivo como 110178.5 nos dice que estan positivamente correlacionadas, pero este número no nos dice nada por si mismo ya que sus unidades no son las adecuadas, entonces hallaremos la correlación ya que esta si es más sensata de interpretar.
 
 ```{r}
-#DF_LLAMADAS
 cor(DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS, DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, use = "complete.obs")
 ```
 
 El coeficiente de correlación de 84% indica una correlación positiva fuerte entre la cantidad total de llamadas entrantes y salientes. Esto significa que, en promedio, un aumento en las llamadas entrantes del usuario está asociado con un aumento en el total de llamadas salientes de este, siendo una relación considerablemente fuerte.
 
-**Ecuación de regresión lineal:**
-
 ```{r echo=FALSE}
 lm(LLAMADAS_OUT_TOTAL_PERIODOS  ~ LLAMADAS_IN_TOTAL_PERIODOS, data = DF_LLAMADAS)
-
 ```
 
 $$ y = 0.9681x + 127.7461 $$
 
-En esta regresion lineal y representa la variable **`LLAMADAS_OUT_TOTAL_PERIODOS`** y x representa **`LLAMADAS_IN_TOTAL_PERIODOS`** . Se observa que el valor del coeficiente de la pendiente indica que por cada llamada entrante, la variable de cantidad de llamadas salientes aumente en 0.9681 unidades. Finalmente, el valor de 127.7461 representa la cantidad de llamadas salientes cuando la cantidad de llamadas entrantes es 0, lo cual puede deberse a algunos valores iniciales significativos.
+En esta regresion lineal, ___y___ representa la variable `LLAMADAS_OUT_TOTAL_PERIODOS` y ___x___ representa `LLAMADAS_IN_TOTAL_PERIODOS` . Se observa que el valor del coeficiente de la pendiente indica que por cada llamada entrante, la variable de cantidad de llamadas salientes es aproximadamente 0.9 veces este valor. Finalmente, el valor de 127.7461 es debido a que durante un mes, la cantidad de llamadas raramente es un número pequeño, por lo tanto el valor de ___x___ no puede tomar un valor pequeño, en este sentido, el valor de 127.75 tiene sentido. 
+
+La regresión no te daría mucha información si es que solo haces una llamada al mes, más si te daría información si te llaman `r median(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS)` veces, que es la media de llamadas entrantes por mes.
+
 
 **Descriptores de variable numerica discreta**
 
@@ -682,6 +677,8 @@ ggplot(correlation_data, aes(Variable1, Variable2, fill = Correlation)) +
 ```
 
 De los gráficos **6** y **8** anteriores, podemos decir que en general, las llamadas que tu haces duran más que las llamadas que recibes.
+
+Y de los gráficos **7** y **9** podemos ver que las llamadas en la semana laboral, tanto entrantes como salientes se relacionan más con las llamadas totales, esto tiene que ver con que hay más tiempo en llamadas durante la semana laboral que en sábados y domingos.
 
 ### **Gráfico 10**
 
