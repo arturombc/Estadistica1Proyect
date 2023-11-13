@@ -86,8 +86,6 @@ Seleccionar una persona de mi estudio que ha recibido 0 llamadas durante el mes.
 
 E_n el evento de atomico de que lo hayan llamado n veces al mes.
 
-
-
 ```{r}
 E_1 <- E_1[-nrow(E_1), ]
 ```
@@ -109,7 +107,6 @@ head(E_1)
 E_1
 sum(E_1$P)
 ```
-
 
 En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio.
 
