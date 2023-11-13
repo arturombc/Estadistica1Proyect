@@ -59,7 +59,7 @@ La variable 1 será una forma de referirnos a la variable `LLAMADAS_IN_TOT`, que
 
 ### **Definición de experimento aleatorio para la variable 1**
 
-Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que lo llamaron durante el mes.
+Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que la llamaron durante el mes.
 
 ### **Espacio de resultados teórico para la variable 1**
 
@@ -70,6 +70,31 @@ $$\Omega_1 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 6820\}$$
 ### **Cálculo de la probabilidad empírica de todos los eventos atómicos de la variable 1**
 
 ```{r}
+hist(DF$LLAMADAS_IN_TOT)
+hist(DF$LLAMADAS_OUT_TOT)
+```
+```{r}
+boxplot(log(DF$LLAMADAS_OUT_TOT))
+```
+```{r}
+hist(log(DF$LLAMADAS_OUT_TOT))
+```
+
+```{r}
+library(fitdistrplus)
+```
+```{r}
+descdist(DF$LLAMADAS_OUT_TOT[complete.cases(DF)])
+```
+```{r}
+X <- DF$LLAMADAS_OUT_TOT 
+
+```
+
+
+
+
+```{r}
 DF %>%
   select(ID,LLAMADAS_IN_TOT) %>%
   group_by(LLAMADAS_IN_TOT) %>%
@@ -78,15 +103,11 @@ DF %>%
 
 ```{r}
 tail(E_1)
-E_1
-sum(E_1$P)
 ```
 
 Seleccionar una persona de mi estudio que ha recibido 0 llamadas durante el mes.
 
 E_n el evento de atomico de que lo hayan llamado n veces al mes.
-
-
 
 ```{r}
 E_1 <- E_1[-nrow(E_1), ]
@@ -107,9 +128,7 @@ head(E_1)
 
 ```{r}
 E_1
-sum(E_1$P)
 ```
-
 
 En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio.
 
@@ -249,3 +268,51 @@ chi_test
 ```
 
 Ya que vemos que el p-value es menor que un nivel de significancia 0.05 se puede decir que las variables están relacionadas.
+
+
+
+
+
+```{r}
+DF %>%
+  select(ID,LLAMADAS_IN_TOT) %>%
+  group_by(LLAMADAS_IN_TOT) %>%
+  summarise(n = n()) -> E_1
+E_1 <- E_1[-nrow(E_1), ]
+Tot1 <- sum(E_1$n)
+E_1$P <- E_1$n / Tot1
+
+DF %>%
+  select(ID,LLAMADAS_OUT_TOT) %>%
+  group_by(LLAMADAS_OUT_TOT) %>%
+  summarise(n = n()) -> E_2
+E_2 <- E_2[-nrow(E_2), ]
+Tot2 <- sum(E_2$n)
+E_2$P <- E_2$n / Tot2
+```
+
+
+```{r}
+P.E_1 <- sum(E_1$P[E_1$LLAMADAS_IN_TOT %in% 0:50])
+P.E_2 <- sum(E_2$P[E_2$LLAMADAS_OUT_TOT %in% 0:50])
+```
+
+```{r}
+nrow(DF[DF$LLAMADAS_IN_TOT %in% 0:50 & DF$LLAMADAS_OUT_TOT %in% 0:50, ]) / sum(!is.na(DF$LLAMADAS_IN_TOT) & !is.na(DF$LLAMADAS_OUT_TOT))#nrow(DF) 
+P.E_1 * P.E_2
+```
+
+```{r}
+Inter <- sum((DF$LLAMADAS_IN_TOT <= 50) & (DF$LLAMADAS_OUT_TOT <= 50), na.rm = TRUE)/sum(!is.na(DF$LLAMADAS_IN_TOT) & !is.na(DF$LLAMADAS_OUT_TOT))
+```
+
+```{r}
+In <- sum((DF$LLAMADAS_IN_TOT <= 50), na.rm = TRUE)/sum(!is.na(DF$LLAMADAS_IN_TOT))
+Out <- sum((DF$LLAMADAS_OUT_TOT <= 50), na.rm = TRUE)/sum(!is.na(DF$LLAMADAS_OUT_TOT))
+```
+
+```{r}
+In*Out
+Inter
+```
+
