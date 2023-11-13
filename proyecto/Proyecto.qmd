@@ -167,7 +167,7 @@ Mostrar/Ocultar Contenido
 
 ::: toggle-content
 | VARIABLE                   | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
-|---------------|---------------|---------------|---------------------------|
+|----------------------------|-----------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
 | ID                         | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
 | PERIODO                    | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
 | CHIP                       | Categórica Ordinal    | 2G, 3G, 4G                    | Tecnología del chip                                                                                                                 |
@@ -466,10 +466,9 @@ lm(LLAMADAS_OUT_TOTAL_PERIODOS  ~ LLAMADAS_IN_TOTAL_PERIODOS, data = DF_LLAMADAS
 
 $$ y = 0.9681x + 127.7461 $$
 
-En esta regresion lineal, ___y___ representa la variable `LLAMADAS_OUT_TOTAL_PERIODOS` y ___x___ representa `LLAMADAS_IN_TOTAL_PERIODOS` . Se observa que el valor del coeficiente de la pendiente indica que por cada llamada entrante, la variable de cantidad de llamadas salientes es aproximadamente 0.9 veces este valor. Finalmente, el valor de 127.7461 es debido a que durante un mes, la cantidad de llamadas raramente es un número pequeño, por lo tanto el valor de ___x___ no puede tomar un valor pequeño, en este sentido, el valor de 127.75 tiene sentido. 
+En esta regresion lineal, ***y*** representa la variable `LLAMADAS_OUT_TOTAL_PERIODOS` y ***x*** representa `LLAMADAS_IN_TOTAL_PERIODOS` . Se observa que el valor del coeficiente de la pendiente indica que por cada llamada entrante, la variable de cantidad de llamadas salientes es aproximadamente 0.9 veces este valor. Finalmente, el valor de 127.7461 es debido a que durante un mes, la cantidad de llamadas raramente es un número pequeño, por lo tanto el valor de ***x*** no puede tomar un valor pequeño, en este sentido, el valor de 127.75 tiene sentido.
 
 La regresión no te daría mucha información si es que solo haces una llamada al mes, más si te daría información si te llaman `r median(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS)` veces, que es la media de llamadas entrantes por mes.
-
 
 **Descriptores de variable numerica discreta**
 

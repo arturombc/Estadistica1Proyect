@@ -99,10 +99,16 @@ DF %>%
   select(ID,LLAMADAS_IN_TOT) %>%
   group_by(LLAMADAS_IN_TOT) %>%
   summarise(n = n()) -> E_1
+E_1
 ```
 
 ```{r}
 tail(E_1)
+<<<<<<< HEAD
+=======
+E_1
+#sum(E_1$P)
+>>>>>>> 285de442781488c5380e5a51f7665c15abf9b51e
 ```
 
 Seleccionar una persona de mi estudio que ha recibido 0 llamadas durante el mes.
@@ -111,6 +117,7 @@ E_n el evento de atomico de que lo hayan llamado n veces al mes.
 
 ```{r}
 E_1 <- E_1[-nrow(E_1), ]
+E_1
 ```
 
 ```{r}
@@ -269,6 +276,7 @@ chi_test
 
 Ya que vemos que el p-value es menor que un nivel de significancia 0.05 se puede decir que las variables están relacionadas.
 
+<<<<<<< HEAD
 
 
 
@@ -316,3 +324,36 @@ In*Out
 Inter
 ```
 
+=======
+## Análisis de variables discretas:
+
+### Variable 1:
+
+La variable 1 será `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
+
+Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que lo llamaron durante el mes.
+
+$E_1$: De $\mathcal{F}_1$, consideramos el evento $E_1$ que consiste en elegir un usuario al azar y que lo hayan llamado menos de 50 veces durante el mes.
+
+```{r}
+P.E_1
+```
+
+Si se desea hallar la probabilidad de que si al repetir el experimento $\epsilon_1$ 100 veces, por lo menos 10 de ellos hayan recibido menos de 50 llamadas durante el mes, debemos plantear un modelo de tipo binomial, donde:
+
+*Probabilidad acumulada (de que X sea por lo menos xo) ==\>* 𝑷(𝑿\>xo-1)=?? **𝒑𝒃𝒊𝒏𝒐𝒎**(xo-1,𝒏,𝒑,tower.tail=FALSE)
+
+$xo$: \# de exitos de $E_1$ (10)
+
+$n$: \# de veces que se repite el experimento (100)
+
+$p$: probabilidad de éxito de $E_1$
+
+```{r}
+pbinom(9,100,P.E_1,lower.tail=FALSE)# = p(X>9) 
+```
+
+### Variable 2:
+
+## Análisis de variables continuas:
+>>>>>>> 285de442781488c5380e5a51f7665c15abf9b51e
