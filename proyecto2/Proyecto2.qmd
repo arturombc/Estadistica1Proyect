@@ -33,9 +33,17 @@ if(!require(ggrepel)){install.packages("ggrepel");library(ggrepel)}
 if(!require(tidyverse)){install.packages("tidyverse");library(tidyverse)}
 if(!require(forcats)){install.packages("forcats");library(forcats)}
 if(!require(ggmosaic)){install.packages("ggmosaic");library(ggmosaic)}
+<<<<<<< HEAD
 library(fitdistrplus)
 library(rriskDistributions)
 if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
+=======
+
+```
+
+```{r}
+rm(list=ls())
+>>>>>>> 5857f628dd2693f4a92c5c47ee4aed97f4f0df36
 ```
 
 ```{r, carga-DF}
@@ -73,6 +81,35 @@ $$\Omega_1 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 6820\}$$
 ### **Cálculo de la probabilidad empírica de todos los eventos atómicos de la variable 1**
 
 ```{r}
+<<<<<<< HEAD
+=======
+hist(DF$LLAMADAS_IN_TOT)
+hist(DF$LLAMADAS_OUT_TOT)
+```
+
+```{r}
+boxplot(log(DF$LLAMADAS_OUT_TOT))
+```
+
+```{r}
+hist(log(DF$LLAMADAS_OUT_TOT))
+```
+
+```{r}
+library(fitdistrplus)
+```
+
+```{r}
+descdist(DF$LLAMADAS_OUT_TOT[complete.cases(DF)])
+```
+
+```{r}
+X <- DF$LLAMADAS_OUT_TOT 
+
+```
+
+```{r}
+>>>>>>> 5857f628dd2693f4a92c5c47ee4aed97f4f0df36
 DF %>%
   select(ID,LLAMADAS_IN_TOT) %>%
   group_by(LLAMADAS_IN_TOT) %>%
@@ -362,6 +399,7 @@ Se espera que al repetir el experimento $\epsilon_1$ 100 veces, Es_1 de ellos ha
 
 ### Variable 2:
 
+<<<<<<< HEAD
 ```{r}
 X <- rbinom(10000, 23, 0.11)
 hist(X, breaks = (-1:24) - 0.5, prob = TRUE)
@@ -380,5 +418,42 @@ La variable 4 será
 ```
 
 ### Variable 2:
+=======
+La variable 2 discreta será `LLAMADAS_OUT_TOT`, que es la cantidad de llamadas que un usuario realiza durante un mes.
+
+Definimos un experimento $\epsilon_2$ determinado por $\{\Omega_2, \mathcal{F}_2, \mathbb{P}_2\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que realizó una llamada durante el mes.
+
+$E_2$: De $\mathcal{F}_2$, consideramos el evento $E_2$ que consiste en elegir un usuario al azar y que el usuario haya llamado menos de 50 veces durante el mes.
+
+```{r}
+P.E_2
+```
+
+Si se desea hallar la probabilidad de que si al repetir el experimento $\epsilon_2$ 100 veces, por lo menos 10 de ellos hayan llamado menos de 50 veces durante el mes, debemos plantear un modelo de tipo binomial, donde:
+
+*Probabilidad acumulada (de que X sea por lo menos xo) ==\>* 𝑷(𝑿\>xo-1)=?? **𝒑𝒃𝒊𝒏𝒐𝒎**(xo-1,𝒏,𝒑,tower.tail=FALSE)
+
+$xo$: \# de exitos de $E_1$ (10)
+
+$n$: \# de veces que se repite el experimento (100)
+
+$p$: probabilidad de éxito de $E_1$
+
+```{r}
+pbinom(9,100,P.E_1,lower.tail=FALSE)# = p(X>9) 
+```
+
+Hallando el esperado y varianza:
+
+```{r}
+#𝑬(𝑿)=𝒏𝒑 
+Es_2<-100*P.E_2
+
+#𝑽(𝑿)=𝒏.𝒑.𝒒  
+V_2<-100*P.E_2*(1-P.E_2)
+```
+
+Se espera que al repetir el experimento $\epsilon_1$ 100 veces, Es_1 de ellos hayan recibido menos de 50 llamadas durante el mes.
+>>>>>>> 5857f628dd2693f4a92c5c47ee4aed97f4f0df36
 
 ## Análisis de variables continuas:
