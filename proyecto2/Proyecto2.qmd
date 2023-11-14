@@ -16,11 +16,11 @@ format:
     author-title: Autores
 
 author: 
-  - E_1rturo E_2arrantes Chuquimia (Líder)
-  - Sheyla Sanchez E_1rauco 
-  - E_1ndrea Maricielo Pérez Castro 
-  - E_1lejandro Rojas E_1lvarez
-  - Luis David E_1cedo Lopez
+  - Arturo Barrantes Chuquimia (Líder)
+  - Sheyla Sanchez Arauco 
+  - Andrea Maricielo Pérez Castro 
+  - Alejandro Rojas Alvarez
+  - Luis David Acedo Lopez
 editor: visual
 ---
 
@@ -33,6 +33,8 @@ if(!require(ggrepel)){install.packages("ggrepel");library(ggrepel)}
 if(!require(tidyverse)){install.packages("tidyverse");library(tidyverse)}
 if(!require(forcats)){install.packages("forcats");library(forcats)}
 if(!require(ggmosaic)){install.packages("ggmosaic");library(ggmosaic)}
+library(fitdistrplus)
+library(rriskDistributions)
 if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
 ```
 
@@ -346,26 +348,6 @@ $p$: probabilidad de éxito de $E_1$
 pbinom(9,100,P.E_1,lower.tail=FALSE)# = p(X>9) 
 ```
 
-Opciones:
-
--   Contar las ocurrencias
-
--   Contar usuarios
-
--   Elegir por nuestra cuenta
-
-### Variable 2:
-
-## **Análisis de variables continuas**
-
-### Variable 4:
-
-La variable 4 será
-
-```{r}
-
-```
-
 Hallando el esperado y varianza:
 
 ```{r}
@@ -377,6 +359,25 @@ V_1<-100*P.E_1*(1-P.E_1)
 ```
 
 Se espera que al repetir el experimento $\epsilon_1$ 100 veces, Es_1 de ellos hayan recibido menos de 50 llamadas durante el mes.
+
+### Variable 2:
+
+```{r}
+X <- rbinom(10000, 23, 0.11)
+hist(X, breaks = (-1:24) - 0.5, prob = TRUE)
+lines((-1:24), dbinom(-1:24, 23, 0.11), type = "h", col = "red")
+```
+
+
+## **Análisis de variables continuas**
+
+### Variable 4:
+
+La variable 4 será
+
+```{r}
+
+```
 
 ### Variable 2:
 
