@@ -34,3 +34,12 @@ X <- DF$LLAMADAS_OUT_TOT
 DF$LLAMADAS_IN_TOT
 DF$LLAMADAS_OUT_TOT
 ```
+
+```{r}
+#hist(X <- rbinom(100, 23, P.E_1, add = TRUE)
+#hist(rbinom(10000,n,P.E_1), add = TRUE)
+
+#hist(X, breaks = (-1:24) - 0.5, prob = TRUE)
+
+```
+

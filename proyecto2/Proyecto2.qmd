@@ -33,17 +33,10 @@ if(!require(ggrepel)){install.packages("ggrepel");library(ggrepel)}
 if(!require(tidyverse)){install.packages("tidyverse");library(tidyverse)}
 if(!require(forcats)){install.packages("forcats");library(forcats)}
 if(!require(ggmosaic)){install.packages("ggmosaic");library(ggmosaic)}
-<<<<<<< HEAD
-library(fitdistrplus)
-library(rriskDistributions)
+if(!require(fitdistrplus)){install.packages("fitdistrplus");library(fitdistrplus)}
+if(!require(rriskDistributions)){install.packages("rriskDistributions");library(rriskDistributions)}
+if(!require(fastGraph)){install.packages("fastGraph")};library(fastGraph)
 if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
-=======
-
-```
-
-```{r}
-rm(list=ls())
->>>>>>> 5857f628dd2693f4a92c5c47ee4aed97f4f0df36
 ```
 
 ```{r, carga-DF}
@@ -81,41 +74,11 @@ $$\Omega_1 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 6820\}$$
 ### **Cálculo de la probabilidad empírica de todos los eventos atómicos de la variable 1**
 
 ```{r}
-<<<<<<< HEAD
-=======
-hist(DF$LLAMADAS_IN_TOT)
-hist(DF$LLAMADAS_OUT_TOT)
-```
-
-```{r}
-boxplot(log(DF$LLAMADAS_OUT_TOT))
-```
-
-```{r}
-hist(log(DF$LLAMADAS_OUT_TOT))
-```
-
-```{r}
-library(fitdistrplus)
-```
-
-```{r}
-descdist(DF$LLAMADAS_OUT_TOT[complete.cases(DF)])
-```
-
-```{r}
-X <- DF$LLAMADAS_OUT_TOT 
-
-```
-
-```{r}
->>>>>>> 5857f628dd2693f4a92c5c47ee4aed97f4f0df36
 DF %>%
   select(ID,LLAMADAS_IN_TOT) %>%
   group_by(LLAMADAS_IN_TOT) %>%
   summarise(n = n()) -> E_1
 E_1
-
 ```
 
 ```{r}
@@ -199,8 +162,8 @@ E_2$P <- E_2$n / Tot2
 ```
 
 ```{r}
-E_1 <- rename(E_1, "Eventos Atómicos" = LLAMADAS_IN_TOT, "Probabilidades atómicas" = P,"Cantidad de repeticiones" = n)
-head(E_1)
+E_2 <- rename(E_2, "Eventos Atómicos" = LLAMADAS_OUT_TOT, "Probabilidades atómicas" = P,"Cantidad de repeticiones" = n)
+head(E_2)
 ```
 
 Ahora podemos definir los eventos atómicos como:
@@ -357,7 +320,9 @@ In*Out
 Inter
 ```
 
-## Análisis de variables discretas:
+# Parte 3
+
+## Análisis de variables discretas
 
 ### Variable 1:
 
@@ -368,7 +333,11 @@ Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1
 $E_1$: De $\mathcal{F}_1$, consideramos el evento $E_1$ que consiste en elegir un usuario al azar y que lo hayan llamado menos de 50 veces durante el mes.
 
 ```{r}
-P.E_1
+n <- length(DF$LLAMADAS_IN_TOT)
+m <- max(log(DF$LLAMADAS_IN_TOT), na.rm = T)
+mm <- floor(m)
+hist(ceiling(log(DF$LLAMADAS_IN_TOT)), probability = T)
+lines((-1:mm), dbinom(-1:mm, mm, 0.60), type = "h", col = "red")
 ```
 
 Si se desea hallar la probabilidad de que si al repetir el experimento $\epsilon_1$ 100 veces, por lo menos 10 de ellos hayan recibido menos de 50 llamadas durante el mes, debemos plantear un modelo de tipo binomial, donde:
@@ -399,26 +368,6 @@ Se espera que al repetir el experimento $\epsilon_1$ 100 veces, Es_1 de ellos ha
 
 ### Variable 2:
 
-<<<<<<< HEAD
-```{r}
-X <- rbinom(10000, 23, 0.11)
-hist(X, breaks = (-1:24) - 0.5, prob = TRUE)
-lines((-1:24), dbinom(-1:24, 23, 0.11), type = "h", col = "red")
-```
-
-
-## **Análisis de variables continuas**
-
-### Variable 4:
-
-La variable 4 será
-
-```{r}
-
-```
-
-### Variable 2:
-=======
 La variable 2 discreta será `LLAMADAS_OUT_TOT`, que es la cantidad de llamadas que un usuario realiza durante un mes.
 
 Definimos un experimento $\epsilon_2$ determinado por $\{\Omega_2, \mathcal{F}_2, \mathbb{P}_2\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que realizó una llamada durante el mes.
@@ -454,6 +403,195 @@ V_2<-100*P.E_2*(1-P.E_2)
 ```
 
 Se espera que al repetir el experimento $\epsilon_1$ 100 veces, Es_1 de ellos hayan recibido menos de 50 llamadas durante el mes.
->>>>>>> 5857f628dd2693f4a92c5c47ee4aed97f4f0df36
 
-## Análisis de variables continuas:
+# Parte 4
+
+## Variable 3
+
+La variable 3 continua será `TIEMPO_LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
+
+### Elección de modelo
+
+```{r}
+x <-DF$TIEMPO_LLAMADAS_IN_TOT
+x <- x[!is.na(x)]
+x <- x[x > 1]
+fit.cont(x) # rriskDistributions
+descdist(x) # fitdistplus
+```
+
+Se decidió tomar el modelo *log normal*.
+
+```{r}
+Z <- log(x)
+```
+
+Para verificar que esto cumple, podemos mirar la centralidad.
+
+```{r}
+median(Z)
+mean(Z)
+```
+
+Aproximadamente son parecidas, esto fue necesario verificarlo más no es suficiente.
+
+### Cálculo de parámetros
+
+Para calcular los parámetros, se hará de dos formas.
+
+```{r}
+fitdist(Z,"norm")
+```
+
+y
+
+```{r}
+m <- mean(Z)
+s <- sd(Z)
+m
+s
+```
+
+### Gráfico de verificación
+
+Para verificar si es una buena elección, podemos graficarlo.
+
+```{r}
+hist(Z,breaks = 50 , prob = TRUE)
+curve(dnorm(x, mean = m, sd = s), add = TRUE, col = "red", lwd = 2)
+```
+
+### Cálculo de la esperanza y varianza
+
+Como nuestra distribución se distribuye normal con parámetros `m` y `s`
+
+La esperanza y la varianza serían
+
+```{r, results=hold}
+Esperanza_X <- m
+Varianza_X <- s^2
+sprintf("E(X_3) =  %f",Esperanza_X)
+sprintf("Var(X_3) = %f",Varianza_X)
+```
+
+### Cálculo de probabilidades
+
+Ya que tenemos un modelo, podemos calcular probabilidades.
+
+¿Cuál es la probabilidad de que alguien llame menos de 420 minutos al mes (6h y 30m)?
+
+Podemos calcular eso usando la función `pnorm` y el parámetro a calcular tendrá que pasarse en `log` debido a la transformación que fue hecha.
+
+```{r}
+pnorm(log(420),m,s)
+```
+
+También se puede ver gráficamente.
+
+```{r}
+shadeDist(log(420),"dnorm",m,s) 
+```
+
+
+## Variable 4
+
+La variable 4 continua será `DATOS_4G`, que es la cantidad de datos 4G que un usuario utiliza durante un mes.
+
+### Elección de modelo
+
+```{r}
+hist(DF$DATOS_4G)
+datos_4g <- DF$DATOS_4G
+descdist(datos_4g)
+```
+
+```{r}
+datos_4g <- datos_4g[datos_4g!=0]
+datos_4g <- datos_4g[!is.na(datos_4g)]
+datos_4g <- datos_4g[datos_4g > 1]
+datos_4g2 <- ((datos_4g - min(datos_4g)) / (max(datos_4g)-min(datos_4g)))
+#fitdist(datos_4g2,"beta")
+#fitdist(datos_4g,"gamma")
+fitdist(datos_4g,"lnorm")
+```
+
+Pese a los intentos, la variable no se pudo calcular como una distribución gamma ni beta.
+
+### Cálculo de parámetros
+
+Se decidió tomar el modelo *log normal*.
+
+```{r}
+Z <- log(datos_4g)
+```
+
+Para verificar que esto cumple, podemos mirar la centralidad.
+
+```{r}
+median(Z)
+mean(Z)
+```
+
+Aproximadamente son parecidas, esto fue necesario verificarlo más no es suficiente.
+
+Para calcular los parámetros, se hará de dos formas.
+
+```{r}
+fitdist(Z,"norm")
+```
+
+y
+
+```{r}
+m <- mean(Z)
+s <- sd(Z)
+s;m
+```
+
+Vimos que estos parámetros coinciden con los anteriormente calculados.
+
+Diremos:
+
+$$
+X_3 \sim \mathsf{Binom}(s,m)
+$$
+
+### Gráfico de verificación
+
+Para verificar si es una buena elección, podemos graficarlo.
+
+```{r}
+hist(Z,breaks = 50 , prob = TRUE)
+curve(dnorm(x, mean = m, sd = s), add = TRUE, col = "red", lwd = 2)
+```
+
+### Cálculo de la esperanza y varianza
+
+Como nuestra distribución se distribuye normal con parámetros `m` y `s`
+
+La esperanza y la varianza serían.
+
+```{r, results=hold}
+Esperanza_X <- m
+Varianza_X <- s^2
+sprintf("E(X_4) =  %f",Esperanza_X)
+sprintf("Var(X_4) = %f",Varianza_X)
+```
+
+### Cálculo de probabilidades
+
+Ya que tenemos un modelo, podemos calcular probabilidades.
+
+¿Cuál es la probabilidad de que alguien gaste menos de 10Gbi en datos al mes(10000Mbi)?
+
+Podemos calcular eso usando la función `pnorm` y el parámetro a calcular tendrá que pasarse en `log` debido a la transformación que fue hecha.
+
+```{r}
+pnorm(log(10000),m,s)
+```
+
+También se puede ver gráficamente.
+
+```{r}
+shadeDist(log(10000),"dnorm",m,s)
+```
