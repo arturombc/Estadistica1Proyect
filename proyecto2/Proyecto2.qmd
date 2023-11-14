@@ -73,9 +73,11 @@ $$\Omega_1 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 6820\}$$
 hist(DF$LLAMADAS_IN_TOT)
 hist(DF$LLAMADAS_OUT_TOT)
 ```
+
 ```{r}
 boxplot(log(DF$LLAMADAS_OUT_TOT))
 ```
+
 ```{r}
 hist(log(DF$LLAMADAS_OUT_TOT))
 ```
@@ -83,16 +85,20 @@ hist(log(DF$LLAMADAS_OUT_TOT))
 ```{r}
 library(fitdistrplus)
 ```
+
 ```{r}
 descdist(DF$LLAMADAS_OUT_TOT[complete.cases(DF)])
 ```
+
 ```{r}
 X <- DF$LLAMADAS_OUT_TOT 
 
 ```
 
-
-
+```{r}
+DF$LLAMADAS_IN_TOT
+DF$LLAMADAS_OUT_TOT
+```
 
 ```{r}
 DF %>%
@@ -100,15 +106,15 @@ DF %>%
   group_by(LLAMADAS_IN_TOT) %>%
   summarise(n = n()) -> E_1
 E_1
+
 ```
 
 ```{r}
 tail(E_1)
-<<<<<<< HEAD
-=======
+
 E_1
 #sum(E_1$P)
->>>>>>> 285de442781488c5380e5a51f7665c15abf9b51e
+
 ```
 
 Seleccionar una persona de mi estudio que ha recibido 0 llamadas durante el mes.
@@ -276,11 +282,6 @@ chi_test
 
 Ya que vemos que el p-value es menor que un nivel de significancia 0.05 se puede decir que las variables están relacionadas.
 
-<<<<<<< HEAD
-
-
-
-
 ```{r}
 DF %>%
   select(ID,LLAMADAS_IN_TOT) %>%
@@ -298,7 +299,6 @@ E_2 <- E_2[-nrow(E_2), ]
 Tot2 <- sum(E_2$n)
 E_2$P <- E_2$n / Tot2
 ```
-
 
 ```{r}
 P.E_1 <- sum(E_1$P[E_1$LLAMADAS_IN_TOT %in% 0:50])
@@ -324,12 +324,11 @@ In*Out
 Inter
 ```
 
-=======
 ## Análisis de variables discretas:
 
 ### Variable 1:
 
-La variable 1 será `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
+La variable 1 discreta será `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
 
 Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que lo llamaron durante el mes.
 
@@ -353,7 +352,18 @@ $p$: probabilidad de éxito de $E_1$
 pbinom(9,100,P.E_1,lower.tail=FALSE)# = p(X>9) 
 ```
 
+Hallando el esperado y varianza:
+
+```{r}
+ #𝑬(𝑿)=𝒏𝒑
+Es_1<-100*P.E_1
+
+#𝑽(𝑿)=𝒏.𝒑.𝒒 
+V_1<-100*P.E_1*(1-P.E_1)
+```
+
+Se espera que al repetir el experimento $\epsilon_1$ 100 veces, Es_1 de ellos hayan recibido menos de 50 llamadas durante el mes.
+
 ### Variable 2:
 
 ## Análisis de variables continuas:
->>>>>>> 285de442781488c5380e5a51f7665c15abf9b51e
