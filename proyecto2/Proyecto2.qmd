@@ -33,6 +33,7 @@ if(!require(ggrepel)){install.packages("ggrepel");library(ggrepel)}
 if(!require(tidyverse)){install.packages("tidyverse");library(tidyverse)}
 if(!require(forcats)){install.packages("forcats");library(forcats)}
 if(!require(ggmosaic)){install.packages("ggmosaic");library(ggmosaic)}
+if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
 ```
 
 ```{r, carga-DF}
@@ -70,31 +71,6 @@ $$\Omega_1 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 6820\}$$
 ### **Cálculo de la probabilidad empírica de todos los eventos atómicos de la variable 1**
 
 ```{r}
-hist(DF$LLAMADAS_IN_TOT)
-hist(DF$LLAMADAS_OUT_TOT)
-```
-```{r}
-boxplot(log(DF$LLAMADAS_OUT_TOT))
-```
-```{r}
-hist(log(DF$LLAMADAS_OUT_TOT))
-```
-
-```{r}
-library(fitdistrplus)
-```
-```{r}
-descdist(DF$LLAMADAS_OUT_TOT[complete.cases(DF)])
-```
-```{r}
-X <- DF$LLAMADAS_OUT_TOT 
-
-```
-
-
-
-
-```{r}
 DF %>%
   select(ID,LLAMADAS_IN_TOT) %>%
   group_by(LLAMADAS_IN_TOT) %>%
@@ -102,13 +78,9 @@ DF %>%
 E_1
 ```
 
+
 ```{r}
 tail(E_1)
-<<<<<<< HEAD
-=======
-E_1
-#sum(E_1$P)
->>>>>>> 285de442781488c5380e5a51f7665c15abf9b51e
 ```
 
 Seleccionar una persona de mi estudio que ha recibido 0 llamadas durante el mes.
@@ -276,11 +248,6 @@ chi_test
 
 Ya que vemos que el p-value es menor que un nivel de significancia 0.05 se puede decir que las variables están relacionadas.
 
-<<<<<<< HEAD
-
-
-
-
 ```{r}
 DF %>%
   select(ID,LLAMADAS_IN_TOT) %>%
@@ -298,7 +265,6 @@ E_2 <- E_2[-nrow(E_2), ]
 Tot2 <- sum(E_2$n)
 E_2$P <- E_2$n / Tot2
 ```
-
 
 ```{r}
 P.E_1 <- sum(E_1$P[E_1$LLAMADAS_IN_TOT %in% 0:50])
@@ -324,7 +290,6 @@ In*Out
 Inter
 ```
 
-=======
 ## Análisis de variables discretas:
 
 ### Variable 1:
@@ -353,7 +318,27 @@ $p$: probabilidad de éxito de $E_1$
 pbinom(9,100,P.E_1,lower.tail=FALSE)# = p(X>9) 
 ```
 
+Opciones:
+
+-   Contar las ocurrencias
+
+-   Contar usuarios
+
+-   Elegir por nuestra cuenta
+
+
+
+
 ### Variable 2:
 
-## Análisis de variables continuas:
->>>>>>> 285de442781488c5380e5a51f7665c15abf9b51e
+## **Análisis de variables continuas**
+
+### Variable 4:
+
+La variable 4 será
+
+```{r}
+
+```
+
+
