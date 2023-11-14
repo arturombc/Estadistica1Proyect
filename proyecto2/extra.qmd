@@ -1,0 +1,36 @@
+---
+title: "extra"
+format: html
+---
+
+
+```{r}
+hist(DF$LLAMADAS_IN_TOT)
+hist(DF$LLAMADAS_OUT_TOT)
+```
+
+```{r}
+boxplot(log(DF$LLAMADAS_OUT_TOT))
+```
+
+```{r}
+hist(log(DF$LLAMADAS_OUT_TOT))
+```
+
+```{r}
+library(fitdistrplus)
+```
+
+```{r}
+descdist(DF$LLAMADAS_OUT_TOT[complete.cases(DF)])
+```
+
+```{r}
+X <- DF$LLAMADAS_OUT_TOT 
+
+```
+
+```{r}
+DF$LLAMADAS_IN_TOT
+DF$LLAMADAS_OUT_TOT
+```

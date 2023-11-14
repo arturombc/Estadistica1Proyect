@@ -76,8 +76,8 @@ DF %>%
   group_by(LLAMADAS_IN_TOT) %>%
   summarise(n = n()) -> E_1
 E_1
-```
 
+```
 
 ```{r}
 tail(E_1)
@@ -102,14 +102,26 @@ E_1$P <- E_1$n / Tot1
 ```
 
 ```{r}
+E_1 <- rename(E_1, "Eventos Atómicos" = LLAMADAS_IN_TOT, "Probabilidades atómicas" = P,"Cantidad de repeticiones" = n)
 head(E_1)
 ```
+
+Ahora podemos definir los eventos atómicos como:
+
+$$
+\begin{align*}
+& E_{1_i}\, \text{el evento atómico i del experimento 1 se define como}\\
+& E_{1_i} : \text{Te llaman }\textit{i }\text{veces durante el mes}\quad i\in\text{Eventos Atómicos}_1
+\end{align*}
+$$
+
+$\text{Eventos atómicos}_1$ Es un conjunto que representa a la columna Eventos atómicos de $E_1$.
 
 ```{r}
 E_1
 ```
 
-En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio.
+En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio. El nombre representa el experimento 1 sin intención de ser algo específico.
 
 ## **Variable 2**
 
@@ -121,7 +133,7 @@ Definimos un experimento $\{\Omega_2, \mathcal{F}_2, \mathbb{P}_2\}$.
 
 ### **Espacio de resultados teórico para LLAMADAS_IN_TOT**
 
-De la misma forma que la anterior variable, esta también es una variable nuḿerica discreta, el espacio de resultados teóricos para esta variable es:
+De la misma forma que la anterior variable, esta también es una variable numérica discreta, el espacio de resultados teóricos para esta variable es:
 
 $$\Omega_2 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 8308\}$$
 
@@ -146,6 +158,22 @@ tail(E_2)
 Tot2 <- sum(E_2$n)
 E_2$P <- E_2$n / Tot2
 ```
+
+```{r}
+E_1 <- rename(E_1, "Eventos Atómicos" = LLAMADAS_IN_TOT, "Probabilidades atómicas" = P,"Cantidad de repeticiones" = n)
+head(E_1)
+```
+
+Ahora podemos definir los eventos atómicos como:
+
+$$
+\begin{align*}
+& E_{2_i}\, \text{el evento atómico i del experimento 2 se define como}\\
+& E_{2_i} : \text{Haces una llamada }\textit{i }\text{veces durante el mes}\quad i\in\text{Eventos Atómicos}_2
+\end{align*}
+$$
+
+$\text{Eventos atómicos}_2$ Es un conjunto que representa a la columna Eventos atómicos de $E_2$.
 
 ```{r}
 head(E_2)
@@ -234,7 +262,7 @@ P.E_2
 
 Mediante las 3 igualdades pudimos verificar que los eventos son relacionadas.
 
-Esto significa que existe una relación entre que te llamen menos de 50 veces con que llames menos de 50 veces.
+Esto significa que la población de las personas que llamaron menos de 51 veces y la población de las personas que recibieron llamadas menos de 51 veces están relacionadas, es decir que hay personas que llamaron menos de 51 veces y que también recibieron llamadas menos de 51 veces.
 
 ### **Verificación extra**
 
@@ -294,7 +322,7 @@ Inter
 
 ### Variable 1:
 
-La variable 1 será `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
+La variable 1 discreta será `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
 
 Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que lo llamaron durante el mes.
 
@@ -326,9 +354,6 @@ Opciones:
 
 -   Elegir por nuestra cuenta
 
-
-
-
 ### Variable 2:
 
 ## **Análisis de variables continuas**
@@ -341,4 +366,18 @@ La variable 4 será
 
 ```
 
+Hallando el esperado y varianza:
 
+```{r}
+ #𝑬(𝑿)=𝒏𝒑
+Es_1<-100*P.E_1
+
+#𝑽(𝑿)=𝒏.𝒑.𝒒 
+V_1<-100*P.E_1*(1-P.E_1)
+```
+
+Se espera que al repetir el experimento $\epsilon_1$ 100 veces, Es_1 de ellos hayan recibido menos de 50 llamadas durante el mes.
+
+### Variable 2:
+
+## Análisis de variables continuas:
