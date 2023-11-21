@@ -145,7 +145,6 @@ orden_corregido <- c(
 data5 <- data4[, orden_corregido]
 ```
 
-
 ```{r}
 write.csv(data5, "DataLimpia.csv", row.names = FALSE)
 round(sum(is.na(data5))/(nrow(data5)*ncol(data5))*100 , digits = 2)
@@ -163,4 +162,3 @@ nrow(data5)
 sum(complete.cases(data5))
 
 ```
-

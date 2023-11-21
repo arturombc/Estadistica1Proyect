@@ -16,7 +16,7 @@ format:
     author-title: Autores
 
 author: 
-  - Arturo Barrantes Chuquimia
+  - Arturo Barrantes Chuquimia (Líder)
   - Sheyla Sanchez Arauco 
   - Andrea Maricielo Pérez Castro 
   - Alejandro Rojas Alvarez
@@ -421,14 +421,17 @@ Analizar la cantidad de llamadas entrantes y salientes de un usuario.
 
 ### **Motivación y desarrollo**
 
-La duración y la cantidad de llamadas entrantes es una forma de conocer las necesidades, preferencias y hábitos de consumo de los usuarios. Por ejemplo, si un usuario recibe muchas llamadas cortas, puede indicar que tiene problemas de conexión, o que prefiere comunicarse por otros medios. Por el contrario, si recibe pocas llamadas largas, puede indicar que tiene una buena cobertura y un buen servicio, o que le gusta hablar mucho por teléfono.
+Analizar la cantidad de llamadas entrantes y salientes de un usuario puede ser muy útil, ya que brinda información valiosa para tomar decisiones, gestionar recursos, optimizar costos y garantizar la seguridad. Sin embargo, es importante hacerlo con respeto a la privacidad y cumplir con las regulaciones aplicables en cuanto a la recopilación y el almacenamiento de datos de llamadas.
 
 ### **Gráfico 5**
 
 Gráfico de variable numérica vs numérica
 
+<<<<<<< HEAD
 Cantidad total de llamadas entrantes y salientes por usuario(Durante los 9 periodos en total)
 
+=======
+>>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 ```{r}
 DF %>%
   group_by(ID) %>%
@@ -444,34 +447,40 @@ nuevo_modelo <- lm(LLAMADAS_OUT_TOTAL_PERIODOS  ~ LLAMADAS_IN_TOTAL_PERIODOS, da
 
 ggplot(DF_LLAMADAS, aes(x = DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, y = DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS)) +
   geom_point(shape = 16, color = "lightgreen") +
-  geom_smooth(method = "lm", se = FALSE, color = "green") +
+  geom_smooth(method = "lm", se = FALSE, color = "darkgreen") +
   labs(x = "Cantidad de llamadas entrantes en total de 9 meses ", y = "Cantidad de llamadas salientes en total de 9 meses",
        title = "Cantidad total de llamadas entrantes vs salientes") + 
   theme_economist()
 ```
 
+<<<<<<< HEAD
 **Covarianza:**
 
+=======
+>>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 ```{r}
-cov(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS,use = "complete.obs")
+cov(DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS, DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, use = "complete.obs")
 ```
 
-**Correlación:**
+En este caso, un valor positivo como 110178.5 nos dice que estan positivamente correlacionadas, pero este número no nos dice nada por si mismo ya que sus unidades no son las adecuadas, entonces hallaremos la correlación ya que esta si es más sensata de interpretar.
 
 ```{r}
-#DF_LLAMADAS
-cor(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS,use = "complete.obs")
+cor(DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS, DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, use = "complete.obs")
 ```
 
 El coeficiente de correlación de 84% indica una correlación positiva fuerte entre la cantidad total de llamadas entrantes y salientes. Esto significa que, en promedio, un aumento en las llamadas entrantes del usuario está asociado con un aumento en el total de llamadas salientes de este, siendo una relación considerablemente fuerte.
 
-**Ecuación de regresión lineal:**
-
 ```{r echo=FALSE}
-lm(LLAMADAS_OUT_TOTAL_PERIODOS ~ LLAMADAS_IN_TOTAL_PERIODOS, data = DF_LLAMADAS)
+lm(LLAMADAS_OUT_TOTAL_PERIODOS  ~ LLAMADAS_IN_TOTAL_PERIODOS, data = DF_LLAMADAS)
 ```
 
 $$ y = 0.9681x + 127.7461 $$
+
+En esta regresion lineal, ***y*** representa la variable `LLAMADAS_OUT_TOTAL_PERIODOS` y ***x*** representa `LLAMADAS_IN_TOTAL_PERIODOS` . Se observa que el valor del coeficiente de la pendiente indica que por cada llamada entrante, la variable de cantidad de llamadas salientes es aproximadamente 0.9 veces este valor. Finalmente, el valor de 127.7461 es debido a que durante un mes, la cantidad de llamadas raramente es un número pequeño, por lo tanto el valor de ***x*** no puede tomar un valor pequeño, en este sentido, el valor de 127.75 tiene sentido.
+
+La regresión no te daría mucha información si es que solo haces una llamada al mes, más si te daría información si te llaman `r median(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS)` veces, que es la media de llamadas entrantes por mes.
+
+**Descriptores de variable numerica discreta**
 
 ```{r, results='hold'}
 summary(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS/9)
@@ -513,6 +522,8 @@ DF %>%
 Descriptores_Dias
 ```
 
+La información revela una falta de datos o valores inusuales en los tres primeros meses de 2018, lo que podría indicar problemas en la recopilación de datos durante ese tiempo.
+
 Los datos estadísticos proporcionados se centran en la variable `DIAS_LLAMADAS_IN_TOT` que representa la cantidad de días en que se recibieron llamadas a lo largo de varios períodos. La información revela una falta de datos o valores inusuales en los tres primeros meses de 2018, lo que podría indicar problemas en la recopilación de datos durante ese tiempo.
 
 A partir de diciembre de 2018 y hasta mayo de 2019, se observa una relativa estabilidad en la cantidad de días de llamadas, con una mediana constante de 29 días y una mínima variación en los cuartiles. La media cercana a la mediana sugiere una distribución que se asemeja a una normal.
@@ -521,26 +532,26 @@ A pesar de las fluctuaciones en los valores máximos y mínimos, el rango interc
 
 De este análisis podemos decir que las personas en promedio hacen llamadas 26 días del mes.
 
+**Análisis univariado de variable numérica continua**
+
 ```{r}
 Descriptores_Datos <- DF %>%
    group_by(PERIODO) %>%
    summarise(
-      Min = min(DATOS_TOTAL, na.rm = TRUE),
-      `1st Qu.` = quantile(DATOS_TOTAL, 0.25, na.rm = TRUE),
-      Median = median(DATOS_TOTAL, na.rm = TRUE),
-      Mean = mean(DATOS_TOTAL, na.rm = TRUE),
-      `3rd Qu.` = quantile(DATOS_TOTAL, 0.75, na.rm = TRUE),
-      Max = max(DATOS_TOTAL, na.rm = TRUE),
-      Sd = sd(DATOS_TOTAL, na.rm = TRUE),
-      IQR = IQR(DATOS_TOTAL, na.rm=TRUE),
-      `Coef. Variation` = (sd(DATOS_TOTAL, na.rm = TRUE) / Mean)
+      Min = min(TIEMPO_LLAMADAS_OUT_TOT, na.rm = TRUE),
+      `1st Qu.` = quantile(TIEMPO_LLAMADAS_OUT_TOT, 0.25, na.rm = TRUE),
+      Median = median(TIEMPO_LLAMADAS_OUT_TOT, na.rm = TRUE),
+      Mean = mean(TIEMPO_LLAMADAS_OUT_TOT, na.rm = TRUE),
+      `3rd Qu.` = quantile(TIEMPO_LLAMADAS_OUT_TOT, 0.75, na.rm = TRUE),
+      Max = max(TIEMPO_LLAMADAS_OUT_TOT, na.rm = TRUE),
+      Sd = sd(TIEMPO_LLAMADAS_OUT_TOT, na.rm = TRUE),
+      IQR = IQR(TIEMPO_LLAMADAS_OUT_TOT, na.rm=TRUE),
+      `Coef. Variation` = (sd(TIEMPO_LLAMADAS_OUT_TOT, na.rm = TRUE) / Mean)
      )
 Descriptores_Datos
 ```
 
-En general, se observa un patrón de aumento constante en el consumo de datos móviles durante este período. Tanto la mediana como la media exhiben un crecimiento gradual en el consumo, pasando de 5845.112 MB en septiembre de 2018 a 7288.248 MB en mayo de 2019, lo que sugiere que los usuarios están utilizando cada vez más datos móviles. A pesar de esta tendencia alcista, el coeficiente de variación se mantiene cerca de 1, lo que indica una variabilidad relativamente constante en relación con la media. Esta consistencia en la variabilidad podría reflejar cierta previsibilidad en los patrones de consumo de datos.
-
-Además podemos ver que en el mes de enero es donde más se consumen datos lo cual puede decir que en las vacaciones las personas tienden a consumir más datos móviles probablemente por la cantidad de actividades fuera de casa que realizan.
+A lo largo de varios meses, se ha observado un aumento en la duración promedio de las llamadas salientes, con valores máximos significativamente altos en algunos casos. En diciembre de 2018, la duración promedio de las llamadas salientes fue de 546.12 minutos, y enero de 2019 registró una media de 531.40 minutos. Febrero mostró una disminución a 473.63 minutos, seguido de un aumento en marzo (516.67 minutos) y una disminución nuevamente en abril (496.64 minutos). Mayo mostró un aumento a 510.33 minutos. La variabilidad y la presencia de valores extremos sugieren que es importante investigar más a fondo las causas de estos cambios en la duración de las llamadas para tomar decisiones informadas en el contexto de las comunicaciones salientes.
 
 ### **Grafico 6**
 
@@ -676,9 +687,11 @@ ggplot(correlation_data, aes(Variable1, Variable2, fill = Correlation)) +
 
 De los gráficos **6** y **8** anteriores, podemos decir que en general, las llamadas que tu haces duran más que las llamadas que recibes.
 
+Y de los gráficos **7** y **9** podemos ver que las llamadas en la semana laboral, tanto entrantes como salientes se relacionan más con las llamadas totales, esto tiene que ver con que hay más tiempo en llamadas durante la semana laboral que en sábados y domingos.
+
 ### **Gráfico 10**
 
-Análisis de una variable categórica ordinal
+Análisis univariado de una variable categórica ordinal
 
 ```{r}
 ggplot(DF, aes(DF$PERIODO)) +
@@ -707,13 +720,22 @@ Podemos ver que la moda se encuentra en el mes de diciembre de 2018 con un total
 A lo largo de este estudio hemos analizado diferentes tipos de variables relacionadas con el comportamiento de un usuario, encontramos información relevante.
 
 -   La mayoría de usuarios no usan internet.
+<<<<<<< HEAD
 -   Si usas internet, consumes 7GB al mes.
+=======
+-   Si usas internet, consumes aproximadamente 7GB al mes.
+>>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 -   Llamas más de lo que te llaman.
 -   Probablemente seas Android.
 -   Probablemente usas Samsung.
 -   Llamas y te llaman en una proporción similar.
+<<<<<<< HEAD
 -   Tus llamadas duran menos de dos minutos.
 -   Llamas y te llaman más durante la semana.
+=======
+-   Tus llamadas duran menos de dos minutos aproximadamente.
+-   Llamas y recibes mas llamadas durante los dias laborables.
+>>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 
 Aunque esta información no se aplica para todas las personas, este sería el perfil del cliente más común para esta empresa de telefonía, sabiendo esto. Podemos decidir cosas como, que equipos vender, o cuándo hacer promociones.
 

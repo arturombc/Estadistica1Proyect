@@ -33,6 +33,13 @@ if(!require(ggrepel)){install.packages("ggrepel");library(ggrepel)}
 if(!require(tidyverse)){install.packages("tidyverse");library(tidyverse)}
 if(!require(forcats)){install.packages("forcats");library(forcats)}
 if(!require(ggmosaic)){install.packages("ggmosaic");library(ggmosaic)}
+<<<<<<< HEAD
+=======
+if(!require(fitdistrplus)){install.packages("fitdistrplus");library(fitdistrplus)}
+if(!require(rriskDistributions)){install.packages("rriskDistributions");library(rriskDistributions)}
+if(!require(fastGraph)){install.packages("fastGraph")};library(fastGraph)
+if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
+>>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 ```
 
 ```{r, carga-DF}
@@ -49,10 +56,13 @@ DF <- read_csv("DataLimpia.csv"
 ```{r}
 summary(DF$LLAMADAS_IN_TOT)
 summary(DF$LLAMADAS_OUT_TOT)
+<<<<<<< HEAD
 
 DF$DATOS_TOTAL
 DF$grupo_llamadas <- cut(DF$LLAMADAS_OUT_TOT, breaks = c(0, 10, 20, 30, 40, 50, Inf), labels = c("0-10", "11-20", "21-30", "31-40", "41-50", "Más de 50"))
 DF %>% group_by(grupo_llamadas) %>% summarise(media_contactos = mean(CONTACTOS_LLAMADAS_OUT_TOT))
+=======
+>>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 ```
 
 # **Parte 1**
@@ -63,7 +73,11 @@ La variable 1 será una forma de referirnos a la variable `LLAMADAS_IN_TOT`, que
 
 ### **Definición de experimento aleatorio para la variable 1**
 
+<<<<<<< HEAD
 Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que lo llamaron durante el mes.
+=======
+Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que la llamaron durante el mes.
+>>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 
 ### **Espacio de resultados teórico para la variable 1**
 
@@ -78,12 +92,19 @@ DF %>%
   select(ID,LLAMADAS_IN_TOT) %>%
   group_by(LLAMADAS_IN_TOT) %>%
   summarise(n = n()) -> E_1
+<<<<<<< HEAD
+=======
+E_1
+>>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 ```
 
 ```{r}
 tail(E_1)
+<<<<<<< HEAD
 E_1
 sum(E_1$P)
+=======
+>>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 ```
 
 Seleccionar una persona de mi estudio que ha recibido 0 llamadas durante el mes.
@@ -92,6 +113,10 @@ E_n el evento de atomico de que lo hayan llamado n veces al mes.
 
 ```{r}
 E_1 <- E_1[-nrow(E_1), ]
+<<<<<<< HEAD
+=======
+E_1
+>>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 ```
 
 ```{r}
@@ -104,6 +129,7 @@ E_1$P <- E_1$n / Tot1
 ```
 
 ```{r}
+<<<<<<< HEAD
 head(E_1)
 ```
 
@@ -113,6 +139,28 @@ sum(E_1$P)
 ```
 
 En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio.
+=======
+rename(E_1, "Eventos Atómicos" = LLAMADAS_IN_TOT, "Probabilidades atómicas" = P,"Cantidad de repeticiones" = n) -> E_1_
+head(E_1_)
+```
+
+Ahora podemos definir los eventos atómicos como:
+
+$$
+\begin{align*}
+& E_{1_i}\, \text{el evento atómico i del experimento 1 se define como}\\
+& E_{1_i} : \text{Te llaman }\textit{i }\text{veces durante el mes}\quad i\in\text{Eventos Atómicos}_1
+\end{align*}
+$$
+
+$\text{Eventos atómicos}_1$ Es un conjunto que representa a la columna Eventos atómicos de $E_1$.
+
+```{r}
+E_1
+```
+
+En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio. El nombre representa el experimento 1 sin intención de ser algo específico.
+>>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 
 ## **Variable 2**
 
@@ -124,7 +172,11 @@ Definimos un experimento $\{\Omega_2, \mathcal{F}_2, \mathbb{P}_2\}$.
 
 ### **Espacio de resultados teórico para LLAMADAS_IN_TOT**
 
+<<<<<<< HEAD
 De la misma forma que la anterior variable, esta también es una variable nuḿerica discreta, el espacio de resultados teóricos para esta variable es:
+=======
+De la misma forma que la anterior variable, esta también es una variable numérica discreta, el espacio de resultados teóricos para esta variable es:
+>>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 
 $$\Omega_2 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 8308\}$$
 
@@ -151,7 +203,27 @@ E_2$P <- E_2$n / Tot2
 ```
 
 ```{r}
+<<<<<<< HEAD
 head(E_2)
+=======
+rename(E_2, "Eventos Atómicos" = LLAMADAS_OUT_TOT, "Probabilidades atómicas" = P,"Cantidad de repeticiones" = n) -> E_2_
+head(E_2_)
+```
+
+Ahora podemos definir los eventos atómicos como:
+
+$$
+\begin{align*}
+& E_{2_i}\, \text{el evento atómico i del experimento 2 se define como}\\
+& E_{2_i} : \text{Haces una llamada }\textit{i }\text{veces durante el mes}\quad i\in\text{Eventos Atómicos}_2
+\end{align*}
+$$
+
+$\text{Eventos atómicos}_2$ Es un conjunto que representa a la columna Eventos atómicos de $E_2$.
+
+```{r}
+E_2
+>>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 ```
 
 En el DataFrame `E_2` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio.
@@ -237,7 +309,11 @@ P.E_2
 
 Mediante las 3 igualdades pudimos verificar que los eventos son relacionadas.
 
+<<<<<<< HEAD
 Esto significa que existe una relación entre que te llamen menos de 50 veces con que llames menos de 50 veces.
+=======
+Esto significa que la población de las personas que llamaron menos de 51 veces y la población de las personas que recibieron llamadas menos de 51 veces están relacionadas, es decir que hay personas que llamaron menos de 51 veces y que también recibieron llamadas menos de 51 veces.
+>>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 
 ### **Verificación extra**
 
@@ -251,6 +327,7 @@ chi_test
 
 Ya que vemos que el p-value es menor que un nivel de significancia 0.05 se puede decir que las variables están relacionadas.
 
+<<<<<<< HEAD
 -   La probabilidad de que un usuario seleccionado al azar haya recibido a lo más 50 llamadas, considerando que como máximo realizó 50 llamadas durante un mes es de 0.3338827
 
 -   La probabilidad de que un usuario seleccionado al azar reciba a lo más 50 llamadas es de 0.1474676
@@ -275,4 +352,302 @@ P1
 P2
 P3
 
+=======
+# Parte 3
+
+## Variable 1:
+
+La variable 1 discreta será `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.}
+
+$E_1$: De $\mathcal{F}_1$, consideramos el evento $E_1$ que consiste en elegir un usuario al azar y que el usuario haya recibido menos de 51 veces durante el mes.
+
+```{r}
+P.E_1
+```
+
+Tomaremos la suposición de que cada evento es independiente del anterior, lo cual es probable.
+
+Con `P.E_2` probabilidad podemos modelar una variable binomial.
+
+$$
+X_1 \sim \mathsf{Binom}(100,0.1063465)
+$$
+
+Ahora, queremos
+
+$$P(X_1 \geq x)$$
+
+$x$: \# de exitos de $E_1$
+
+$n$: \# de veces que se repite el experimento
+
+$p$: probabilidad de éxito de $E_1$
+
+Si se desea hallar la probabilidad de que si al repetir el experimento $\epsilon_1$ 100 veces, por lo menos 10 de ellos hayan recibido menos de 51 llamadas durante el mes podemos usar la función `pbinom` para calcularlo.
+
+```{r}
+pbinom(9,100,P.E_1,lower.tail=FALSE)# = p(X>9) 
+```
+
+Hallando la esperanza y varianza:
+
+```{r}
+ #𝑬(𝑿)=𝒏𝒑
+Es_1<-100*P.E_1
+Es_1
+
+#𝑽(𝑿)=𝒏.𝒑.𝒒 
+V_1<-100*P.E_1*(1-P.E_1)
+V_1
+```
+
+Se espera que al repetir el experimento $\epsilon_1$ 100 veces, Es_1 de ellos hayan recibido menos de 50 llamadas durante el mes.
+
+```{r}
+hist(log(DF$LLAMADAS_OUT_TOT))
+sz <- length(DF$LLAMADAS_OUT_TOT)
+lines(1:8,dbinom(1:8,sz,P.E_1),type = "h")
+```
+
+## Variable 2:
+
+La variable 2 discreta será `LLAMADAS_OUT_TOT`, que es la cantidad de llamadas que un usuario realiza durante un mes.
+
+$E_2$: De $\mathcal{F}_2$, consideramos el evento $E_2$ que consiste en elegir un usuario al azar y que el usuario haya llamado menos de 51 veces durante el mes.
+
+```{r}
+P.E_2
+```
+
+Tomaremos la suposición de que cada evento es independiente del anterior, lo cual es probable.
+
+Con `P.E_2` probabilidad podemos modelar una variable binomial.
+
+$$
+X_2 \sim \mathsf{Binom}(100,0.1063465)
+$$
+
+Ahora, queremos
+
+$$P(X_2 \geq 10)$$
+
+$x$: \# de exitos de $X_2$
+
+$n$: \# de veces que se repite el experimento
+
+$p$: probabilidad de éxito de $E_2$
+
+Si se desea hallar la probabilidad de que si al repetir el experimento $\epsilon_2$ 100 veces, por lo menos 10 de ellos hayan llamado menos de 51 veces durante el mes podemos usar la función `pbinom` para calcularlo.
+
+```{r}
+pbinom(9,100,P.E_2,lower.tail=FALSE)# = p(X>9)
+```
+
+Hallando el esperado y varianza:
+
+```{r}
+#𝑬(𝑿)=𝒏𝒑 
+Es_2<-100*P.E_2
+Es_2
+#𝑽(𝑿)=𝒏.𝒑.𝒒  
+V_2<-100*P.E_2*(1-P.E_2)
+V_2
+```
+
+Se espera que al repetir el experimento $\epsilon_1$ 100 veces, Es_1 de ellos hayan recibido menos de 50 llamadas durante el mes.
+
+# Parte 4
+
+## Variable 3
+
+La variable 3 continua será `TIEMPO_LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
+
+### Elección de modelo
+
+```{r}
+x <-DF$TIEMPO_LLAMADAS_IN_TOT
+x <- x[!is.na(x)]
+x <- x[x > 1]
+fit.cont(x) # rriskDistributions
+descdist(x) # fitdistplus
+```
+
+Se decidió tomar el modelo *log normal*.
+
+```{r}
+hist(log(DF$TIEMPO_LLAMADAS_IN_TOT))
+```
+
+```{r}
+Z <- log(x)
+```
+
+Para verificar que esto cumple, podemos mirar la centralidad.
+
+```{r}
+median(Z)
+mean(Z)
+```
+
+Aproximadamente son parecidas, esto fue necesario verificarlo más no es suficiente.
+
+### Cálculo de parámetros
+
+Para calcular los parámetros, se hará de dos formas.
+
+```{r}
+fitdist(Z,"norm")
+```
+
+y
+
+```{r}
+m <- mean(Z)
+s <- sd(Z)
+m
+s
+```
+
+### Gráfico de verificación
+
+Para verificar si es una buena elección, podemos graficarlo.
+
+```{r}
+hist(Z,breaks = 50 , prob = TRUE)
+curve(dnorm(x, mean = m, sd = s), add = TRUE, col = "red", lwd = 2)
+```
+
+### Cálculo de la esperanza y varianza
+
+Como nuestra distribución se distribuye normal con parámetros `m` y `s`
+
+La esperanza y la varianza serían
+
+```{r, results=hold}
+Esperanza_X <- m
+Varianza_X <- s^2
+sprintf("E(X_3) =  %f",Esperanza_X)
+sprintf("Var(X_3) = %f",Varianza_X)
+```
+
+### Cálculo de probabilidades
+
+Ya que tenemos un modelo, podemos calcular probabilidades.
+
+¿Cuál es la probabilidad de que alguien llame menos de 420 minutos al mes (6h y 30m)?
+
+Podemos calcular eso usando la función `pnorm` y el parámetro a calcular tendrá que pasarse en `log` debido a la transformación que fue hecha.
+
+```{r}
+pnorm(log(420),m,s)
+```
+
+También se puede ver gráficamente.
+
+```{r}
+shadeDist(log(420),"dnorm",m,s)
+```
+
+## Variable 4
+
+La variable 4 continua será `DATOS_4G`, que es la cantidad de datos 4G que un usuario utiliza durante un mes.
+
+### Elección de modelo
+
+```{r}
+hist(DF$DATOS_4G)
+datos_4g <- DF$DATOS_4G
+descdist(datos_4g)
+```
+
+```{r}
+datos_4g <- datos_4g[datos_4g!=0]
+datos_4g <- datos_4g[!is.na(datos_4g)]
+datos_4g <- datos_4g[datos_4g > 1]
+datos_4g2 <- ((datos_4g - min(datos_4g)) / (max(datos_4g)-min(datos_4g)))
+#fitdist(datos_4g2,"beta")
+#fitdist(datos_4g,"gamma")
+fitdist(datos_4g,"lnorm")
+```
+
+Pese a los intentos, la variable no se pudo calcular como una distribución gamma ni beta.
+
+### Cálculo de parámetros
+
+Se decidió tomar el modelo *log normal*.
+
+```{r}
+Z <- log(datos_4g)
+```
+
+Para verificar que esto cumple, podemos mirar la centralidad.
+
+```{r}
+median(Z)
+mean(Z)
+```
+
+Aproximadamente son parecidas, esto fue necesario verificarlo más no es suficiente.
+
+Para calcular los parámetros, se hará de dos formas.
+
+```{r}
+fitdist(Z,"norm")
+```
+
+y
+
+```{r}
+m <- mean(Z)
+s <- sd(Z)
+s;m
+```
+
+Vimos que estos parámetros coinciden con los anteriormente calculados.
+
+Diremos:
+
+$$
+X_3 \sim \mathsf{Norm}(s,m)
+$$
+
+### Gráfico de verificación
+
+Para verificar si es una buena elección, podemos graficarlo.
+
+```{r}
+hist(Z,breaks = 50 , prob = TRUE)
+curve(dnorm(x, mean = m, sd = s), add = TRUE, col = "red", lwd = 2)
+```
+
+### Cálculo de la esperanza y varianza
+
+Como nuestra distribución se distribuye normal con parámetros `m` y `s`
+
+La esperanza y la varianza serían.
+
+```{r, results=hold}
+Esperanza_X <- m
+Varianza_X <- s^2
+sprintf("E(X_4) =  %f",Esperanza_X)
+sprintf("Var(X_4) = %f",Varianza_X)
+```
+
+### Cálculo de probabilidades
+
+Ya que tenemos un modelo, podemos calcular probabilidades.
+
+¿Cuál es la probabilidad de que alguien gaste menos de 10Gbi en datos al mes(10000Mbi)?
+
+Podemos calcular eso usando la función `pnorm` y el parámetro a calcular tendrá que pasarse en `log` debido a la transformación que fue hecha.
+
+```{r}
+pnorm(log(10000),m,s)
+```
+
+También se puede ver gráficamente.
+
+```{r}
+shadeDist(log(10000),"dnorm",m,s)
+>>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 ```
