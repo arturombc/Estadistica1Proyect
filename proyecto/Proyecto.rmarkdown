@@ -1,0 +1,799 @@
+---
+title: <center><span>Minería de Datos en la Industria de Telefonía Móvil<span>:</span> Análisis de clientes peruanos entre septiembre del 2018 y mayo del 2019.</span></center>
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    toc-title: Contenido
+    anchor_sections: TRUE # Mostrar anclaje de la sección al pasar el mouse
+    code_download: TRUE # Permite a los lectores descargar el qmd
+    code_folding: TRUE # Permite a los lectores cambiar a none, hide or show
+    fig_caption: TRUE # Las imagenes se renderizan con caption
+    theme: journal  #superhero cyborg, darkly, journal, vapor. Library "bslib"
+    # runtime: shiny # sirve para que la librería shiny interactiva funcione. library("shiny")
+    number-sections: true
+    embed-resources: true
+    author-title: Autores
+
+author: 
+  - Arturo Barrantes Chuquimia
+  - Sheyla Sanchez Arauco 
+  - Andrea Maricielo Pérez Castro 
+  - Alejandro Rojas Alvarez
+  - Luis David Acedo Lopez
+editor: visual
+---
+
+```{=html}
+<style>
+.toggle-content {
+  display: none;
+}
+#toggle-button{
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #3498db;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+</style>
+```
+
+# [**Introducción**]{style="color:#1FB0DB"}
+
+## **Relevancia**
+
+En el contexto empresarial, analizar una base de datos con información de los clientes puede llegar a ser crucial para el crecimiento de una empresa; así como del uso correcto de los recursos.\
+A lo largo de este trabajo, se analizará el comportamiento de los clientes de una empresa de telefonía móvil. El objetivo será encontrar *insights* con el fin de optimizar nuestros esfuerzos hacia el crecimiento empresarial.
+
+## **Objetivos**
+
+### **Objetivo general**
+
+Analizar el comportamiento de la transferencia de datos y llamadas en los clientes peruanos de una empresa de telefonía móvil entre septiembre del 2018 y mayo del 2019. Los objetivos están orientados a encontrar posibles *insights* que nos permitan mejorar el desempeño de la empresa de telefonía móvil.
+
+Las conclusiones de estos objetivos nos permitirán tomar decisiones que puedan resultar en un mejor desempeño general.
+
+### **Objetivos específicos**
+
+1.  Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
+2.  Analizar la duración y la cantidad de llamadas entrantes y salientes a un usuario.
+3.  Analizar la duración de las llamadas durante periodos específicos de la semana y cómo se relacionan las variables involucradas.
+
+## **Planificación**
+
+Después de limpiar los datos iniciales, juntar los datos que nos son relevantes en un único csv. Podemos hacer un análisis más exhaustivo y menos complicado que si fueran en varias tablas. El trabajo se dividirá en el cumplimiento de los 3 objetivos antes presentados. Cada objetivo tendrá su respectiva sección, así como lo que motivó su búsqueda y conclusiones. Finalmente se uniran todas las conclusiones en un capítulo final.
+
+### **Librerías y setup**
+
+
+```{r, liberías, message=FALSE}
+if(!require(readr)){install.packages("readr");library(readr)}
+if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
+if(!require(ggplot2)){install.packages("ggplot2");library(ggplot2)}
+if(!require(ggthemes)){install.packages("ggthemes");library(ggthemes)}
+if(!require(ggrepel)){install.packages("ggrepel");library(ggrepel)}
+if(!require(tidyverse)){install.packages("tidyverse");library(tidyverse)}
+if(!require(forcats)){install.packages("forcats");library(forcats)}
+if(!require(ggmosaic)){install.packages("ggmosaic");library(ggmosaic)}
+```
+
+```{r, setup, message=FALSE}
+knitr::opts_chunk$set(
+  #comment = '', fig.width = 14, fig.height = 9
+  warning = FALSE,
+  message = FALSE,
+  error = FALSE
+)
+```
+
+
+### **Milestones del proyecto**
+
+
+```{mermaid, flowchart}
+flowchart LR
+  A[Recolección de datos] --> B(Unión y limpieza de datos)
+  B --> C{Objetivos}
+  C --> D[Objetivo 1]
+  C --> E[Objetivo 2]
+  C --> F[Objetivo 3]
+  D --> G(Resultado 1)
+  E --> H(Resultado 2)
+  F --> I(Resultado 3)
+  G --> J(Conclusiones finales)
+  H --> J
+  I --> J
+```
+
+
+### **Timeline del proyecto**
+
+
+```{R, Timeline, message=FALSE}
+timeline <- read_csv("timeline.csv")
+ggplot(timeline, aes(x = inicio, xend = fin, y = Integrantes, yend = Integrantes, color = actividad)) +
+  geom_segment(linewidth = 2, lineend = "round") +
+  labs(
+    title = 'Timeline de proyecto',
+    x = 'Fecha',
+    y = 'Participantes'
+  ) +
+  scale_colour_brewer(palette = "Set1") +
+  theme_minimal() +
+  theme(
+    axis.title = element_text(size = 15),
+    axis.text.x = element_text(size = 10),
+    legend.position = "top",
+    legend.title = element_blank(),
+    plot.title = element_text(size = 20, hjust = 0.5)
+  )
+```
+
+
+# [**Datos**]{style="color:#1FB0DB"}
+
+## **Carga de la base de datos**
+
+
+```{r, carga-DF}
+DF <- read_csv("DataLimpia.csv"
+               , col_types = cols(.default = col_guess()
+                                  , CHIP=col_factor(levels = c("2G","3G","4G"))
+                                  , PERIODO=col_date(format = "%Y%m")
+                                  )
+               )
+```
+
+
+## **Recolección**
+
+Los datos utilizados en este análisis fueron recopilados durante el período mencionado de febrero a mayo de 2019. La información se obtuvo de los registros de la empresa de telefonía móvil, que incluye una variedad de variables relacionadas con el equipo, el tráfico de datos, las llamadas y otros aspectos del uso del servicio por parte de los clientes.
+
+## **Población, muestra y muestreo**
+
+-   **POBLACIÓN:** Usuarios de telefonía móvil dentro de Perú.
+-   **MUESTRA:** Clientes de una empresa de telefonía móvil en Perú durante el período de septiembre del 2018 a mayo de 2019.
+    -   **UNIDAD MUESTRAL:** Registro de un cliente en un determinado mes.
+    -   **TAMAÑO:** `r nrow(DF)` observaciones.
+    -   **REPRESENTATIVIDAD:** Si.
+-   **MUESTREO:** Muestreo no aleatorio por conveniencia.
+
+## **Variables**
+
+Las variables con las que contamos son las siguientes:
+
+<button id="toggle-button" onclick="toggleContent()">
+
+Mostrar/Ocultar Contenido
+
+</button>
+
+::: toggle-content
+| VARIABLE                   | CLASE y TIPO          | RESTRICCION                   | DESCRIPCCION                                                                                                                        |
+|----------------------------|-----------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| ID                         | Categórica Nominal    | Hash de 44 letras             | Nombre encriptado de la persona                                                                                                     |
+| PERIODO                    | Categórica Ordinal    | Entre febrero y mayo del 2019 | Periodo de la información                                                                                                           |
+| CHIP                       | Categórica Ordinal    | 2G, 3G, 4G                    | Tecnología del chip                                                                                                                 |
+| MARCA                      | Categórica Nominal    | LG, SAMSUNG, APPLE, etc.      | Marca del equipo                                                                                                                    |
+| MODELO                     | Categórica Nominal    | Galaxy J2, iPhone6, etc.      | Modelo del dispositivo                                                                                                              |
+| OS                         | Categórica Nominal    | Android, iOS, sin tac, otros. | Tipo de sistema operativo                                                                                                           |
+| DATOS_4G                   | Cuantitativa Continua | Número positivo               | MB consumidos en 4G                                                                                                                 |
+| DATOS_3G                   | Cuantitativa Continua | Número positivo               | MB consumidos en 3G                                                                                                                 |
+| DATOS_2G                   | Cuantitativa Continua | Número positivo               | MB consumidos en 2G                                                                                                                 |
+| DATOS_TOTAL                | Cuantitativa Continua | Número positivo               | MB consumidos en total                                                                                                              |
+| TIEMPO_4G                  | Cuantitativa Continua | Número positivo               | Tiempo de navegación en 4G                                                                                                          |
+| TIEMPO_3G                  | Cuantitativa Continua | Número positivo               | Tiempo de navegación en 3G                                                                                                          |
+| TIEMPO_2G                  | Cuantitativa Continua | Número positivo               | Tiempo de navegación en 2G                                                                                                          |
+| DPTO_DATOS                 | Categória Nominal     | LIMA, HUÁNUCO, PIURA, etc.    | Departamento en el cuál se consumió mayor cantidad de Mb's                                                                          |
+| DPTO_TIEMPO_LLAMADAS       | Categória Nominal     | LIMA, HUÁNUCO, PIURA, etc.    | Departamento en el cuál se realizó mayor tiempo de llamadas, en minutos                                                             |
+| TIEMPO_LLAMADAS_IN_TOT     | Cuantitativa Continua | Número positivo               | Tiempo total de llamadas recibidas durante el periodo, en minutos                                                                   |
+| TIEMPO_LLAMADAS_IN_SEM     | Cuantitativa Continua | Número Positivo               | Tiempo total de llamadas recibidas de Lunes a Viernes durante el periodo, en minutos                                                |
+| TIEMPO_LLAMADAS_IN_FINDE   | Cuantitativa Continua | Número Positivo               | Tiempo total de llamadas recibidas de Sábado a Domingo durante el periodo, en minutos                                               |
+| LLAMADAS_IN_TOT            | Cuantitativa Discreta | Número entero y positivo      | Cantidad de llamadas recibidas durante el periodo                                                                                   |
+| LLAMADAS_IN_SEM            | Cuantitativa Discreta | Número entero y positivo      | Cantidad de llamadas recibidas de Lunes a Viernes durante el periodo                                                                |
+| LLAMADAS_IN_FINDE          | Cuantitativa Discreta | Número entero y positivo      | Cantidad de llamadas recibidas de Sábado a Domingo durante el periodo                                                               |
+| TIEMPO_LLAMADAS_OUT_TOT    | Cuantitativa Continua | Número positivo               | Tiempo total de llamadas realizadas durante el periodo                                                                              |
+| TIEMPO_LLAMADAS_OUT_SEM    | Cuantitativa Continua | Número positivo               | Tiempo total de llamadas realizadas de Lunes a Viernes durante el periodo, en minutos                                               |
+| TIEMPO_LLAMADAS_OUT_FINDE  | Cuantitativa Continua | Número positivo               | Tiempo total de llamadas realizadas de Sábado a Domingo durante el periodo, en minutos                                              |
+| LLAMADAS_OUT_TOT           | Cuantitativa Discreta | Número entero y positivo      | Cantidad de llamadas realizadas durante el periodo                                                                                  |
+| LLAMADAS_OUT_SEM           | Cuantitativa Discreta | Número entero y positivo      | Cantidad de llamadas realizadas de Lunes a Viernes durante el periodo                                                               |
+| LLAMADAS_OUT_FINDE         | Cuantitativa Discreta | Número entero y positivo      | Cantidad de llamadas realizadas de Sábado a Domingo durante el periodo                                                              |
+| CONTACTOS_LLAMADAS_IN_TOT  | Cuantitativa Discreta | Número entero y positivo      | Contactos totales de los que recibió alguna llamada durante el periodo                                                              |
+| CONTACTOS_LLAMADAS_OUT_TOT | Cuantitativa Discreta | Número entero y positivo      | Contactos totales a los que llamó durante el periodo                                                                                |
+| DIAS_LLAMADAS_IN_TOT       | Cuantitativa Discreta | Número entero y positivo      | Cantidad de días que recibieron llamadas durante el periodo                                                                         |
+| DIAS_LLAMADAS_OUT_TOT      | Cuantitativa Discreta | Número entero y positivo      | Cantidad de días que realizó llamadas durante el periodo                                                                            |
+| CONTACTOS_TOT              | Cuantitativa Discreta | Número entero y positivo      | Contactos totales con los que realizó un evento (llamada entrante / saliente o mensaje de texto saliente) durante el periodo        |
+| CONTACTOS_TOT_5            | Cuantitativa Discreta | Número entero y positivo      | Contactos totales con los que realizó más de 5 eventos (llamada entrante / saliente o mensaje de texto saliente) durante el periodo |
+:::
+
+## **Política de Limpieza de Datos**
+
+En un inicio se fue proporcionada una base de datos que contenía 9 tablas. Después de medir el posible impacto, carga y trabajo se decidió usar DF1, DF6, DF8 y DF9. Asimismo, se filtraron las columnas que nos parecieron más relevantes para este trabajo.
+
+Después se unieron las tablas mediante `left_join`, se utilizó DF1 como tabla de cruce; con esta estrategia se recuperó la mayor información posible que es relevante para nuestro estudio.
+
+Los nombres de las variables fueron cambiadas a español con la intención de una mejor comprensión.
+
+El porcentaje de datos nulos en la tabla es `r round(sum(is.na(DF))/(nrow(DF)*ncol(DF))*100 , digits = 2)`% y la cantidad de casos completos es `r sum(complete.cases(DF))`. La razón por la que tenemos una relativa gran cantidad de casos incompletos es porque no se registraron todos los indicadores de red para los periodos anteriores a febrero del 2019. Pero se decidió conservar esas observaciones principalmente para tener una muestra más grande sobre `EQUIPOS`.
+
+# [**Análisis Descriptivo**]{style="color:#1FB0DB"}
+
+## [**OBJETIVO 1:**]{style="color:#1F2CDB"}
+
+Analizar la relación entre el equipo y el tráfico de datos de los usuarios por periodo.
+
+### **Motivación y desarrollo**
+
+La justificación de este objetivo reside en que latinoamérica es actualmente el continente que en proporción consume más el internet en el [mundo](https://www.atlantico.vc "Latin America Digital Transformation Report 2023"). Además, en el año 2019, los peruanos [tenian un consumo considerable de datos](https://m.inei.gob.pe/prensa/noticias/el-668-de-la-poblacion-de-6-y-mas-anos-de-edad-accedio-a-internet-de-enero-a-marzo-del-presente-ano-12954/ "Uso de teléfonos móviles Perú").
+
+En este aspecto, analizar patrones puede permitir un mejor dominio de mercado por cualquier empresa de telefonía móvil actual, esto hace que este análisis se vuelva indispensable para conocer mejor el mercado actual y tomar mejores decisiones basadas en los datos.
+
+Existen diferentes tipos de tecnología para telecomunicaciones, durante este proyecto analizaremos las de 2G, 3G y 4G; con la intención de dar contexto a los gráficos, mostraremos las diferencias entre cada una de estas tecnologías y daremos una intuición de en que contexto se pueden usar.
+
+![](src/chip.jpg "Tecnología de Chips")
+
+-   2G: Permite solamente llamadas y mensajes. Generalmente se utiliza cuando no existe cobertura de otro tipo. Podría ser que se use en zonas alejadas de las grandes ciudades, generalmente en modelos antiguos. No soporta la conexión a internet.
+
+-   3G: La velocidad de descarga se aumenta, este aumento [permite visualizar](https://kenstechtips.com/index.php/download-speeds-2g-3g-and-4g-actual-meaning "Velocidad de descarga con redes 2g, 3g y 4g") contenido de streaming como videos de youtube, aunque no a una muy buena calidad.
+
+-   4G: Como referencia, con esta tecnología es posible ver videos a 4K de resolución, el uso de esto esta más ampliamente distribuido a lo largo de las grandes ciudades y en 2019 fué el tipo de chip más utilizado.
+
+Podemos tener una primera suposición de que esto implica que se consuman más datos de 4G que de los demás debido a la diversidad de usos que se le puede dar a este tipo de datos; y además, a la comercialización masiva de esta tecnología.
+
+Una primera pregunta que hacer es ver si tu dispositivo puede datos que sean diferentes a la tecnología de tu chip. Podemos averiguar eso utilizando las funciones de la librería `dplyr`.
+
+
+```{r, chip-4g-datos-nrow}
+DF %>% 
+  filter(CHIP=="4G", DATOS_2G > 0, DATOS_3G > 0) %>%
+  nrow()
+```
+
+
+Mediante el anterior chunk podemos ver que aunque tu chip tenga una tecnología principal de 4G, a veces puede recurrir a redes de 2G y 3G.
+
+¿Cómo será con los otros 2 tipos de chips?
+
+
+```{r, uso-datos-chip-nrow, results='hold'}
+DF %>% 
+  filter(CHIP=="2G") %>%
+  select(DATOS_2G,DATOS_3G,DATOS_4G) %>%
+  filter(DATOS_4G > 0 | DATOS_3G > 0) %>%
+  nrow()
+DF %>% 
+  filter(CHIP=="3G") %>%
+  select(DATOS_2G,DATOS_3G,DATOS_4G) %>%
+  filter(DATOS_4G > 0) %>%
+  nrow()
+```
+
+
+A pesar de no ser intuitivo, podemos decir que aunque la tecnología del chip sea inferior, aún es posible recurrir a la transferencia de datos mediante otras redes.
+
+Ahora que sabemos qué significan los diferentes tipos de tecnología de chip, podemos ver cómo es que se comporta esta variable a lo largo de estos `r length(DF$PERIODO)` meses y cuánta es la transferencia de datos para cada tipo de chip. Usaremos unidades de GB, por lo tanto dividiremos `DATOS_TOTAL`(MB) entre 1000 para apreciar una mejor escala.
+
+### **Gráfico 1**
+
+Gráfico de variable categórica vs numérica.
+
+
+```{r}
+nombres_personalizados <- c("2018-09-01" = "Septiembre 2018", 
+                            "2018-10-01" = "Octubre 2018",
+                            "2018-11-01" = "Noviembre 2018",
+                            "2018-12-01" = "Diciembre 2018",
+                            "2019-01-01" = "Enero 2019",
+                            "2019-02-01" = "Febrero 2019",
+                            "2019-03-01" = "Marzo 2019",
+                            "2019-04-01" = "Abril 2019",
+                            "2019-05-01" = "Mayo 2019")
+labeller_personalizado <- as_labeller(nombres_personalizados)
+
+ylim_min <- -1
+ylim_max <- (1.5*quantile(DF$DATOS_TOTAL, 0.75) + IQR(DF$DATOS_TOTAL, na.rm = TRUE))/1000
+
+media_per <- aggregate(DATOS_TOTAL ~ PERIODO, data = DF, FUN = mean)
+mediana_per <- aggregate(DATOS_TOTAL ~ PERIODO, data = DF, FUN = median)
+
+ggplot(DF, aes(CHIP, DATOS_TOTAL/1000, fill = CHIP)) + 
+  geom_boxplot(na.rm = TRUE, outlier.shape = NA) +
+  facet_wrap(vars(PERIODO), ncol = 3, labeller = labeller_personalizado) +
+  xlim(c("2G","3G","4G")) +
+  ylim(ylim_min, ylim_max) +  # Establecer los límites del eje y
+  geom_hline(data = media_per
+             , aes(yintercept = DATOS_TOTAL / 1000, color="Media")
+             , linetype = "dashed") +
+  geom_hline(data = mediana_per
+             , aes(yintercept = DATOS_TOTAL / 1000, color="Mediana")
+             , linetype = "dashed") +
+  theme_solarized() +
+  ggtitle("Uso de red de usuarios por periodo") +
+  labs(x = NULL
+       , y = "DATOS EN GB"
+       , color = "Media y mediana")
+```
+
+
+En esta gráfica se utilizó el límite en el eje *y* como el tercer cuartíl más 1.5 veces la IQR de `DF$DATOS_TOTAL`, además se eliminó la visualización de datos atípicos para una visualización más limpia. Esto se realizó porque los valores atípicos son extremadamente diferentes en escala al compararlos con los datos más comunes; por ejemplo, el máximo valor en GB que se gastó en un periodo es `r round(max(DF$DATOS_TOTAL/1000), 2)`, a comparación del valor de la mediana que es `r round(median(DF$DATOS_TOTAL/1000), 2)`. Debido a este comportamiento, en algunos de los gráficos futuros se tomarán los valores dentro de un intervalo razonable (1.5 veces IQR).
+
+Ahora surge la pregunta: ¿Qué significan estos números? Podemos explicar esto dando un ejemplo de [cuánto](https://kenstechtips.com/index.php/data-plans/1gb-data "1GB of Data: How Much Is It & How Long Does It Last? Mobile Data Limits") puedes lograr con 1GB de transferencia de datos.
+
+-   1GB: Descargar un video de 30 min en HD
+-   10GB: 300 horas de llamada de voz por Whatsapp
+-   100GB: Descargar 250 aplicaciones
+
+Podemos decir que una persona con un chip 4G, al mes, consume 8GB lo que equivale a 30 horas de llamadas por Whatsapp(1GB), descargar una película de 2h(4GB) y descarga 5 apps (2GB).
+
+Ya que en el gráfico anterior pudimos ver el comportamiento entre entre el consumo de datos por `CHIP` en cada `PERIODO` y no vimos nada inusual, podemos decidir tomar de forma razonable a la variable `DATOS_4G` y analizarla.
+
+### **Gráfico 2**
+
+Análisis univariado de variable numérica continua e histograma.
+
+
+```{r histograma1, warning=FALSE}
+xlim_min <- -1
+xlim_max <- (quantile(DF$DATOS_4G, 0.75) + 1.5*IQR(DF$DATOS_4G, na.rm = TRUE))/1000
+
+ggplot(DF, aes(DATOS_4G/1000)) +
+  geom_histogram(aes(fill=..count..),binwidth = 0.5) +
+  xlim(xlim_min,xlim_max) +
+  xlab("Datos en GB") +
+  ylab("Cantidad de usuarios") +
+  scale_fill_gradient(low = "red", high = "yellow") +
+  theme_solarized()
+```
+
+
+Podemos ver que la clase modal es de \[0,0.5\] lo que significa que generalmente las personas no gastan datos.
+
+
+```{r}
+Q1 <- quantile(DF$DATOS_4G, 0.25)/1000
+Q3 <- quantile(DF$DATOS_4G, 0.75)/1000
+IQ <- IQR(DF$DATOS_4G) / 1000
+dat_4g_atipicos <- sum(DF$DATOS_4G/1000 < (Q1 - 1.5 * IQ) | DF$DATOS_4G/1000 > (Q3 + 1.5 * IQ))
+```
+
+
+Podemos ver de la gráfica 1 que la media y la mediana de los datos 4G no están alineadas, podemos declarar con cierta confianza que se debe a los `r dat_4g_atipicos` datos atípicos, aunque estos representen un `r round((dat_4g_atipicos/length(DF$DATOS_4G))*100,2)`% de los datos. Podemos analizar la desviación estándar para ver cómo es que se comportan estos *outliers*.
+
+
+```{r}
+sd(DF$DATOS_4G, na.rm = TRUE) / 1000
+```
+
+
+Podemos ver que a pesar de nuestras sospechas, pareciera que no es muy alta la desviación estándar. Pero esto es debido a la gran cantidad de datos de la muestra, esto hace que el denominador, al momento de calcular la desviación estándar, sea muy grande y eso hace que el número en general se reduzca. Pero podemos contrarrestar en cierta medida estos cambios si utilizamos el coeficiente de variación.
+
+Se usará el coeficiente de variación para ver que tan dispersa es la muestra, no tenemos la necesidad de transformar las unidades ya que eso no afecta al cálculo final.
+
+
+```{r}
+coef_var_DATOS_4G <- (sd(DF$DATOS_4G, na.rm = TRUE))/mean(DF$DATOS_4G)
+coef_var_DATOS_4G
+```
+
+
+Tenemos un coeficiente de variación de `r round(coef_var_DATOS_4G*100,2)`%, que según las convenciones establecidas, es considerado bastante alto, además confirma nuestras sospechas de que era el número de observaciones lo que hacía que la desviación estándar parezca pequeña. El coeficiente de variación indica que la dispersión de los datos es bastante grande; también, describir la variable con la media puede no ser adecuado, la mediana es un mejor descriptor en este caso.
+
+Podemos decir que los usuarios usan aproximadamente `r round(median(DF$DATOS_4G)/1000,2)`GB por mes (mediana). Esto equivale aproximadamente a descargar una película en HD y llamar a tus amigos por Whatsapp durante 3 horas al día durante todo el mes.
+
+### **Gráfico 3**
+
+Gráfico de variable categórica vs categórica.
+
+
+```{r mosaic1,warning=FALSE}
+ggplot(data = DF) +
+  geom_mosaic(aes(x = product(OS), fill = CHIP)) +
+  theme_mosaic() +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.text.x = element_text(angle = -90, hjust = 0, vjust = 1)) +
+  labs(title = "Tabla de Chip vs Sistema Operativo")
+```
+
+
+Podemos ver que en su mayoría los usuarios con un `OS` que esta calificado como "Otros" usan en su mayoria CHIPS 2G. Esto podría deberse a que son equipos antiguos que se usan principalmente para la comunicación sin acceso a internet. Pero sin más datos no podemos concluir nada.
+
+También vemos que en proporción, los que tienen `CHIP` 4G son principalmente los usuarios de *IOS*.
+
+Podemos concluir que el `CHIP` tiene una relación con el `OS` ya que las proporciones no son las mismas en el *mosaicplot*.
+
+### **Gráfico 4**
+
+Análisis univariado de variable categórica nominal.
+
+
+```{r}
+# Condicion: hi% > 3 
+# Contamos las marcas únicas excluyendo las que cumplen la condición (398)
+cant_marcas_f <- length(unique(DF$MARCA)[!(unique(DF$MARCA) %in% c("APPLE", "HUAWEI", "LG", "MOTOROLA", "SAMSUNG"))])
+
+# Calculamos las hi% de cada marca y si es < 3 renombrar por OTROS
+Fi <- table(DF$MARCA)
+hi <- round(prop.table(Fi)*100, digits = 2)
+DF_temp <- DF
+DF_temp$MARCA <- ifelse(hi[DF_temp$MARCA] > 3, DF_temp$MARCA, "OTRA")
+frec <- round(prop.table(table(DF_temp$MARCA))*100, digits = 2)
+
+# Agrupamos las variables de interés
+DF_temp <- data.frame(
+  Marca = names(table(DF_temp$MARCA)),
+  Frec = as.numeric(frec)
+)
+#DF_temp$Frec[DF_temp$Marca == "OTRA"] <- round(DF_temp$Frec[DF_temp$Marca == "OTRA"] / cant_marcas_f, digits = 2)
+
+# Gráfico circular
+etiqueta <- paste(DF_temp$Frec,"%", sep = " ")
+colores <-c("#F4D03F", "#5DADE2", "#F5B041", "#58D68D", "#AF7AC5", "#EC7063")
+pie(DF_temp$Frec, labels = etiqueta, clockwise = TRUE, col = colores,
+    main = "Marcas de teléfonos preferidas por los usuarios")
+legend("topright", c("APPLE", "HUAWEI", "LG", "MOTOROLA", "OTRAS", "SAMSUNG"), cex = 0.75, fill = colores)
+```
+
+
+Se registraron un total de 403 `MARCAS` diferentes de celulares, de las cuales únicamente 5 fueron las elegidas por un porcentaje considerable de usuarios. En ese sentido, se utilizó un gráfico circular para representar las 5 `MARCAS` y las demás agrupadas en base a sus `hi%` (cantidad de usuarios que usa cierta marca de celular respecto al total de usuarios expresada en forma porcentual) y al promedio de las `hi%` de cada una de las marcas reunidas en la categoría *OTRAS*. A partir de ello, se puede concluir que *SAMSUNG* y *HUAWEI* son las marcas más utilizadas.
+
+## [**OBJETIVO 2:**]{style="color:#1F2CDB"}
+
+Analizar la cantidad de llamadas entrantes y salientes de un usuario.
+
+### **Motivación y desarrollo**
+
+La duración y la cantidad de llamadas entrantes es una forma de conocer las necesidades, preferencias y hábitos de consumo de los usuarios. Por ejemplo, si un usuario recibe muchas llamadas cortas, puede indicar que tiene problemas de conexión, o que prefiere comunicarse por otros medios. Por el contrario, si recibe pocas llamadas largas, puede indicar que tiene una buena cobertura y un buen servicio, o que le gusta hablar mucho por teléfono.
+
+### **Gráfico 5**
+
+Gráfico de variable numérica vs numérica
+
+Cantidad total de llamadas entrantes y salientes por usuario(Durante los 9 periodos en total)
+
+
+```{r}
+DF %>%
+  group_by(ID) %>%
+  summarise(LLAMADAS_IN_TOTAL_PERIODOS=sum(LLAMADAS_IN_TOT,na.rm=TRUE),
+            LLAMADAS_OUT_TOTAL_PERIODOS=sum(LLAMADAS_OUT_TOT,na.rm=TRUE)
+            ) -> resultado_final
+
+modelo <- lm(LLAMADAS_OUT_TOTAL_PERIODOS  ~ LLAMADAS_IN_TOTAL_PERIODOS, data = resultado_final)
+residuos <- residuals(modelo)
+valores_atipicos <- boxplot.stats(residuos)$out
+DF_LLAMADAS<- resultado_final[!(residuos %in% valores_atipicos), ]
+nuevo_modelo <- lm(LLAMADAS_OUT_TOTAL_PERIODOS  ~ LLAMADAS_IN_TOTAL_PERIODOS, data = DF_LLAMADAS)
+
+ggplot(DF_LLAMADAS, aes(x = DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, y = DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS)) +
+  geom_point(shape = 16, color = "lightgreen") +
+  geom_smooth(method = "lm", se = FALSE, color = "green") +
+  labs(x = "Cantidad de llamadas entrantes en total de 9 meses ", y = "Cantidad de llamadas salientes en total de 9 meses",
+       title = "Cantidad total de llamadas entrantes vs salientes") + 
+  theme_economist()
+```
+
+
+**Covarianza:**
+
+
+```{r}
+cov(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS,use = "complete.obs")
+```
+
+
+**Correlación:**
+
+
+```{r}
+#DF_LLAMADAS
+cor(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS,use = "complete.obs")
+```
+
+
+El coeficiente de correlación de 84% indica una correlación positiva fuerte entre la cantidad total de llamadas entrantes y salientes. Esto significa que, en promedio, un aumento en las llamadas entrantes del usuario está asociado con un aumento en el total de llamadas salientes de este, siendo una relación considerablemente fuerte.
+
+**Ecuación de regresión lineal:**
+
+
+```{r echo=FALSE}
+lm(LLAMADAS_OUT_TOTAL_PERIODOS ~ LLAMADAS_IN_TOTAL_PERIODOS, data = DF_LLAMADAS)
+```
+
+
+$$ y = 0.9681x + 127.7461 $$
+
+
+```{r, results='hold'}
+summary(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS/9)
+summary(DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS/9)
+sd(DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS/9, na.rm = T) / mean(DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS/9, na.rm = T)
+sd(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS/9, na.rm = T) / mean(DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS/9, na.rm = T)
+```
+
+
+Se dividió entre 9 ya que tenemos un total de 9 periodos para que las llamadas totales den una cifra significativa. Ya que vemos que el coeficiente de variación es mayor a 60%, podemos decir que los datos están dispersos.
+
+Ahora usaremos la mediana para describir la muestra.
+
+De media te llaman 40 veces en el mes y llamas 52 veces en el mes.
+
+## [**OBJETIVO 3:**]{style="color:#1F2CDB"}
+
+Analizar la duración de las llamadas durante periodos específicos de la semana y cómo se relacionan las variables relacionadas a esto.
+
+### **Motivación y desarrollo**
+
+Analizar cómo es que las personas utilizan el servicio de llamadas permite un mejor entendimiento del cliente y eso nos puede generar ganancias si encontramos las métricas adecuadas. Con este fin, analizaremos las llamadas entrantes y salientes por semana. Además veremos como es que nuestra muestra se comporta analizando la variable `PERIODO`.
+
+**Análisis univariado de variable numérica discreta**
+
+
+```{r}
+DF %>%
+   group_by(PERIODO) %>%
+   summarise(
+      Min = min(DIAS_LLAMADAS_IN_TOT, na.rm = TRUE),
+      `1st Qu.` = quantile(DIAS_LLAMADAS_IN_TOT, 0.25, na.rm = TRUE),
+      Median = median(DIAS_LLAMADAS_IN_TOT, na.rm = TRUE),
+      Mean = mean(DIAS_LLAMADAS_IN_TOT, na.rm = TRUE),
+      `3rd Qu.` = quantile(DIAS_LLAMADAS_IN_TOT, 0.75, na.rm = TRUE),
+      Max = max(DIAS_LLAMADAS_IN_TOT, na.rm = TRUE),
+      Sd = sd(DIAS_LLAMADAS_IN_TOT, na.rm = TRUE),
+      IQR = IQR(DIAS_LLAMADAS_IN_TOT, na.rm=TRUE),
+      `CV` = (sd(DIAS_LLAMADAS_IN_TOT, na.rm = TRUE) / Mean)
+     ) %>% arrange(desc(PERIODO)) -> Descriptores_Dias
+Descriptores_Dias
+```
+
+
+Los datos estadísticos proporcionados se centran en la variable `DIAS_LLAMADAS_IN_TOT` que representa la cantidad de días en que se recibieron llamadas a lo largo de varios períodos. La información revela una falta de datos o valores inusuales en los tres primeros meses de 2018, lo que podría indicar problemas en la recopilación de datos durante ese tiempo.
+
+A partir de diciembre de 2018 y hasta mayo de 2019, se observa una relativa estabilidad en la cantidad de días de llamadas, con una mediana constante de 29 días y una mínima variación en los cuartiles. La media cercana a la mediana sugiere una distribución que se asemeja a una normal.
+
+A pesar de las fluctuaciones en los valores máximos y mínimos, el rango intercuartil de 6 días señala que la mayor parte de los períodos tuvo una cantidad de días de llamadas muy similar, lo que respalda la idea de estabilidad. La baja desviación estándar y el coeficiente de variación menor a un 30% confirman una dispersión baja en comparación con la media, lo que indica que los datos están simétricamente distribuidos.
+
+De este análisis podemos decir que las personas en promedio hacen llamadas 26 días del mes.
+
+
+```{r}
+Descriptores_Datos <- DF %>%
+   group_by(PERIODO) %>%
+   summarise(
+      Min = min(DATOS_TOTAL, na.rm = TRUE),
+      `1st Qu.` = quantile(DATOS_TOTAL, 0.25, na.rm = TRUE),
+      Median = median(DATOS_TOTAL, na.rm = TRUE),
+      Mean = mean(DATOS_TOTAL, na.rm = TRUE),
+      `3rd Qu.` = quantile(DATOS_TOTAL, 0.75, na.rm = TRUE),
+      Max = max(DATOS_TOTAL, na.rm = TRUE),
+      Sd = sd(DATOS_TOTAL, na.rm = TRUE),
+      IQR = IQR(DATOS_TOTAL, na.rm=TRUE),
+      `Coef. Variation` = (sd(DATOS_TOTAL, na.rm = TRUE) / Mean)
+     )
+Descriptores_Datos
+```
+
+
+En general, se observa un patrón de aumento constante en el consumo de datos móviles durante este período. Tanto la mediana como la media exhiben un crecimiento gradual en el consumo, pasando de 5845.112 MB en septiembre de 2018 a 7288.248 MB en mayo de 2019, lo que sugiere que los usuarios están utilizando cada vez más datos móviles. A pesar de esta tendencia alcista, el coeficiente de variación se mantiene cerca de 1, lo que indica una variabilidad relativamente constante en relación con la media. Esta consistencia en la variabilidad podría reflejar cierta previsibilidad en los patrones de consumo de datos.
+
+Además podemos ver que en el mes de enero es donde más se consumen datos lo cual puede decir que en las vacaciones las personas tienden a consumir más datos móviles probablemente por la cantidad de actividades fuera de casa que realizan.
+
+### **Grafico 6**
+
+Comparación del tiempo llamadas entrantes de días laborables y no laborales:
+
+
+```{r results='hold'}
+summary(DF$TIEMPO_LLAMADAS_IN_FINDE)
+summary(DF$TIEMPO_LLAMADAS_IN_SEM)
+sd(DF$TIEMPO_LLAMADAS_IN_FINDE, na.rm = T) / mean(DF$TIEMPO_LLAMADAS_IN_FINDE, na.rm = T)
+sd(DF$TIEMPO_LLAMADAS_IN_SEM, na.rm = T) / mean(DF$TIEMPO_LLAMADAS_IN_SEM, na.rm = T)
+```
+
+
+Ya que vemos que la desviación estándar es alta para ambas variables, usaremos la mediana como medida de centralidad.
+
+
+```{r}
+promedio_tiempo_week <- median(DF$TIEMPO_LLAMADAS_IN_SEM/DF$LLAMADAS_IN_SEM, na.rm = TRUE)
+promedio_tiempo_weekd <- median(DF$TIEMPO_LLAMADAS_IN_FINDE/DF$LLAMADAS_IN_FINDE, na.rm = TRUE)
+
+bar_heights <- c(promedio_tiempo_week, promedio_tiempo_weekd)
+bar_names <- c("Días Laborables", "Días No Laborables")
+bar_colors <- c("lightblue", "blue")
+
+barplot(bar_heights, 
+        names.arg = bar_names,
+        main = "Duración media de una llamada recibida",
+        xlab= "Tipo de día",
+        ylab = "Duración en minutos",
+        col = bar_colors)
+
+tiempo <- c(round(promedio_tiempo_week,2),
+                 round(promedio_tiempo_weekd,2))
+
+legend(x = 1.4,
+       y = max(bar_heights) - 0.4,
+       legend = paste0(bar_names, ":  ", tiempo, " min"), 
+       fill = bar_colors,
+       cex = 1)
+```
+
+
+Podemos observar que la duración promedio de las llamadas **recibidas** es mayor de Lunes a Viernes que de Sábado a Domingo. Esto puede deberse a que las llamadas por trabajo podrían tender a durar más que las llamadas, por ejemplo, a familiares ya que estas ocurren en los días no laborales.
+
+Podemos intentar encontrar la correlación entre las variables involucradas mediante un `heatmap`.
+
+### **Grafico 7**
+
+
+```{r}
+DFcor <- DF[, c("TIEMPO_LLAMADAS_IN_FINDE", "TIEMPO_LLAMADAS_IN_SEM", "TIEMPO_LLAMADAS_IN_TOT")] %>%
+  rename(
+    FINDE = TIEMPO_LLAMADAS_IN_FINDE,
+    SEM = TIEMPO_LLAMADAS_IN_SEM,
+    TOT = TIEMPO_LLAMADAS_IN_TOT,
+  )
+correlation_matrix <- cor(DFcor, use = "pairwise.complete") # Se utiliza pairwise.complete a diferencia de complete.obs
+correlation_data <- as.data.frame(as.table(correlation_matrix))
+colnames(correlation_data) <- c("Variable1", "Variable2", "Correlation")
+
+ggplot(correlation_data, aes(Variable1, Variable2, fill = Correlation)) +
+  geom_tile() +
+  scale_fill_gradient(low = "skyblue", high = "blue") +
+  labs(title = "Matriz de Correlación Heatmap",
+       x = NULL,
+       y = NULL) +
+  theme_minimal()
+```
+
+
+Podemos decir de esta matriz de correlación indica que tenemos un valor alto que relaciona a las variables `TIEMPO_LLAMADAS_IN_FINDE` y `TIEMPO_LLAMADAS_IN_SEM` de manera directa; es decir, a más tiempo de llamadas en el fin de semana, más tiempo de llamadas durante la semana.
+
+Además se ve que la correlación entre el `TIEMPO_LLAMADAS_IN_TOT` es mayor en las llamadas dentro de la semana, esto confirma la hipótesis de que las llamdas en la semana duran más tiempo.
+
+### **Grafico 8**
+
+Comparación del tiempo llamadas salientes de días laborables y no laborales:
+
+
+```{r results='hold'}
+summary(DF$TIEMPO_LLAMADAS_OUT_FINDE)
+summary(DF$TIEMPO_LLAMADAS_OUT_SEM)
+sd(DF$TIEMPO_LLAMADAS_OUT_FINDE, na.rm = T) / mean(DF$TIEMPO_LLAMADAS_OUT_FINDE, na.rm = T)
+sd(DF$TIEMPO_LLAMADAS_OUT_SEM, na.rm = T) / mean(DF$TIEMPO_LLAMADAS_OUT_SEM, na.rm = T)
+```
+
+
+Ya que vemos que la desviación estándar es alta para ambas variables, usaremos la mediana como medida de centralidad.
+
+
+```{r}
+promedio_tiempo_week <- median(DF$TIEMPO_LLAMADAS_OUT_SEM/DF$LLAMADAS_OUT_SEM, na.rm = TRUE)
+promedio_tiempo_weekd <- median(DF$TIEMPO_LLAMADAS_OUT_FINDE/DF$LLAMADAS_OUT_FINDE, na.rm = TRUE)
+
+bar_heights <- c(promedio_tiempo_week, promedio_tiempo_weekd)
+bar_names <- c("Días Laborables", "Días No Laborables")
+bar_colors <- c("coral", "lightcoral")
+
+barplot(bar_heights, 
+        names.arg = bar_names,
+        main = "Duración media de una llamada realizada",
+        xlab= "Tipo de día",
+        ylab = "Duración",
+        col = bar_colors)
+
+tiempo <- c(round(promedio_tiempo_week,2),
+                 round(promedio_tiempo_weekd,2))
+
+legend(x = 1.4,
+       y = max(bar_heights) - 0.4,
+       legend = paste0(bar_names, ":  ", tiempo, " min"), 
+       fill = bar_colors,
+       cex = 1)
+```
+
+
+Podemos observar que la duración promedio de las llamadas **realizadas** es mayor de Lunes a Viernes que de Sábado a Domingo. Esto también puede significar lo mismo de antes, que en los días laborales se hacen llamadas por trabajo y estas duran más que las llamadas en fines de semana.
+
+Podemos intentar encontrar la correlación entre las variables involucradas mediante un `heatmap`.
+
+### **Grafico 9**
+
+
+```{r}
+DFcor <- DF[, c("TIEMPO_LLAMADAS_OUT_FINDE", "TIEMPO_LLAMADAS_OUT_SEM", "TIEMPO_LLAMADAS_OUT_TOT")] %>%
+  rename(
+    FINDE = TIEMPO_LLAMADAS_OUT_FINDE,
+    SEM = TIEMPO_LLAMADAS_OUT_SEM,
+    TOT = TIEMPO_LLAMADAS_OUT_TOT,
+  )
+correlation_matrix <- cor(DFcor, use = "pairwise.complete")
+correlation_data <- as.data.frame(as.table(correlation_matrix))
+colnames(correlation_data) <- c("Variable1", "Variable2", "Correlation")
+
+ggplot(correlation_data, aes(Variable1, Variable2, fill = Correlation)) +
+  geom_tile() +
+  scale_fill_gradient(low = "lightcoral", high = "coral3") +
+  labs(title = "Matriz de Correlación Heatmap",
+       x = NULL,
+       y = NULL) +
+  theme_minimal()
+```
+
+
+De los gráficos **6** y **8** anteriores, podemos decir que en general, las llamadas que tu haces duran más que las llamadas que recibes.
+
+### **Gráfico 10**
+
+Análisis de una variable categórica ordinal
+
+
+```{r}
+ggplot(DF, aes(DF$PERIODO)) +
+  geom_bar(color = "black", fill = "skyblue") +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.text.x = element_text(angle = -90, hjust = 0, vjust = 1)) +
+  ylab("Cantidad de registros") +
+  xlab("Periodo") +
+  labs(title = "Distribución de registros por período"
+       )
+```
+
+
+Podemos ver que la mayoria de las observaciones que tenemos estan en los meses de diciembre, enero y febrero con una cantidad bastante similar de usuarios; siendo septiembre de 2018 el periodo con menos observaciones.
+
+
+```{r}
+table(DF$PERIODO)
+which.max(table(DF$PERIODO))
+median(DF$PERIODO)
+```
+
+
+Podemos ver que la moda se encuentra en el mes de diciembre de 2018 con un total de `r table(DF$PERIODO)[which.max(table(DF$PERIODO))]` observaciones. Además la media esta en el mes de enero del 2019. Esto podría indicar que hubo un mayor consumo en esos meses, probablemente debido a navidad y año nuevo.
+
+# **Conclusiones**
+
+A lo largo de este estudio hemos analizado diferentes tipos de variables relacionadas con el comportamiento de un usuario, encontramos información relevante.
+
+-   La mayoría de usuarios no usan internet.
+-   Si usas internet, consumes 7GB al mes.
+-   Llamas más de lo que te llaman.
+-   Probablemente seas Android.
+-   Probablemente usas Samsung.
+-   Llamas y te llaman en una proporción similar.
+-   Tus llamadas duran menos de dos minutos.
+-   Llamas y te llaman más durante la semana.
+
+Aunque esta información no se aplica para todas las personas, este sería el perfil del cliente más común para esta empresa de telefonía, sabiendo esto. Podemos decidir cosas como, que equipos vender, o cuándo hacer promociones.
+
+Gracias.
+
+
+```{=html}
+<script>
+function toggleContent() {
+  let content = document.querySelector(".toggle-content");
+  if (content.style.display === "none" || content.style.display === "") {
+    content.style.display = "block";
+  } else {
+    content.style.display = "none";
+  }
+}
+</script>
+```
+
+# [**Bibliografía**]{style="color:#1FB0DB"}
+
+-   https://www.atlantico.vc "Latin America Digital Transformation Report 2023"
+-   https://m.inei.gob.pe/prensa/noticias/el-668-de-la-poblacion-de-6-y-mas-anos-de-edad-accedio-a-internet-de-enero-a-marzo-del-presente-ano-12954/ "Uso de teléfonos móviles Perú"
+-   https://kenstechtips.com/index.php/download-speeds-2g-3g-and-4g-actual-meaning "Velocidad de descarga con redes 2g, 3g y 4g"
+-   https://kenstechtips.com/index.php/data-plans/1gb-data "1GB of Data: How Much Is It & How Long Does It Last? Mobile Data Limits"
+

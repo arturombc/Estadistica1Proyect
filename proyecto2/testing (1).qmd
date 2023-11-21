@@ -1,0 +1,95 @@
+---
+title: "testing"
+format: html
+---
+
+```{r}
+library(readr)
+library(dplyr)
+```
+
+```{r}
+DF <- read_csv("DataLimpia.csv"
+               , col_types = cols(.default = col_guess()
+                                  , CHIP=col_factor(levels = c("2G","3G","4G"))
+                                  , PERIODO=col_date(format = "%Y%m")
+                                  )
+               )
+```
+
+```{r}
+library(rriskDistributions)
+x <-DF$TIEMPO_LLAMADAS_OUT_TOT
+x <- x[!is.na(x)]
+x <- x[x > 1]
+#fit.cont(x)
+library(fitdistrplus)
+descdist(x)
+Z <- log(x)
+x
+```
+
+$$Z \sim Normal(\mu,\sigma)$$
+
+```{r}
+#fitdist(Z,"norm")
+#fitdist(Z,"beta")
+```
+
+```{r}
+mean(Z)
+sd(Z)
+```
+
+```{r}
+m <-mean(Z)
+s <- sd(Z)
+
+hist(Z,breaks = 50 , prob = TRUE)
+curve(dnorm(x, mean = m, sd = s), add = TRUE, col = "red", lwd = 2)
+```
+
+Gráficamente, vemos que la variable aleatoria `TIEMPO_LLAMADAS_OUT_TOT` se distribuye según la distribución normal
+
+Por lo tanto, se cumple que:
+
+```{r}
+Media <-mean(x)
+Mediana <- median(x)
+Mediana
+Media
+```
+
+La mediana $Me$ se aproxima a la media $X$
+
+Se requiere saber cuál es la probabilidad de que un cliente haya realizado un tiempo de llamadas mayor que 1037.38 minutos = 17.28967 horas. P(X \> 1037.38)
+
+```{r}
+pnorm(log(781.88),m,s,lower.tail=FALSE) 
+```
+
+```{r}
+Esperanza <- m
+Varianza <- s^2
+Esperanza
+Varianza
+```
+
+```{r}
+hist(Z,breaks = 50 , prob = TRUE)
+curve(dnorm(x, mean = Media, sd = Mediana), add = TRUE, col = "red", lwd = 2)
+```
+
+```{r}
+# cuál es la probabilidad de que alguien llame menos de 420 minutos al mes (6h y 30m)
+pnorm(log(420),m,s)
+```
+
+```{r}
+library(fastGraph)
+shadeDist(log(420),"dnorm",m,s)
+```
+
+```{r}
+
+```
