@@ -104,8 +104,8 @@ E_1$P <- E_1$n / Tot1
 ```
 
 ```{r}
-E_1 <- rename(E_1, "Eventos Atómicos" = LLAMADAS_IN_TOT, "Probabilidades atómicas" = P,"Cantidad de repeticiones" = n)
-head(E_1)
+rename(E_1, "Eventos Atómicos" = LLAMADAS_IN_TOT, "Probabilidades atómicas" = P,"Cantidad de repeticiones" = n) -> E_1_
+head(E_1_)
 ```
 
 Ahora podemos definir los eventos atómicos como:
@@ -162,8 +162,8 @@ E_2$P <- E_2$n / Tot2
 ```
 
 ```{r}
-E_2 <- rename(E_2, "Eventos Atómicos" = LLAMADAS_OUT_TOT, "Probabilidades atómicas" = P,"Cantidad de repeticiones" = n)
-head(E_2)
+rename(E_2, "Eventos Atómicos" = LLAMADAS_OUT_TOT, "Probabilidades atómicas" = P,"Cantidad de repeticiones" = n) -> E_2_
+head(E_2_)
 ```
 
 Ahora podemos definir los eventos atómicos como:
@@ -178,7 +178,7 @@ $$
 $\text{Eventos atómicos}_2$ Es un conjunto que representa a la columna Eventos atómicos de $E_2$.
 
 ```{r}
-head(E_2)
+E_2
 ```
 
 En el DataFrame `E_2` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio.
@@ -278,118 +278,94 @@ chi_test
 
 Ya que vemos que el p-value es menor que un nivel de significancia 0.05 se puede decir que las variables están relacionadas.
 
-```{r}
-DF %>%
-  select(ID,LLAMADAS_IN_TOT) %>%
-  group_by(LLAMADAS_IN_TOT) %>%
-  summarise(n = n()) -> E_1
-E_1 <- E_1[-nrow(E_1), ]
-Tot1 <- sum(E_1$n)
-E_1$P <- E_1$n / Tot1
-
-DF %>%
-  select(ID,LLAMADAS_OUT_TOT) %>%
-  group_by(LLAMADAS_OUT_TOT) %>%
-  summarise(n = n()) -> E_2
-E_2 <- E_2[-nrow(E_2), ]
-Tot2 <- sum(E_2$n)
-E_2$P <- E_2$n / Tot2
-```
-
-```{r}
-P.E_1 <- sum(E_1$P[E_1$LLAMADAS_IN_TOT %in% 0:50])
-P.E_2 <- sum(E_2$P[E_2$LLAMADAS_OUT_TOT %in% 0:50])
-```
-
-```{r}
-nrow(DF[DF$LLAMADAS_IN_TOT %in% 0:50 & DF$LLAMADAS_OUT_TOT %in% 0:50, ]) / sum(!is.na(DF$LLAMADAS_IN_TOT) & !is.na(DF$LLAMADAS_OUT_TOT))#nrow(DF) 
-P.E_1 * P.E_2
-```
-
-```{r}
-Inter <- sum((DF$LLAMADAS_IN_TOT <= 50) & (DF$LLAMADAS_OUT_TOT <= 50), na.rm = TRUE)/sum(!is.na(DF$LLAMADAS_IN_TOT) & !is.na(DF$LLAMADAS_OUT_TOT))
-```
-
-```{r}
-In <- sum((DF$LLAMADAS_IN_TOT <= 50), na.rm = TRUE)/sum(!is.na(DF$LLAMADAS_IN_TOT))
-Out <- sum((DF$LLAMADAS_OUT_TOT <= 50), na.rm = TRUE)/sum(!is.na(DF$LLAMADAS_OUT_TOT))
-```
-
-```{r}
-In*Out
-Inter
-```
-
 # Parte 3
 
-## Análisis de variables discretas
+## Variable 1:
 
-### Variable 1:
+La variable 1 discreta será `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.}
 
-La variable 1 discreta será `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
-
-Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que lo llamaron durante el mes.
-
-$E_1$: De $\mathcal{F}_1$, consideramos el evento $E_1$ que consiste en elegir un usuario al azar y que lo hayan llamado menos de 50 veces durante el mes.
+$E_1$: De $\mathcal{F}_1$, consideramos el evento $E_1$ que consiste en elegir un usuario al azar y que el usuario haya recibido menos de 51 veces durante el mes.
 
 ```{r}
-n <- length(DF$LLAMADAS_IN_TOT)
-m <- max(log(DF$LLAMADAS_IN_TOT), na.rm = T)
-mm <- floor(m)
-hist(ceiling(log(DF$LLAMADAS_IN_TOT)), probability = T)
-lines((-1:mm), dbinom(-1:mm, mm, 0.60), type = "h", col = "red")
+P.E_1
 ```
 
-Si se desea hallar la probabilidad de que si al repetir el experimento $\epsilon_1$ 100 veces, por lo menos 10 de ellos hayan recibido menos de 50 llamadas durante el mes, debemos plantear un modelo de tipo binomial, donde:
+Tomaremos la suposición de que cada evento es independiente del anterior, lo cual es probable.
 
-*Probabilidad acumulada (de que X sea por lo menos xo) ==\>* 𝑷(𝑿\>xo-1)=?? **𝒑𝒃𝒊𝒏𝒐𝒎**(xo-1,𝒏,𝒑,tower.tail=FALSE)
+Con `P.E_2` probabilidad podemos modelar una variable binomial.
 
-$xo$: \# de exitos de $E_1$ (10)
+$$
+X_1 \sim \mathsf{Binom}(100,0.1063465)
+$$
 
-$n$: \# de veces que se repite el experimento (100)
+Ahora, queremos
+
+$$P(X_1 \geq x)$$
+
+$x$: \# de exitos de $E_1$
+
+$n$: \# de veces que se repite el experimento
 
 $p$: probabilidad de éxito de $E_1$
+
+Si se desea hallar la probabilidad de que si al repetir el experimento $\epsilon_1$ 100 veces, por lo menos 10 de ellos hayan recibido menos de 51 llamadas durante el mes podemos usar la función `pbinom` para calcularlo.
 
 ```{r}
 pbinom(9,100,P.E_1,lower.tail=FALSE)# = p(X>9) 
 ```
 
-Hallando el esperado y varianza:
+Hallando la esperanza y varianza:
 
 ```{r}
  #𝑬(𝑿)=𝒏𝒑
 Es_1<-100*P.E_1
+Es_1
 
 #𝑽(𝑿)=𝒏.𝒑.𝒒 
 V_1<-100*P.E_1*(1-P.E_1)
+V_1
 ```
 
 Se espera que al repetir el experimento $\epsilon_1$ 100 veces, Es_1 de ellos hayan recibido menos de 50 llamadas durante el mes.
 
-### Variable 2:
+```{r}
+hist(log(DF$LLAMADAS_OUT_TOT))
+sz <- length(DF$LLAMADAS_OUT_TOT)
+lines(1:8,dbinom(1:8,sz,P.E_1),type = "h")
+```
+
+## Variable 2:
 
 La variable 2 discreta será `LLAMADAS_OUT_TOT`, que es la cantidad de llamadas que un usuario realiza durante un mes.
 
-Definimos un experimento $\epsilon_2$ determinado por $\{\Omega_2, \mathcal{F}_2, \mathbb{P}_2\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que realizó una llamada durante el mes.
-
-$E_2$: De $\mathcal{F}_2$, consideramos el evento $E_2$ que consiste en elegir un usuario al azar y que el usuario haya llamado menos de 50 veces durante el mes.
+$E_2$: De $\mathcal{F}_2$, consideramos el evento $E_2$ que consiste en elegir un usuario al azar y que el usuario haya llamado menos de 51 veces durante el mes.
 
 ```{r}
 P.E_2
 ```
 
-Si se desea hallar la probabilidad de que si al repetir el experimento $\epsilon_2$ 100 veces, por lo menos 10 de ellos hayan llamado menos de 50 veces durante el mes, debemos plantear un modelo de tipo binomial, donde:
+Tomaremos la suposición de que cada evento es independiente del anterior, lo cual es probable.
 
-*Probabilidad acumulada (de que X sea por lo menos xo) ==\>* 𝑷(𝑿\>xo-1)=?? **𝒑𝒃𝒊𝒏𝒐𝒎**(xo-1,𝒏,𝒑,tower.tail=FALSE)
+Con `P.E_2` probabilidad podemos modelar una variable binomial.
 
-$xo$: \# de exitos de $E_1$ (10)
+$$
+X_2 \sim \mathsf{Binom}(100,0.1063465)
+$$
 
-$n$: \# de veces que se repite el experimento (100)
+Ahora, queremos
 
-$p$: probabilidad de éxito de $E_1$
+$$P(X_2 \geq 10)$$
+
+$x$: \# de exitos de $X_2$
+
+$n$: \# de veces que se repite el experimento
+
+$p$: probabilidad de éxito de $E_2$
+
+Si se desea hallar la probabilidad de que si al repetir el experimento $\epsilon_2$ 100 veces, por lo menos 10 de ellos hayan llamado menos de 51 veces durante el mes podemos usar la función `pbinom` para calcularlo.
 
 ```{r}
-pbinom(9,100,P.E_1,lower.tail=FALSE)# = p(X>9) 
+pbinom(9,100,P.E_2,lower.tail=FALSE)# = p(X>9)
 ```
 
 Hallando el esperado y varianza:
@@ -397,9 +373,10 @@ Hallando el esperado y varianza:
 ```{r}
 #𝑬(𝑿)=𝒏𝒑 
 Es_2<-100*P.E_2
-
+Es_2
 #𝑽(𝑿)=𝒏.𝒑.𝒒  
 V_2<-100*P.E_2*(1-P.E_2)
+V_2
 ```
 
 Se espera que al repetir el experimento $\epsilon_1$ 100 veces, Es_1 de ellos hayan recibido menos de 50 llamadas durante el mes.
@@ -421,6 +398,10 @@ descdist(x) # fitdistplus
 ```
 
 Se decidió tomar el modelo *log normal*.
+
+```{r}
+hist(log(DF$TIEMPO_LLAMADAS_IN_TOT))
+```
 
 ```{r}
 Z <- log(x)
@@ -489,9 +470,8 @@ pnorm(log(420),m,s)
 También se puede ver gráficamente.
 
 ```{r}
-shadeDist(log(420),"dnorm",m,s) 
+shadeDist(log(420),"dnorm",m,s)
 ```
-
 
 ## Variable 4
 
@@ -553,7 +533,7 @@ Vimos que estos parámetros coinciden con los anteriormente calculados.
 Diremos:
 
 $$
-X_3 \sim \mathsf{Binom}(s,m)
+X_3 \sim \mathsf{Norm}(s,m)
 $$
 
 ### Gráfico de verificación

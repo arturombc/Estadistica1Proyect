@@ -15,6 +15,8 @@ boxplot(log(DF$LLAMADAS_OUT_TOT))
 
 ```{r}
 hist(log(DF$LLAMADAS_OUT_TOT))
+sz <- length(DF$LLAMADAS_OUT_TOT)
+lines(1:8,dbinom(1:8,sz,P.E_1),type = "h")
 ```
 
 ```{r}
@@ -41,5 +43,48 @@ DF$LLAMADAS_OUT_TOT
 
 #hist(X, breaks = (-1:24) - 0.5, prob = TRUE)
 
+```
+
+
+```{r}
+DF %>%
+  select(ID,LLAMADAS_IN_TOT) %>%
+  group_by(LLAMADAS_IN_TOT) %>%
+  summarise(n = n()) -> E_1
+E_1 <- E_1[-nrow(E_1), ]
+Tot1 <- sum(E_1$n)
+E_1$P <- E_1$n / Tot1
+
+DF %>%
+  select(ID,LLAMADAS_OUT_TOT) %>%
+  group_by(LLAMADAS_OUT_TOT) %>%
+  summarise(n = n()) -> E_2
+E_2 <- E_2[-nrow(E_2), ]
+Tot2 <- sum(E_2$n)
+E_2$P <- E_2$n / Tot2
+```
+
+```{r}
+P.E_1 <- sum(E_1$P[E_1$LLAMADAS_IN_TOT %in% 0:50])
+P.E_2 <- sum(E_2$P[E_2$LLAMADAS_OUT_TOT %in% 0:50])
+```
+
+```{r}
+nrow(DF[DF$LLAMADAS_IN_TOT %in% 0:50 & DF$LLAMADAS_OUT_TOT %in% 0:50, ]) / sum(!is.na(DF$LLAMADAS_IN_TOT) & !is.na(DF$LLAMADAS_OUT_TOT))#nrow(DF) 
+P.E_1 * P.E_2
+```
+
+```{r}
+Inter <- sum((DF$LLAMADAS_IN_TOT <= 50) & (DF$LLAMADAS_OUT_TOT <= 50), na.rm = TRUE)/sum(!is.na(DF$LLAMADAS_IN_TOT) & !is.na(DF$LLAMADAS_OUT_TOT))
+```
+
+```{r}
+In <- sum((DF$LLAMADAS_IN_TOT <= 50), na.rm = TRUE)/sum(!is.na(DF$LLAMADAS_IN_TOT))
+Out <- sum((DF$LLAMADAS_OUT_TOT <= 50), na.rm = TRUE)/sum(!is.na(DF$LLAMADAS_OUT_TOT))
+```
+
+```{r}
+In*Out
+Inter
 ```
 

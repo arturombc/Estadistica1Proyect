@@ -1,0 +1,45 @@
+---
+title: "extra3"
+format: html
+editor: visual
+---
+
+```{r}
+X <- rnorm(30000, mean = 27, sd = 1.8)
+```
+
+```{r}
+X <- c(X, rep(36, 10))
+```
+
+```{r}
+hist(X)
+```
+
+```{r}
+library(fitdistrplus)
+```
+
+```{r}
+descdist(X, boot = 50)
+```
+```{r}
+FDN <- fitdist(X, "norm")
+FDG <- fitdist(X, "gamma")
+```
+
+```{r}
+plot(FDN)
+```
+```{r}
+plot(FDG)
+```
+
+```{r}
+GOFL <- gofstat(list(FDN, FDG), fitnames = list("Nomal", "Gamma"))
+```
+
+```{r}
+(GOFL)
+```
+
