@@ -1,22 +1,17 @@
 ---
-title: "G4_presentacion"
-format: revealjs
+title: "Minería de Datos en la Industria de Telefonía Móvil: Análisis de clientes peruanos entre septiembre del 2018 y mayo del 2019"
+format:
+  revealjs:
+    transition: slide
+    transition-speed: fast
+    incremental: false 
+    theme: black
+author: "Grupo 4"
 editor: visual
+params:
+  alpha: 0.1
+  ratio: 0.1
 ---
-
-## G4\_ Minería de Datos en la Industria de Telefonía Móvil: Análisis de clientes peruanos entre septiembre del 2018 y mayo del 2019
-
-**Integrantes**
-
--   Arturo Barrantes Chuquimia (Líder)
-
--   Sheyla Sanchez Arauco
-
--   Andrea Maricielo Pérez Castro
-
--   Alejandro Rojas Alvarez
-
--   Luis David Acedo Lopez
 
 ```{r, liberías, message=FALSE}
 if(!require(readr)){install.packages("readr");library(readr)}
@@ -27,6 +22,7 @@ if(!require(ggrepel)){install.packages("ggrepel");library(ggrepel)}
 if(!require(tidyverse)){install.packages("tidyverse");library(tidyverse)}
 if(!require(forcats)){install.packages("forcats");library(forcats)}
 if(!require(ggmosaic)){install.packages("ggmosaic");library(ggmosaic)}
+if(!require(fastGraph)){install.packages("fastGraph")};library(fastGraph)
 ```
 
 # Evento 1
@@ -46,21 +42,19 @@ summary(DF$LLAMADAS_IN_TOT)
 summary(DF$LLAMADAS_OUT_TOT)
 ```
 
-## **Variable 1**
+## **Variable 1** {.smaller}
 
-La variable 1 será una forma de referirnos a la variable `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
+`LLAMADAS_IN_TOT`: Cantidad de llamadas que un usuario recibe durante un mes.
 
-### **Definición de experimento aleatorio para la variable 1**
+**Definición de experimento aleatorio**
 
-Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que la llamaron durante el mes.
+Elijo una persona de la muestra y anoto la cantidad de veces que la llamaron durante el mes.
 
-### **Espacio de resultados teórico para la variable 1**
-
-Dado que esta es una variable cuantitativa discreta con valores enteros positivos, el espacio de resultados teóricos para esta variable es:
+**Espacio de resultados teórico**
 
 $$\Omega_1 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 6820\}$$
 
-### **Cálculo de la probabilidad empírica de todos los eventos atómicos de la variable 1**
+**Cálculo de la probabilidad empírica de todos los eventos atómicos**
 
 ```{r}
 E_1<-DF %>%
@@ -98,7 +92,7 @@ head(E_1)
 
 Ahora podemos definir los eventos atómicos como:
 
-$$ \begin{align*} & E_{1_i}\, \text{el evento atómico i del experimento 1 se define como}\\ & E_{1_i} : \text{Te llaman }\textit{i }\text{veces durante el mes}\quad i\in\text{Eventos Atómicos}_1 \end{align*} $$
+$$ \begin{align*} & E_{1_i}\, \text{Te llaman }\textit{i }\text{veces durante el mes}\quad i\in\text{Eventos Atómicos}_1 \end{align*} $$
 
 $\text{Eventos atómicos}_1$ Es un conjunto que representa a la columna Eventos atómicos de $E_1$.
 
@@ -108,21 +102,19 @@ E_1
 
 En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio. El nombre representa el experimento 1 sin intención de ser algo específico.
 
-## **Variable 2**
+## **Variable 2** {.smaller}
 
-La variable 2 será una forma de referirnos a la variable `LLAMADAS_OUT_TOT` que es la cantidad de llamadas que un usuario realiza a lo largo de un mes.
+`LLAMADAS_OUT_TOT` : Cantidad de llamadas que un usuario realiza en un mes.
 
-### **Definición de experimento aleatorio para la variable LLAMADAS_OUT_TOT**
+**Definición de experimento aleatorio**
 
-Definimos un experimento $\{\Omega_2, \mathcal{F}_2, \mathbb{P}_2\}$.
+$\{\Omega_2, \mathcal{F}_2, \mathbb{P}_2\}$.
 
-### **Espacio de resultados teórico para LLAMADAS_IN_TOT**
-
-De la misma forma que la anterior variable, esta también es una variable numérica discreta, el espacio de resultados teóricos para esta variable es:
+**Espacio de resultados teórico**
 
 $$\Omega_2 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 8308\}$$
 
-### **Cálculo de la probabilidad empírica de todos los eventos atómicos de la variable 2**
+**Cálculo de la probabilidad empírica de todos los eventos atómicos de la variable 2**
 
 ```{r}
 DF %>%   select(ID,LLAMADAS_OUT_TOT) %>%   group_by(LLAMADAS_OUT_TOT) %>%   summarise(n = n()) -> E_2
@@ -132,7 +124,7 @@ DF %>%   select(ID,LLAMADAS_OUT_TOT) %>%   group_by(LLAMADAS_OUT_TOT) %>%   summ
 E_2 <- E_2[-nrow(E_2), ]
 ```
 
-```{r}
+```{r, results='hide'}
 tail(E_2)
 ```
 
@@ -157,3 +149,147 @@ head(E_2)
 ```
 
 En el DataFrame `E_2` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio.
+
+## Variable 3 {.smaller}
+
+`TIEMPO_LLAMADAS_IN_TOT`: Cantidad de llamadas que un usuario recibe durante un mes.
+
+**Elección de modelo**
+
+```{r, fig.width=9, fig.height=4}
+if(!require(fitdistrplus)){install.packages("fitdistrplus");library(fitdistrplus)}
+x <-DF$TIEMPO_LLAMADAS_IN_TOT
+x <- x[!is.na(x)]
+x <- x[x > 1]
+#fit.cont(x) # rriskDistributions
+descdist(x) # fitdistplus
+```
+
+```{r}
+hist(log(DF$TIEMPO_LLAMADAS_IN_TOT))
+```
+
+```{r}
+Z <- log(x)
+```
+
+```{r}
+median(Z)
+mean(Z)
+```
+
+Aproximadamente son parecidas, esto fue necesario verificarlo más no es suficiente.
+
+**Cálculo de parámetros**
+
+```{r}
+fitdist(Z,"norm")
+```
+
+```{r}
+m <- mean(Z)
+s <- sd(Z)
+m
+s
+```
+
+**Gráfico de verificación**
+
+```{r, fig.width=10, fig.height=6}
+hist(Z,breaks = 50 , prob = TRUE)
+curve(dnorm(x, mean = m, sd = s), add = TRUE, col = "red", lwd = 2)
+```
+
+**Cálculo de la esperanza y varianza**
+
+```{r}
+Esperanza_X <- m
+Varianza_X <- s^2
+sprintf("E(X_3) =  %f",Esperanza_X)
+sprintf("Var(X_3) = %f",Varianza_X)
+```
+
+### Cálculo de probabilidades
+
+¿Cuál es la probabilidad de que alguien llame menos de 420 minutos al mes (6h y 30m)?
+
+```{r}
+pnorm(log(420),m,s)
+```
+
+```{r}
+shadeDist(log(420),"dnorm",m,s)
+```
+
+## Variable 4 {.smaller}
+
+`DATOS_4G`: Cantidad de datos 4G que un usuario utiliza durante un mes.
+
+**Elección de modelo**
+
+```{r}
+hist(DF$DATOS_4G)
+datos_4g <- DF$DATOS_4G
+#descdist(datos_4g)
+```
+
+```{r}
+datos_4g <- datos_4g[datos_4g!=0]
+datos_4g <- datos_4g[!is.na(datos_4g)]
+datos_4g <- datos_4g[datos_4g > 1]
+datos_4g2 <- ((datos_4g - min(datos_4g)) / (max(datos_4g)-min(datos_4g)))
+#fitdist(datos_4g2,"beta")
+#fitdist(datos_4g,"gamma")
+#fitdist(datos_4g,"lnorm")
+```
+
+Se decidió tomar el modelo *log normal*.
+
+**Cálculo de parámetros**
+
+```{r}
+Z <- log(datos_4g)
+```
+
+```{r}
+median(Z)
+mean(Z)
+```
+
+```{r}
+#fitdist(Z,"norm")
+```
+
+```{r}
+m <- mean(Z)
+s <- sd(Z)
+s;m
+```
+
+**Gráfico de verificación**
+
+```{r}
+hist(Z,breaks = 50 , prob = TRUE)
+curve(dnorm(x, mean = m, sd = s), add = TRUE, col = "red", lwd = 2)
+```
+
+**Cálculo de la esperanza y varianza**
+
+```{r}
+Esperanza_X <- m
+Varianza_X <- s^2
+sprintf("E(X_4) =  %f",Esperanza_X)
+sprintf("Var(X_4) = %f",Varianza_X)
+```
+
+**Cálculo de probabilidades**
+
+¿Cuál es la probabilidad de que alguien gaste menos de 10Gbi en datos al mes(10000Mbi)?
+
+```{r}
+pnorm(log(10000),m,s)
+```
+
+```{r}
+shadeDist(log(10000),"dnorm",m,s)
+```
