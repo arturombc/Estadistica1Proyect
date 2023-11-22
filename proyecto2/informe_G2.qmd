@@ -522,7 +522,7 @@ sprintf("E(X_4) =  %f",Esperanza_X)
 sprintf("Var(X_4) = %f",Varianza_X)
 ```
 
-Al escoger a un usuario de manera aleatoria, se esperaría que haya gastado 8.59Gbi de datos 4G durante el mes.
+Al escoger a un usuario de manera aleatoria, se esperaría que haya gastado 5361.5Mbi o 5.361Gbi de datos 4G durante el mes.
 
 Ya que tenemos un modelo, podemos calcular probabilidades.
 
