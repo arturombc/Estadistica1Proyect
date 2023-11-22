@@ -53,6 +53,8 @@ DF <- read_csv("DataLimpia.csv"
 
 La variable 1 será una forma de referirnos a la variable `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
 
+La variable 2 será una forma de referirnos a la variable `LLAMADAS_OUT_TOT` que es la cantidad de llamadas que un usuario realiza a lo largo de un mes.
+
 ### **Definición de experimento aleatorio para la variable 1**
 
 Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que lo llamaron durante el mes.
@@ -65,34 +67,50 @@ $$\Omega_1 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 6820\}$$
 
 ### **Cálculo de la probabilidad empírica de todos los eventos atómicos de la variable 1**
 
-```{r} DF %>%   select(ID,LLAMADAS_IN_TOT) %>%   group_by(LLAMADAS_IN_TOT) %>%   summarise(n = n()) -> E_1}
+```{r}
+DF %>%   
+  select(ID,LLAMADAS_IN_TOT) %>%   
+  group_by(LLAMADAS_IN_TOT) %>%   
+  summarise(n = n()) -> E_1 
 ```
 
-```{r} tail(E_1) E_1 sum(E_1$P)}
+```{r}
+tail(E_1) 
+E_1 
+sum(E_1$P) 
 ```
 
 Seleccionar una persona de mi estudio que ha recibido 0 llamadas durante el mes.
 
 E_n el evento de atomico de que lo hayan llamado n veces al mes.
 
-```{r} E_1 <- E_1[-nrow(E_1), ]}
+```{r}
+E_1 <- E_1[-nrow(E_1), ] 
 ```
 
-```{r} tail(E_1)}
+```{r}
+tail(E_1)
 ```
 
-```{r} Tot1 <- sum(E_1$n) E_1$P <- E_1$n / Tot1}
+```{r}
+Tot1 <- sum(E_1$n) 
+E_1$P <- E_1$n / Tot1
 ```
 
-```{r}  head(E_1)}
+```{r}
+head(E_1)
 ```
 
-```{r} E_1 sum(E_1$P)}
+```{r}
+E_1 
+sum(E_1$P)
 ```
 
 En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio.
 
-```{r} rename(E_1, "Eventos Atómicos" = LLAMADAS_IN_TOT, "Probabilidades atómicas" = P,"Cantidad de repeticiones" = n) -> E_1_ head(E_1_)}
+```{r}
+rename(E_1, "Eventos Atómicos" = LLAMADAS_IN_TOT, "Probabilidades atómicas" = P,"Cantidad de repeticiones" = n) -> E_1_ 
+head(E_1_)
 ```
 
 Ahora podemos definir los eventos atómicos como:
@@ -101,7 +119,8 @@ $$ \begin{align*} & E_{1_i}\, \text{el evento atómico i del experimento 1 se de
 
 $\text{Eventos atómicos}_1$ Es un conjunto que representa a la columna Eventos atómicos de $E_1$.
 
-```{r} E_1}
+```{r}
+E_1
 ```
 
 En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio. El nombre representa el experimento 1 sin intención de ser algo específico.
