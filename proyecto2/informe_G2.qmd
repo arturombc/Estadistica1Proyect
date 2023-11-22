@@ -1,0 +1,111 @@
+---
+title: "Untitled"
+format: html
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+# **Tema: Minería de Datos en la Industria de Telefonía Móvil**
+
+Análisis de clientes peruanos entre septiembre del 2018 y mayo del 2019
+
+## **Introducción**
+
+En el contexto empresarial, analizar una base de datos con información de los clientes puede llegar a ser crucial para el crecimiento de una empresa; así como del uso correcto de los recursos.\
+A lo largo de este trabajo, se analizará el comportamiento de los clientes de una empresa de telefonía móvil. El objetivo será encontrar *insights* con el fin de optimizar nuestros esfuerzos hacia el crecimiento empresarial.
+
+## **Objetivos:**
+
+1.  Analizar la dependencia o independencia entre la cantidad de llamadas que un usuario recibe durante un mes y la cantidad de llamadas que un usuario realiza a lo largo de aquel tiempo.
+2.  Analizar la cantidad de llamadas entrantes y salientes de un usuario durante un mes, y el tiempo total de llamadas entrantes y salientes que recibe un usuario durante el periodo, con el objetivo de hallar un modelo probabilístico adecuado, junto a parámetros pertinentes .
+
+## Limpieza y carga de datos:
+
+```{r, liberías, message=FE_1LSE}
+if(!require(readr)){install.packages("readr");library(readr)}
+if(!require(ggplot2)){install.packages("ggplot2");library(ggplot2)}
+if(!require(ggthemes)){install.packages("ggthemes");library(ggthemes)}
+if(!require(ggrepel)){install.packages("ggrepel");library(ggrepel)}
+if(!require(tidyverse)){install.packages("tidyverse");library(tidyverse)}
+if(!require(forcats)){install.packages("forcats");library(forcats)}
+if(!require(ggmosaic)){install.packages("ggmosaic");library(ggmosaic)}
+#if(!require(fitdistrplus)){install.packages("fitdistrplus");library(fitdistrplus)}
+#if(!require(rriskDistributions)){install.packages("rriskDistributions");library(rriskDistributions)}
+#if(!require(fastGraph)){install.packages("fastGraph")};library(fastGraph)
+if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
+```
+
+```{r, carga-DF}
+DF <- read_csv("DataLimpia.csv"
+               , col_types = cols(.default = col_guess()
+                                  , CHIP=col_factor(levels = c("2G","3G","4G"))
+                                  , PERIODO=col_date(format = "%Y%m")
+                                  )
+               )
+```
+
+## Resultados:
+
+### OBJETIVO 1:
+
+La variable 1 será una forma de referirnos a la variable `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
+
+### **Definición de experimento aleatorio para la variable 1**
+
+Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que lo llamaron durante el mes.
+
+### **Espacio de resultados teórico para la variable 1**
+
+Dado que esta es una variable cuantitativa discreta con valores enteros positivos, el espacio de resultados teóricos para esta variable es:
+
+$$\Omega_1 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 6820\}$$
+
+### **Cálculo de la probabilidad empírica de todos los eventos atómicos de la variable 1**
+
+```{r} DF %>%   select(ID,LLAMADAS_IN_TOT) %>%   group_by(LLAMADAS_IN_TOT) %>%   summarise(n = n()) -> E_1}
+```
+
+```{r} tail(E_1) E_1 sum(E_1$P)}
+```
+
+Seleccionar una persona de mi estudio que ha recibido 0 llamadas durante el mes.
+
+E_n el evento de atomico de que lo hayan llamado n veces al mes.
+
+```{r} E_1 <- E_1[-nrow(E_1), ]}
+```
+
+```{r} tail(E_1)}
+```
+
+```{r} Tot1 <- sum(E_1$n) E_1$P <- E_1$n / Tot1}
+```
+
+```{r}  head(E_1)}
+```
+
+```{r} E_1 sum(E_1$P)}
+```
+
+En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio.
+
+```{r} rename(E_1, "Eventos Atómicos" = LLAMADAS_IN_TOT, "Probabilidades atómicas" = P,"Cantidad de repeticiones" = n) -> E_1_ head(E_1_)}
+```
+
+Ahora podemos definir los eventos atómicos como:
+
+$$ \begin{align*} & E_{1_i}\, \text{el evento atómico i del experimento 1 se define como}\\ & E_{1_i} : \text{Te llaman }\textit{i }\text{veces durante el mes}\quad i\in\text{Eventos Atómicos}_1 \end{align*} $$
+
+$\text{Eventos atómicos}_1$ Es un conjunto que representa a la columna Eventos atómicos de $E_1$.
+
+```{r} E_1}
+```
+
+En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio. El nombre representa el experimento 1 sin intención de ser algo específico.
+
+### OBJETIVO 2:
+
+## Conclusiones:
