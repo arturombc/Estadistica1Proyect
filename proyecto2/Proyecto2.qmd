@@ -33,13 +33,10 @@ if(!require(ggrepel)){install.packages("ggrepel");library(ggrepel)}
 if(!require(tidyverse)){install.packages("tidyverse");library(tidyverse)}
 if(!require(forcats)){install.packages("forcats");library(forcats)}
 if(!require(ggmosaic)){install.packages("ggmosaic");library(ggmosaic)}
-<<<<<<< HEAD
-=======
 if(!require(fitdistrplus)){install.packages("fitdistrplus");library(fitdistrplus)}
 if(!require(rriskDistributions)){install.packages("rriskDistributions");library(rriskDistributions)}
 if(!require(fastGraph)){install.packages("fastGraph")};library(fastGraph)
 if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
->>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 ```
 
 ```{r, carga-DF}
@@ -56,13 +53,10 @@ DF <- read_csv("DataLimpia.csv"
 ```{r}
 summary(DF$LLAMADAS_IN_TOT)
 summary(DF$LLAMADAS_OUT_TOT)
-<<<<<<< HEAD
 
 DF$DATOS_TOTAL
 DF$grupo_llamadas <- cut(DF$LLAMADAS_OUT_TOT, breaks = c(0, 10, 20, 30, 40, 50, Inf), labels = c("0-10", "11-20", "21-30", "31-40", "41-50", "Más de 50"))
 DF %>% group_by(grupo_llamadas) %>% summarise(media_contactos = mean(CONTACTOS_LLAMADAS_OUT_TOT))
-=======
->>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 ```
 
 # **Parte 1**
@@ -73,11 +67,9 @@ La variable 1 será una forma de referirnos a la variable `LLAMADAS_IN_TOT`, que
 
 ### **Definición de experimento aleatorio para la variable 1**
 
-<<<<<<< HEAD
+
 Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que lo llamaron durante el mes.
-=======
-Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que la llamaron durante el mes.
->>>>>>> 5769040524e7de38fb62156f184441087ab062d3
+
 
 ### **Espacio de resultados teórico para la variable 1**
 
@@ -92,19 +84,14 @@ DF %>%
   select(ID,LLAMADAS_IN_TOT) %>%
   group_by(LLAMADAS_IN_TOT) %>%
   summarise(n = n()) -> E_1
-<<<<<<< HEAD
-=======
-E_1
->>>>>>> 5769040524e7de38fb62156f184441087ab062d3
+
 ```
 
 ```{r}
 tail(E_1)
-<<<<<<< HEAD
 E_1
 sum(E_1$P)
-=======
->>>>>>> 5769040524e7de38fb62156f184441087ab062d3
+
 ```
 
 Seleccionar una persona de mi estudio que ha recibido 0 llamadas durante el mes.
@@ -113,10 +100,7 @@ E_n el evento de atomico de que lo hayan llamado n veces al mes.
 
 ```{r}
 E_1 <- E_1[-nrow(E_1), ]
-<<<<<<< HEAD
-=======
-E_1
->>>>>>> 5769040524e7de38fb62156f184441087ab062d3
+
 ```
 
 ```{r}
@@ -129,7 +113,7 @@ E_1$P <- E_1$n / Tot1
 ```
 
 ```{r}
-<<<<<<< HEAD
+
 head(E_1)
 ```
 
@@ -139,7 +123,8 @@ sum(E_1$P)
 ```
 
 En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio.
-=======
+
+```{r}
 rename(E_1, "Eventos Atómicos" = LLAMADAS_IN_TOT, "Probabilidades atómicas" = P,"Cantidad de repeticiones" = n) -> E_1_
 head(E_1_)
 ```
@@ -160,7 +145,7 @@ E_1
 ```
 
 En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio. El nombre representa el experimento 1 sin intención de ser algo específico.
->>>>>>> 5769040524e7de38fb62156f184441087ab062d3
+
 
 ## **Variable 2**
 
@@ -172,11 +157,9 @@ Definimos un experimento $\{\Omega_2, \mathcal{F}_2, \mathbb{P}_2\}$.
 
 ### **Espacio de resultados teórico para LLAMADAS_IN_TOT**
 
-<<<<<<< HEAD
+
 De la misma forma que la anterior variable, esta también es una variable nuḿerica discreta, el espacio de resultados teóricos para esta variable es:
-=======
-De la misma forma que la anterior variable, esta también es una variable numérica discreta, el espacio de resultados teóricos para esta variable es:
->>>>>>> 5769040524e7de38fb62156f184441087ab062d3
+
 
 $$\Omega_2 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 8308\}$$
 
@@ -203,9 +186,6 @@ E_2$P <- E_2$n / Tot2
 ```
 
 ```{r}
-<<<<<<< HEAD
-head(E_2)
-=======
 rename(E_2, "Eventos Atómicos" = LLAMADAS_OUT_TOT, "Probabilidades atómicas" = P,"Cantidad de repeticiones" = n) -> E_2_
 head(E_2_)
 ```
@@ -223,7 +203,6 @@ $\text{Eventos atómicos}_2$ Es un conjunto que representa a la columna Eventos 
 
 ```{r}
 E_2
->>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 ```
 
 En el DataFrame `E_2` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio.
@@ -309,11 +288,9 @@ P.E_2
 
 Mediante las 3 igualdades pudimos verificar que los eventos son relacionadas.
 
-<<<<<<< HEAD
-Esto significa que existe una relación entre que te llamen menos de 50 veces con que llames menos de 50 veces.
-=======
+
 Esto significa que la población de las personas que llamaron menos de 51 veces y la población de las personas que recibieron llamadas menos de 51 veces están relacionadas, es decir que hay personas que llamaron menos de 51 veces y que también recibieron llamadas menos de 51 veces.
->>>>>>> 5769040524e7de38fb62156f184441087ab062d3
+
 
 ### **Verificación extra**
 
@@ -327,7 +304,7 @@ chi_test
 
 Ya que vemos que el p-value es menor que un nivel de significancia 0.05 se puede decir que las variables están relacionadas.
 
-<<<<<<< HEAD
+
 -   La probabilidad de que un usuario seleccionado al azar haya recibido a lo más 50 llamadas, considerando que como máximo realizó 50 llamadas durante un mes es de 0.3338827
 
 -   La probabilidad de que un usuario seleccionado al azar reciba a lo más 50 llamadas es de 0.1474676
@@ -351,13 +328,13 @@ P3<-pbinom(10,12,1/5,lower.tail=F)
 P1
 P2
 P3
+```
 
-=======
 # Parte 3
 
 ## Variable 1:
 
-La variable 1 discreta será `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.}
+La variable 1 discreta será `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
 
 $E_1$: De $\mathcal{F}_1$, consideramos el evento $E_1$ que consiste en elegir un usuario al azar y que el usuario haya recibido menos de 51 veces durante el mes.
 
@@ -649,5 +626,4 @@ También se puede ver gráficamente.
 
 ```{r}
 shadeDist(log(10000),"dnorm",m,s)
->>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 ```

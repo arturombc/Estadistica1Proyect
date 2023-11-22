@@ -427,11 +427,8 @@ Analizar la cantidad de llamadas entrantes y salientes de un usuario puede ser m
 
 Gráfico de variable numérica vs numérica
 
-<<<<<<< HEAD
 Cantidad total de llamadas entrantes y salientes por usuario(Durante los 9 periodos en total)
 
-=======
->>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 ```{r}
 DF %>%
   group_by(ID) %>%
@@ -453,11 +450,7 @@ ggplot(DF_LLAMADAS, aes(x = DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, y = DF_LLAMA
   theme_economist()
 ```
 
-<<<<<<< HEAD
-**Covarianza:**
 
-=======
->>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 ```{r}
 cov(DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS, DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, use = "complete.obs")
 ```
@@ -720,22 +713,13 @@ Podemos ver que la moda se encuentra en el mes de diciembre de 2018 con un total
 A lo largo de este estudio hemos analizado diferentes tipos de variables relacionadas con el comportamiento de un usuario, encontramos información relevante.
 
 -   La mayoría de usuarios no usan internet.
-<<<<<<< HEAD
--   Si usas internet, consumes 7GB al mes.
-=======
 -   Si usas internet, consumes aproximadamente 7GB al mes.
->>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 -   Llamas más de lo que te llaman.
 -   Probablemente seas Android.
 -   Probablemente usas Samsung.
 -   Llamas y te llaman en una proporción similar.
-<<<<<<< HEAD
--   Tus llamadas duran menos de dos minutos.
--   Llamas y te llaman más durante la semana.
-=======
 -   Tus llamadas duran menos de dos minutos aproximadamente.
 -   Llamas y recibes mas llamadas durante los dias laborables.
->>>>>>> 5769040524e7de38fb62156f184441087ab062d3
 
 Aunque esta información no se aplica para todas las personas, este sería el perfil del cliente más común para esta empresa de telefonía, sabiendo esto. Podemos decidir cosas como, que equipos vender, o cuándo hacer promociones.
 
