@@ -170,6 +170,81 @@ E_2
 
 En el DataFrame `E_2` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio. El nombre representa el experimento 2 sin intención de ser algo específico.
 
+**Definición de eventos y análisis de independencia:**
+
+Definiremos 2 eventos, $E_1$ y $E_2$.
+
+$E_1$: De $\mathcal{F}_1$, consideramos el evento $E_1$ que consiste en elegir un usuario al azar y que lo hayan llamado menos de 50 veces durante el mes.
+
+$E_2$: De $\mathcal{F}_2$, consideramos el evento $E_2$ que consiste en elegir un usuario al azar y que el usuario haya llamado menos de 50 veces durante el mes.
+
+Podemos calcular $|E_1|$ como la cantidad de usuarios a los que llamaron 0, 1, 2, 3, ...,49 o 50 veces durante el mes.
+
+Similarmente, calcular $|E_2|$ como la cantidad de usuarios que realizaron llamadas 0, 1, 2, 3, ...,49 o 50 veces durante el mes.
+
+Dados los eventos $E_1$ y $E_2$, diremos que son *independientes* si se cumple cualquiera de las siguientes tres igualdades.
+
+1.  $\mathbb{P}(E_1 \cap E_2) = \mathbb{P}(E_1)*\mathbb{P}(E_2)$
+
+2.  $\mathbb{P}(E_1 | E_2) = \mathbb{P}(E_1)$
+
+3.  $\mathbb{P}(E_2 | E_1) = \mathbb{P}(E_2)$
+
+Calculando las probabilidades de ambos eventos:
+
+Podemos entonces calcular $\mathbb{P}_{E_1}$ como $\tfrac{|E_1|}{|\Omega_1|}$.
+
+```{r}
+P.E_1 <- sum(E_1$P[E_1$LLAMADAS_IN_TOT %in% 0:50])
+P.E_1
+```
+
+De la misma manera, podemos calcular $\mathbb{P}_{E_2}$ como $\tfrac{|E_2|}{|\Omega_2|}$.
+
+```{r}
+P.E_2 <- sum(E_2$P[E_2$LLAMADAS_OUT_TOT %in% 0:50])
+P.E_2
+```
+
+Al tener $\mathbb{P}_{E_1}$ y $\mathbb{P}_{E_2}$, ahora podemos utilizar las igualdades de arriba para verificar la independencia de los eventos:
+
+Para la igualdad 1:
+
+$$\mathbb{P}(E_1 \cap E_2) = \mathbb{P}(E_1)*\mathbb{P}(E_2)$$
+
+```{r}
+nrow(DF[DF$LLAMADAS_IN_TOT %in% 0:50 & DF$LLAMADAS_OUT_TOT %in% 0:50, ]) / nrow(DF) == P.E_1 * P.E_2
+nrow(DF[DF$LLAMADAS_IN_TOT %in% 0:50 & DF$LLAMADAS_OUT_TOT %in% 0:50, ]) / nrow(DF) 
+P.E_1 * P.E_2
+```
+
+Entonces los eventos no son independientes
+
+Para la igualdad 2:
+
+$$\mathbb{P}(E_1 | E_2) = \mathbb{P}(E_1)$$
+
+```{r}
+inte <- nrow(DF[DF$LLAMADAS_IN_TOT %in% 0:50 & DF$LLAMADAS_OUT_TOT %in% 0:50, ]) / nrow(DF)
+inte / P.E_2 == P.E_1
+inte / P.E_2
+P.E_1
+```
+
+Para la igualdad 3:
+
+$$\mathbb{P}(E_2 | E_1) = \mathbb{P}(E_2)$$
+
+```{r}
+inte / P.E_1 == P.E_2
+inte / P.E_1
+P.E_2
+```
+
+Mediante las 3 igualdades pudimos verificar que los eventos son dependientes.
+
+Esto significa que la población de las personas que llamaron menos de 51 veces y la población de las personas que recibieron llamadas menos de 51 veces están relacionadas, es decir que hay personas que llamaron menos de 51 veces y que también recibieron llamadas menos de 51 veces.
+
 ### OBJETIVO 2:
 
 ## Conclusiones:
