@@ -26,18 +26,23 @@ editor: visual
 
 ```{r, liberías, message=FE_1LSE}
 if(!require(readr)){install.packages("readr");library(readr)}
-if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
 if(!require(ggplot2)){install.packages("ggplot2");library(ggplot2)}
 if(!require(ggthemes)){install.packages("ggthemes");library(ggthemes)}
 if(!require(ggrepel)){install.packages("ggrepel");library(ggrepel)}
 if(!require(tidyverse)){install.packages("tidyverse");library(tidyverse)}
 if(!require(forcats)){install.packages("forcats");library(forcats)}
 if(!require(ggmosaic)){install.packages("ggmosaic");library(ggmosaic)}
-if(!require(fitdistrplus)){install.packages("fitdistrplus");library(fitdistrplus)}
-if(!require(rriskDistributions)){install.packages("rriskDistributions");library(rriskDistributions)}
-if(!require(fastGraph)){install.packages("fastGraph")};library(fastGraph)
+#if(!require(fitdistrplus)){install.packages("fitdistrplus");library(fitdistrplus)}
+#if(!require(rriskDistributions)){install.packages("rriskDistributions");library(rriskDistributions)}
+#if(!require(fastGraph)){install.packages("fastGraph")};library(fastGraph)
 if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
 ```
+```{r}
+#detach("package:fitdistrplus", unload=TRUE)
+#detach("package:rriskDistributions", unload=TRUE)
+#detach("package:fastGraph", unload=TRUE)
+```
+
 
 ```{r, carga-DF}
 DF <- read_csv("DataLimpia.csv"
@@ -59,6 +64,7 @@ DF$grupo_llamadas <- cut(DF$LLAMADAS_OUT_TOT, breaks = c(0, 10, 20, 30, 40, 50, 
 DF %>% group_by(grupo_llamadas) %>% summarise(media_contactos = mean(CONTACTOS_LLAMADAS_OUT_TOT))
 ```
 
+
 # **Parte 1**
 
 ## **Variable 1**
@@ -67,9 +73,7 @@ La variable 1 será una forma de referirnos a la variable `LLAMADAS_IN_TOT`, que
 
 ### **Definición de experimento aleatorio para la variable 1**
 
-
 Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que lo llamaron durante el mes.
-
 
 ### **Espacio de resultados teórico para la variable 1**
 
@@ -146,7 +150,6 @@ E_1
 
 En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio. El nombre representa el experimento 1 sin intención de ser algo específico.
 
-
 ## **Variable 2**
 
 La variable 2 será una forma de referirnos a la variable `LLAMADAS_OUT_TOT` que es la cantidad de llamadas que un usuario realiza a lo largo de un mes.
@@ -157,9 +160,7 @@ Definimos un experimento $\{\Omega_2, \mathcal{F}_2, \mathbb{P}_2\}$.
 
 ### **Espacio de resultados teórico para LLAMADAS_IN_TOT**
 
-
 De la misma forma que la anterior variable, esta también es una variable nuḿerica discreta, el espacio de resultados teóricos para esta variable es:
-
 
 $$\Omega_2 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 8308\}$$
 
@@ -288,9 +289,7 @@ P.E_2
 
 Mediante las 3 igualdades pudimos verificar que los eventos son relacionadas.
 
-
 Esto significa que la población de las personas que llamaron menos de 51 veces y la población de las personas que recibieron llamadas menos de 51 veces están relacionadas, es decir que hay personas que llamaron menos de 51 veces y que también recibieron llamadas menos de 51 veces.
-
 
 ### **Verificación extra**
 
@@ -303,7 +302,6 @@ chi_test
 ```
 
 Ya que vemos que el p-value es menor que un nivel de significancia 0.05 se puede decir que las variables están relacionadas.
-
 
 -   La probabilidad de que un usuario seleccionado al azar haya recibido a lo más 50 llamadas, considerando que como máximo realizó 50 llamadas durante un mes es de 0.3338827
 
@@ -445,7 +443,7 @@ La variable 3 continua será `TIEMPO_LLAMADAS_IN_TOT`, que es la cantidad de lla
 x <-DF$TIEMPO_LLAMADAS_IN_TOT
 x <- x[!is.na(x)]
 x <- x[x > 1]
-fit.cont(x) # rriskDistributions
+#fit.cont(x) # rriskDistributions
 descdist(x) # fitdistplus
 ```
 
