@@ -1,12 +1,28 @@
 ---
-title: "Untitled"
-format: html
+title: <center><span>Minería de Datos en la Industria de Telefonía Móvil<span>:</span> Análisis de clientes peruanos entre septiembre del 2018 y mayo del 2019.</span></center>
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    toc-title: Contenido
+    anchor_sections: TRUE # Mostrar anclaje de la sección al pasar el mouse
+    code_download: TRUE # Permite a los lectores descargar el qmd
+    code_folding: TRUE # Permite a los lectores cambiar a none, hide or show
+    fig_caption: TRUE # Las imagenes se renderizan con caption
+    theme: journal  #superhero cyborg, darkly, journal, vapor. Library "bslib"
+    # runtime: shiny # sirve para que la librería shiny interactiva funcione. library("shiny")
+    number-sections: true
+    embed-resources: true
+    author-title: Autores
+
+author: 
+  - Arturo Barrantes Chuquimia (Líder)
+  - Sheyla Sanchez Arauco 
+  - Andrea Maricielo Pérez Castro 
+  - Alejandro Rojas Alvarez
+  - Luis David Acedo Lopez
 editor: visual
 ---
-
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
 
 # **Tema: Minería de Datos en la Industria de Telefonía Móvil**
 
@@ -175,7 +191,7 @@ E_2
 
 En el DataFrame `E_2` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio. El nombre representa el experimento 2 sin intención de ser algo específico.
 
-**Definición de eventos y análisis de independencia:**
+#### **Definición de eventos y análisis de independencia:**
 
 Definiremos 2 eventos, $E_1$ y $E_2$.
 
