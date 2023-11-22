@@ -67,7 +67,7 @@ DF <- read_csv("DataLimpia.csv"
 
 ### OBJETIVO 1:
 
-#### Variable discreta 1:
+#### **Variable discreta 1:**
 
 La variable 1 será una forma de referirnos a la variable `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
 
@@ -130,7 +130,7 @@ $\text{Eventos atómicos}_1$ Es un conjunto que representa a la columna Eventos 
 
 En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio. El nombre representa el experimento 1 sin intención de ser algo específico.
 
-#### Variable discreta 2:
+#### **Variable discreta 2:**
 
 La variable 2 será una forma de referirnos a la variable `LLAMADAS_OUT_TOT` que es la cantidad de llamadas que un usuario realiza a lo largo de un mes.
 
@@ -194,9 +194,9 @@ En el DataFrame `E_2` tenemos las probabilidades atómicas de cada uno de los re
 
 Definiremos 2 eventos, $E_1$ y $E_2$.
 
-$E_1$: De $\mathcal{F}_1$, consideramos el evento $E_1$ que consiste en elegir un usuario al azar y que lo hayan llamado menos de 50 veces durante el mes.
+$E_1$: De $\mathcal{F}_1$, consideramos el evento $E_1$ que consiste en elegir un usuario al azar y que lo hayan llamado 50 veces o menos durante el mes.
 
-$E_2$: De $\mathcal{F}_2$, consideramos el evento $E_2$ que consiste en elegir un usuario al azar y que el usuario haya llamado menos de 50 veces durante el mes.
+$E_2$: De $\mathcal{F}_2$, consideramos el evento $E_2$ que consiste en elegir un usuario al azar y que el usuario haya realizado una llamada 50 veces o menos durante el mes.
 
 Podemos calcular $|E_1|$ como la cantidad de usuarios a los que llamaron 0, 1, 2, 3, ...,49 o 50 veces durante el mes.
 
@@ -215,14 +215,14 @@ Calculando las probabilidades de ambos eventos:
 Podemos entonces calcular $\mathbb{P}_{E_1}$ como $\tfrac{|E_1|}{|\Omega_1|}$.
 
 ```{r}
-P.E_1 <- sum(E_1$P[E_1$LLAMADAS_IN_TOT %in% 0:50])
+P.E_1 <- sum(E_1$P[E_1$LLAMADAS_IN_TOT <= 50])
 P.E_1
 ```
 
 De la misma manera, podemos calcular $\mathbb{P}_{E_2}$ como $\tfrac{|E_2|}{|\Omega_2|}$.
 
 ```{r}
-P.E_2 <- sum(E_2$P[E_2$LLAMADAS_OUT_TOT %in% 0:50])
+P.E_2 <- sum(E_2$P[E_2$LLAMADAS_OUT_TOT <= 50])
 P.E_2
 ```
 
@@ -234,8 +234,9 @@ $$\mathbb{P}(E_1 \cap E_2) = \mathbb{P}(E_1)*\mathbb{P}(E_2)$$
 
 ```{r}
 nrow(DF[DF$LLAMADAS_IN_TOT %in% 0:50 & DF$LLAMADAS_OUT_TOT %in% 0:50, ]) / nrow(DF) == P.E_1 * P.E_2
-nrow(DF[DF$LLAMADAS_IN_TOT %in% 0:50 & DF$LLAMADAS_OUT_TOT %in% 0:50, ]) / nrow(DF) 
+P.inter <- sum((DF$LLAMADAS_IN_TOT <= 50) & (DF$LLAMADAS_OUT_TOT <= 50), na.rm = TRUE)/sum(!is.na(DF$LLAMADAS_IN_TOT) & !is.na(DF$LLAMADAS_OUT_TOT))
 P.E_1 * P.E_2
+P.inter
 ```
 
 Entonces los eventos no son independientes
@@ -245,9 +246,9 @@ Para la igualdad 2:
 $$\mathbb{P}(E_1 | E_2) = \mathbb{P}(E_1)$$
 
 ```{r}
-inte <- nrow(DF[DF$LLAMADAS_IN_TOT %in% 0:50 & DF$LLAMADAS_OUT_TOT %in% 0:50, ]) / nrow(DF)
+inte <- sum(DF$LLAMADAS_IN_TOT <= 50 & DF$LLAMADAS_OUT_TOT <= 50, na.rm = TRUE) / sum(!is.na(DF$LLAMADAS_IN_TOT) & !is.na(DF$LLAMADAS_OUT_TOT))
 inte / P.E_2 == P.E_1
-inte / P.E_2
+tinte / P.E_2
 P.E_1
 ```
 
