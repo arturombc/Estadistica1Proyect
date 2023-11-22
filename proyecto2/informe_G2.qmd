@@ -48,9 +48,9 @@ if(!require(ggrepel)){install.packages("ggrepel");library(ggrepel)}
 if(!require(tidyverse)){install.packages("tidyverse");library(tidyverse)}
 if(!require(forcats)){install.packages("forcats");library(forcats)}
 if(!require(ggmosaic)){install.packages("ggmosaic");library(ggmosaic)}
-#if(!require(fitdistrplus)){install.packages("fitdistrplus");library(fitdistrplus)}
-#if(!require(rriskDistributions)){install.packages("rriskDistributions");library(rriskDistributions)}
-#if(!require(fastGraph)){install.packages("fastGraph")};library(fastGraph)
+if(!require(fitdistrplus)){install.packages("fitdistrplus");library(fitdistrplus)}#comentar
+if(!require(rriskDistributions)){install.packages("rriskDistributions");library(rriskDistributions)}#comentar
+if(!require(fastGraph)){install.packages("fastGraph")};library(fastGraph)#comentar
 if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
 ```
 
@@ -266,5 +266,274 @@ Mediante las 3 igualdades pudimos verificar que los eventos son dependientes.
 Esto significa que la población de las personas que llamaron menos de 51 veces y la población de las personas que recibieron llamadas menos de 51 veces están relacionadas, es decir que hay personas que llamaron menos de 51 veces y que también recibieron llamadas menos de 51 veces.
 
 ### OBJETIVO 2:
+
+#### Análisis de variables discretas:
+
+#### Variable discreta 1:
+
+La variable 1 discreta será `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
+
+$E_1$: De $\mathcal{F}_1$, consideramos el evento $E_1$ que consiste en elegir un usuario al azar y que el usuario haya recibido menos de 51 veces durante el mes.
+
+```{r}
+P.E_1
+```
+
+Tomaremos la suposición de que cada evento es independiente del anterior, lo cual es probable.
+
+Realizando la grafica de frecuencias para la variable `LLAMADAS_IN_TOT`
+
+Con `P.E_2` probabilidad podemos modelar una variable binomial.
+
+$$ X_1 \sim \mathsf{Binom}(100,0.1063465) $$
+
+Ahora, queremos
+
+$$P(X_1 \geq x)$$
+
+Donde:
+
+$x$: \# de exitos de $E_1$
+
+$n$: \# de veces que se repite el experimento
+
+$p$: probabilidad de éxito de $E_1$
+
+Si se desea hallar la probabilidad de que si al repetir el experimento $\epsilon_1$ 100 veces, por lo menos 10 de ellos hayan recibido menos de 51 llamadas durante el mes podemos usar la función `pbinom` para calcularlo.
+
+```{r}
+pbinom(9,100,P.E_1,lower.tail=FALSE)# = p(X>9) 
+```
+
+Hallando la esperanza y varianza:
+
+```{r}
+#𝑬(𝑿)=𝒏𝒑 
+Es_1<-100*P.E_1 
+Es_1  
+#𝑽(𝑿)=𝒏.𝒑.𝒒  
+V_1<-100*P.E_1*(1-P.E_1) 
+V_1
+```
+
+Se espera que al repetir el experimento $\epsilon_1$ 100 veces, Es_1 de ellos hayan recibido menos de 50 llamadas durante el mes.
+
+#### Variable discreta 2:
+
+La variable 2 discreta será `LLAMADAS_OUT_TOT`, que es la cantidad de llamadas que un usuario realiza durante un mes.
+
+$E_2$: De $\mathcal{F}_2$, consideramos el evento $E_2$ que consiste en elegir un usuario al azar y que el usuario haya llamado menos de 51 veces durante el mes.
+
+```{r}
+P.E_2
+```
+
+Tomaremos la suposición de que cada evento es independiente del anterior, lo cual es probable.
+
+Con `P.E_2` probabilidad podemos modelar una variable binomial.
+
+$$ X_2 \sim \mathsf{Binom}(100,0.1063465) $$
+
+Ahora, queremos
+
+$$P(X_2 \geq 10)$$
+
+Donde:
+
+$x$: \# de exitos de $X_2$
+
+$n$: \# de veces que se repite el experimento
+
+$p$: probabilidad de éxito de $E_2$
+
+Si se desea hallar la probabilidad de que si al repetir el experimento $\epsilon_2$ 100 veces, por lo menos 10 de ellos hayan llamado menos de 51 veces durante el mes podemos usar la función `pbinom` para calcularlo.
+
+```{r}
+pbinom(9,100,P.E_2,lower.tail=FALSE)# = p(X>9)
+```
+
+Hallando el esperado y varianza:
+
+```{r}
+#𝑬(𝑿)=𝒏𝒑  
+Es_2<-100*P.E_2 
+Es_2 
+#𝑽(𝑿)=𝒏.𝒑.𝒒   
+V_2<-100*P.E_2*(1-P.E_2) 
+V_2
+```
+
+Se espera que al repetir el experimento $\epsilon_1$ 100 veces, Es_2 de ellos hayan recibido menos de 50 llamadas durante el mes.
+
+#### Análisis de variables continuas:
+
+#### Variable continua 3:
+
+La variable 3 continua será `TIEMPO_LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
+
+Eligiendo el modelo:
+
+```{r}
+x <-DF$TIEMPO_LLAMADAS_IN_TOT 
+x <- x[!is.na(x)] 
+x <- x[x > 1] #fit.cont(x) # rriskDistributions 
+descdist(x) # fitdistplus
+```
+
+Se decidió tomar el modelo *log normal*.
+
+```{r}
+hist(log(DF$TIEMPO_LLAMADAS_IN_TOT))
+```
+
+```{r}
+Z <- log(x)
+```
+
+Para verificar que esto cumple, podemos mirar la centralidad.
+
+```{r}
+median(Z) 
+mean(Z)
+```
+
+Aproximadamente son parecidas, esto fue necesario verificarlo más no es suficiente.
+
+Para calcular los parámetros, se hará de dos formas.
+
+```{r}
+fitdist(Z,"norm")
+```
+
+y
+
+```{r}
+m <- mean(Z) 
+s <- sd(Z) 
+m 
+s
+```
+
+Para verificar si es una buena elección, podemos graficarlo.
+
+```{r}
+hist(Z,breaks = 50 , prob = TRUE) 
+curve(dnorm(x, mean = m, sd = s), add = TRUE, col = "red", lwd = 2)
+```
+
+Para el calculo de la esperanza y varianza, como nuestra distribución se distribuye normal con parámetros `m` y `s` :
+
+La esperanza y la varianza serían:
+
+```{r, results=hold}
+Esperanza_X <- m 
+Varianza_X <- s^2 
+sprintf("E(X_3) =  %f",Esperanza_X) 
+sprintf("Var(X_3) = %f",Varianza_X)
+```
+
+Ya que tenemos un modelo, podemos calcular probabilidades.
+
+¿Cuál es la probabilidad de que al escoger un usuario de manera aleatoria, haya llamado menos de 420 minutos al mes (6h y 30m)?
+
+Podemos calcular eso usando la función `pnorm` y el parámetro a calcular tendrá que pasarse en `log` debido a la transformación que fue hecha.
+
+```{r}
+pnorm(log(420),m,s)
+```
+
+También se puede ver gráficamente.
+
+```{r}
+shadeDist(log(420),"dnorm",m,s)
+```
+
+#### Variable continua 4:
+
+La variable 4 continua será `DATOS_4G`, que es la cantidad de datos 4G que un usuario utiliza durante un mes.
+
+Eligiendo el modelo:
+
+```{r}
+hist(DF$DATOS_4G) 
+datos_4g <- DF$DATOS_4G 
+descdist(datos_4g)
+```
+
+```{r}
+datos_4g <- datos_4g[datos_4g!=0] 
+datos_4g <- datos_4g[!is.na(datos_4g)] 
+datos_4g <- datos_4g[datos_4g > 1] 
+datos_4g2 <- ((datos_4g - min(datos_4g)) / (max(datos_4g)-min(datos_4g))) #fitdist(datos_4g2,"beta") #fitdist(datos_4g,"gamma") fitdist(datos_4g,"lnorm")
+```
+
+Pese a los intentos, la variable no se pudo calcular como una distribución gamma ni beta.
+
+Por ello, se decidió tomar el modelo *log normal*.
+
+```{r}
+Z <- log(datos_4g)
+```
+
+Para verificar que esto cumple, podemos mirar la centralidad.
+
+```{r}
+median(Z) 
+mean(Z)
+```
+
+Aproximadamente son parecidas, esto fue necesario verificarlo más no es suficiente.
+
+Para calcular los parámetros, se hará de dos formas.
+
+```{r}
+fitdist(Z,"norm")
+```
+
+y
+
+```{r}
+m <- mean(Z) 
+s <- sd(Z) 
+s;m
+```
+
+Vimos que estos parámetros coinciden con los anteriormente calculados.
+
+Diremos:
+
+$$ X_3 \sim \mathsf{Norm}(s,m) $$
+
+Para verificar si es una buena elección, podemos graficarlo:
+
+```{r}
+hist(Z,breaks = 50 , prob = TRUE) 
+curve(dnorm(x, mean = m, sd = s), add = TRUE, col = "red", lwd = 2)
+```
+
+Como nuestra distribución se distribuye normal con parámetros `m` y `s`, la esperanza y la varianza serían:
+
+```{r, results=hold}
+Esperanza_X <- m 
+Varianza_X <- s^2 
+sprintf("E(X_4) =  %f",Esperanza_X) 
+sprintf("Var(X_4) = %f",Varianza_X)
+```
+
+Ya que tenemos un modelo, podemos calcular probabilidades.
+
+¿Cuál es la probabilidad de que al escoger un usuario de manera aleatoria, este haya gastado menos de 10Gbi en datos al mes(10000Mbi)?
+
+Podemos calcular eso usando la función `pnorm` y el parámetro a calcular tendrá que pasarse en `log` debido a la transformación que fue hecha.
+
+```{r}
+pnorm(log(10000),m,s)
+```
+
+También se puede ver gráficamente.
+
+```{r}
+shadeDist(log(10000),"dnorm",m,s)
+```
 
 ## Conclusiones:
