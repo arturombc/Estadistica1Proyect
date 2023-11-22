@@ -43,3 +43,17 @@ GOFL <- gofstat(list(FDN, FDG), fitnames = list("Nomal", "Gamma"))
 (GOFL)
 ```
 
+```{r}
+x <- DF$LLAMADAS_OUT_TOT[!is.na(DF$LLAMADAS_OUT_TOT)]
+x1 <- ceiling(log(x))
+x1[x1 == -Inf] <- NA
+x1[x1 == Inf] <- NA
+x1 <- x1[!is.na(x1)]
+descdist(x1,discrete = T )
+hist(x1)
+#fitdist(x1, discrete = T, distr = "binom") #<- Puede estar mal
+```
+```{r}
+hist(DF$LLAMADAS_OUT_TOT)
+```
+
