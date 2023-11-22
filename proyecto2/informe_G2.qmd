@@ -89,7 +89,6 @@ DF %>%
 ```{r}
 tail(E_1) 
 E_1 
-sum(E_1$P) 
 ```
 
 Eliminando la ultima columna que representa los valores n/a
@@ -119,7 +118,7 @@ sum(E_1$P)
 En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio.
 
 ```{r}
-rename(E_1, "Eventos Atómicos" = LLAMADAS_IN_TOT, "Probabilidades atómicas" = P,"Cantidad de repeticiones" = n) -> E_1_ 
+rename(E_1, "Eventos Atómicos" = LLAMADAS_IN_TOT, "Probabilidades atómicas" = P,"Frecuencia de repeticiones" = n) -> E_1_ 
 head(E_1_)
 ```
 
@@ -137,7 +136,7 @@ La variable 2 será una forma de referirnos a la variable `LLAMADAS_OUT_TOT` que
 
 Definimos un experimento $\{\Omega_2, \mathcal{F}_2, \mathbb{P}_2\}$.
 
-De la misma forma que la anterior variable, esta también es una variable nuḿerica discreta, el espacio de resultados teóricos para esta variable es:
+De la misma forma que la anterior variable, esta también es una variable numérica discreta, el espacio de resultados teóricos para esta variable es:
 
 $$\Omega_2 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 8308\}$$
 
@@ -175,7 +174,7 @@ sum(E_2$P)
 ```
 
 ```{r}
-rename(E_2, "Eventos Atómicos" = LLAMADAS_OUT_TOT, "Probabilidades atómicas" = P,"Cantidad de repeticiones" = n) -> E_2_ 
+rename(E_2, "Eventos Atómicos" = LLAMADAS_OUT_TOT, "Probabilidades atómicas" = P,"Frecuencia de repeticiones" = n) -> E_2_ 
 head(E_2_)
 ```
 
