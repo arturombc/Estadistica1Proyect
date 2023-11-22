@@ -68,15 +68,14 @@ DF %>% group_by(grupo_llamadas) %>% summarise(media_contactos = mean(CONTACTOS_L
 
 ## **Variable 1**
 
-La variable 1 será una forma de referirnos a la variable `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
+`LLAMADAS_IN_TOT`:cantidad de llamadas que un usuario recibe durante un mes.
 
 ### **Definición de experimento aleatorio para la variable 1**
 
 Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que lo llamaron durante el mes.
 
-### **Espacio de resultados teórico para la variable 1**
 
-Dado que esta es una variable cuantitativa discreta con valores enteros positivos, el espacio de resultados teóricos para esta variable es:
+### **Espacio de resultados teórico para la variable 1**
 
 $$\Omega_1 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 6820\}$$
 
@@ -439,6 +438,7 @@ La variable 3 continua será `TIEMPO_LLAMADAS_IN_TOT`, que es la cantidad de lla
 ### Elección de modelo
 
 ```{r}
+if(!require(fitdistrplus)){install.packages("fitdistrplus");library(fitdistrplus)}
 x <-DF$TIEMPO_LLAMADAS_IN_TOT
 x <- x[!is.na(x)]
 x <- x[x > 1]
@@ -531,7 +531,7 @@ La variable 4 continua será `DATOS_4G`, que es la cantidad de datos 4G que un u
 ```{r}
 hist(DF$DATOS_4G)
 datos_4g <- DF$DATOS_4G
-descdist(datos_4g)
+#descdist(datos_4g)
 ```
 
 ```{r}
@@ -541,7 +541,7 @@ datos_4g <- datos_4g[datos_4g > 1]
 datos_4g2 <- ((datos_4g - min(datos_4g)) / (max(datos_4g)-min(datos_4g)))
 #fitdist(datos_4g2,"beta")
 #fitdist(datos_4g,"gamma")
-fitdist(datos_4g,"lnorm")
+#fitdist(datos_4g,"lnorm")
 ```
 
 Pese a los intentos, la variable no se pudo calcular como una distribución gamma ni beta.
@@ -566,7 +566,7 @@ Aproximadamente son parecidas, esto fue necesario verificarlo más no es suficie
 Para calcular los parámetros, se hará de dos formas.
 
 ```{r}
-fitdist(Z,"norm")
+#fitdist(Z,"norm")
 ```
 
 y
