@@ -387,14 +387,14 @@ hist(log(DF$TIEMPO_LLAMADAS_IN_TOT))
 ```
 
 ```{r}
-Z <- log(x)
+Z_3 <- log(x)
 ```
 
 Para verificar que esto cumple, podemos mirar la centralidad.
 
 ```{r}
-median(Z) 
-mean(Z)
+median(Z_3) 
+mean(Z_3)
 ```
 
 Aproximadamente son parecidas, esto fue necesario verificarlo más no es suficiente.
@@ -402,14 +402,14 @@ Aproximadamente son parecidas, esto fue necesario verificarlo más no es suficie
 Para calcular los parámetros, se hará de dos formas.
 
 ```{r}
-fitdist(Z,"norm")
+fitdist(Z_3,"norm")
 ```
 
 y
 
 ```{r}
-m <- mean(Z) 
-s <- sd(Z) 
+m <- mean(Z_3) 
+s <- sd(Z_3) 
 m 
 s
 ```
@@ -417,7 +417,7 @@ s
 Para verificar si es una buena elección, podemos graficarlo.
 
 ```{r}
-hist(Z,breaks = 50 , prob = TRUE) 
+hist(Z_3,breaks = 50 , prob = TRUE) 
 curve(dnorm(x, mean = m, sd = s), add = TRUE, col = "red", lwd = 2)
 ```
 
@@ -431,6 +431,8 @@ Varianza_X <- s^2
 sprintf("E(X_3) =  %f",Esperanza_X) 
 sprintf("Var(X_3) = %f",Varianza_X)
 ```
+
+Al escoger a un usuario de manera aleatoria, se esperaría que haya llamado aproximadamente 237,14 minutos durante el mes.
 
 Ya que tenemos un modelo, podemos calcular probabilidades.
 
@@ -472,14 +474,14 @@ Pese a los intentos, la variable no se pudo calcular como una distribución gamm
 Por ello, se decidió tomar el modelo *log normal*.
 
 ```{r}
-Z <- log(datos_4g)
+Z_4 <- log(datos_4g)
 ```
 
 Para verificar que esto cumple, podemos mirar la centralidad.
 
 ```{r}
-median(Z) 
-mean(Z)
+median(Z_4) 
+mean(Z_4)
 ```
 
 Aproximadamente son parecidas, esto fue necesario verificarlo más no es suficiente.
@@ -487,14 +489,14 @@ Aproximadamente son parecidas, esto fue necesario verificarlo más no es suficie
 Para calcular los parámetros, se hará de dos formas.
 
 ```{r}
-fitdist(Z,"norm")
+fitdist(Z_4,"norm")
 ```
 
 y
 
 ```{r}
-m <- mean(Z) 
-s <- sd(Z) 
+m <- mean(Z_4) 
+s <- sd(Z_4) 
 s;m
 ```
 
@@ -507,7 +509,7 @@ $$ X_3 \sim \mathsf{Norm}(s,m) $$
 Para verificar si es una buena elección, podemos graficarlo:
 
 ```{r}
-hist(Z,breaks = 50 , prob = TRUE) 
+hist(Z_4,breaks = 50 , prob = TRUE) 
 curve(dnorm(x, mean = m, sd = s), add = TRUE, col = "red", lwd = 2)
 ```
 
@@ -519,6 +521,8 @@ Varianza_X <- s^2
 sprintf("E(X_4) =  %f",Esperanza_X) 
 sprintf("Var(X_4) = %f",Varianza_X)
 ```
+
+Al escoger a un usuario de manera aleatoria, se esperaría que haya gastado 8.59Gbi de datos 4G durante el mes.
 
 Ya que tenemos un modelo, podemos calcular probabilidades.
 
