@@ -233,7 +233,7 @@ Para la igualdad 1:
 $$\mathbb{P}(E_1 \cap E_2) = \mathbb{P}(E_1)*\mathbb{P}(E_2)$$
 
 ```{r}
-nrow(DF[DF$LLAMADAS_IN_TOT %in% 0:50 & DF$LLAMADAS_OUT_TOT %in% 0:50, ]) / nrow(DF) == P.E_1 * P.E_2
+nrow(DF[DF$LLAMADAS_IN_TOT <= 50 & DF$LLAMADAS_OUT_TOT <= 50, ]) / nrow(DF) == P.E_1 * P.E_2
 P.inter <- sum((DF$LLAMADAS_IN_TOT <= 50) & (DF$LLAMADAS_OUT_TOT <= 50), na.rm = TRUE)/sum(!is.na(DF$LLAMADAS_IN_TOT) & !is.na(DF$LLAMADAS_OUT_TOT))
 P.E_1 * P.E_2
 P.inter
@@ -248,7 +248,7 @@ $$\mathbb{P}(E_1 | E_2) = \mathbb{P}(E_1)$$
 ```{r}
 inte <- sum(DF$LLAMADAS_IN_TOT <= 50 & DF$LLAMADAS_OUT_TOT <= 50, na.rm = TRUE) / sum(!is.na(DF$LLAMADAS_IN_TOT) & !is.na(DF$LLAMADAS_OUT_TOT))
 inte / P.E_2 == P.E_1
-tinte / P.E_2
+inte / P.E_2
 P.E_1
 ```
 
@@ -272,9 +272,71 @@ Esto significa que la población de las personas que llamaron menos de 51 veces 
 
 #### Variable discreta 1:
 
-La variable 1 discreta será `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
+La variable 1 discreta será `DIAS_LLAMADAS_IN_TOT`, que es la cantidad de días en los que un usuario recibe llamadas durante el mes.
 
-$E_1$: De $\mathcal{F}_1$, consideramos el evento $E_1$ que consiste en elegir un usuario al azar y que el usuario haya recibido menos de 51 veces durante el mes.
+Definimos un experimento $\epsilon_3$ determinado por $\{\Omega_3, \mathcal{F}_3, \mathbb{P}_3\}$ que consiste en elegir una persona de la muestra y anotar la cantidad de días que lo llamaron durante el mes.
+
+Definimos la variable aleatoria $X_3$, buscaremos un modelo al que se distribuya correctamente.
+
+```{r}
+X_3 <- DF$DIAS_LLAMADAS_IN_TOT
+X_3 <- X_3[!is.na(X_3)]
+descdist(X_3, discrete = TRUE)
+```
+
+Observamos que sigue una distribución $\mathsf{Poisson}$, calcularemos sus parámetros. Podemos hacerlo de dos maneras.
+
+```{r}
+fitdist(X_3, "pois")
+```
+
+y
+
+definimos $\lambda$ como $25.62425$
+
+```{r}
+l = mean(X_3)
+```
+
+Entonces $X_3 \sim \mathsf{Pois}(25.62425)$.
+
+Podemos calcular su función de masa de probabilidad como.
+
+$$
+\mathbb{P}(\mathbb{X} = x) = p(x) =   
+\begin{cases} 
+  \frac{\mathrm{e^{-\lambda}\lambda^x}}{x!}, & \forall~x > 0; \\
+  0, & \text{en caso contrario}
+\end{cases}
+$$
+
+```{r}
+DF %>% 
+  group_by(DIAS_LLAMADAS_IN_TOT) %>% 
+  count() %>% 
+  rename(Frecuencia = n) -> probDias
+probDias <- probDias[-nrow(probDias), ]
+probDias$P <- probDias$Frecuencia / sum(probDias$Frecuencia)
+sum(probDias$P)
+```
+
+```{r}
+plot(probDias$DIAS_LLAMADAS_IN_TOT 
+     ,  probDias$P
+     , type = "h", col="red", main = "Comparación de la variable 'DIAS_LLAMADAS_IN_TOT' y Poisson", xlab = "Cantidad de días de llamadas", ylab = "Probabilidad"
+     #, ylim = c(0,0.2) 
+     )
+
+points(probDias$DIAS_LLAMADAS_IN_TOT,  probDias$P,pch = 20, col="red")
+
+lines(dpois(0:31, l), col="blue", type="l", lwd = 2, lty = 2)
+
+legend("topleft", legend = c("Función de probabilidad", "Distribución de Poisson"), col = c("red", "blue"), lwd = 2, lty = c(1,2) )
+```
+```{r}
+hist(DF$DIAS_LLAMADAS_IN_TOT, breaks = 31)
+```
+
 
 ```{r}
 P.E_1
