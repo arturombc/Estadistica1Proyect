@@ -152,11 +152,11 @@ En el DataFrame `E_2` tenemos las probabilidades atómicas de cada uno de los re
 
 ## Variable 3 {.smaller}
 
-`TIEMPO_LLAMADAS_IN_TOT`: Cantidad de llamadas que un usuario recibe durante un mes.
+`TIEMPO_LLAMADAS_IN_TOT`: Cantidad de llamadas que un usuario recibe en un mes.
 
 **Elección de modelo**
 
-```{r, fig.width=9, fig.height=4}
+```{r, fig.align='center'}
 if(!require(fitdistrplus)){install.packages("fitdistrplus");library(fitdistrplus)}
 x <-DF$TIEMPO_LLAMADAS_IN_TOT
 x <- x[!is.na(x)]
@@ -165,7 +165,9 @@ x <- x[x > 1]
 descdist(x) # fitdistplus
 ```
 
-```{r}
+## **Variable 3** {.smaller}
+
+```{r, fig.align='center'}
 hist(log(DF$TIEMPO_LLAMADAS_IN_TOT))
 ```
 
@@ -173,12 +175,14 @@ hist(log(DF$TIEMPO_LLAMADAS_IN_TOT))
 Z <- log(x)
 ```
 
-```{r}
+```{r, results='hide'}
 median(Z)
 mean(Z)
 ```
 
-Aproximadamente son parecidas, esto fue necesario verificarlo más no es suficiente.
+Aproximadamente son parecidas
+
+## **Variable 3** {.smaller}
 
 **Cálculo de parámetros**
 
@@ -195,10 +199,12 @@ s
 
 **Gráfico de verificación**
 
-```{r, fig.width=10, fig.height=6}
+```{r, fig.width=9, fig.height=3.5, fig.align='center'}
 hist(Z,breaks = 50 , prob = TRUE)
 curve(dnorm(x, mean = m, sd = s), add = TRUE, col = "red", lwd = 2)
 ```
+
+## **Variable 3** {.smaller}
 
 **Cálculo de la esperanza y varianza**
 
@@ -209,15 +215,15 @@ sprintf("E(X_3) =  %f",Esperanza_X)
 sprintf("Var(X_3) = %f",Varianza_X)
 ```
 
-### Cálculo de probabilidades
+**Cálculo de probabilidades**
 
 ¿Cuál es la probabilidad de que alguien llame menos de 420 minutos al mes (6h y 30m)?
 
-```{r}
+```{r, results='hide'}
 pnorm(log(420),m,s)
 ```
 
-```{r}
+```{r, fig.align='center'}
 shadeDist(log(420),"dnorm",m,s)
 ```
 
@@ -227,7 +233,7 @@ shadeDist(log(420),"dnorm",m,s)
 
 **Elección de modelo**
 
-```{r}
+```{r, fig.width=9, fig.height=4.5, fig.align='center'}
 hist(DF$DATOS_4G)
 datos_4g <- DF$DATOS_4G
 #descdist(datos_4g)
@@ -243,7 +249,9 @@ datos_4g2 <- ((datos_4g - min(datos_4g)) / (max(datos_4g)-min(datos_4g)))
 #fitdist(datos_4g,"lnorm")
 ```
 
-Se decidió tomar el modelo *log normal*.
+Se decidió tomar el modelo *log normal*
+
+## Variable 4 {.smaller}
 
 **Cálculo de parámetros**
 
@@ -268,10 +276,12 @@ s;m
 
 **Gráfico de verificación**
 
-```{r}
+```{r, fig.width=9, fig.height=4, fig.align='center'}
 hist(Z,breaks = 50 , prob = TRUE)
 curve(dnorm(x, mean = m, sd = s), add = TRUE, col = "red", lwd = 2)
 ```
+
+## Variable 4 {.smaller}
 
 **Cálculo de la esperanza y varianza**
 
@@ -286,10 +296,10 @@ sprintf("Var(X_4) = %f",Varianza_X)
 
 ¿Cuál es la probabilidad de que alguien gaste menos de 10Gbi en datos al mes(10000Mbi)?
 
-```{r}
+```{r, results='hide'}
 pnorm(log(10000),m,s)
 ```
 
-```{r}
+```{r, fig.align='center'}
 shadeDist(log(10000),"dnorm",m,s)
 ```
