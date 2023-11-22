@@ -40,7 +40,6 @@ hist(DF$DIAS_LLAMADAS_IN_TOT, prob = TRUE)
 
 ```{r}
 X <- DF$DIAS_LLAMADAS_IN_TOT[!is.na(DF$DIAS_LLAMADAS_IN_TOT)]
-
 descdist(X
          , discrete = TRUE
 )

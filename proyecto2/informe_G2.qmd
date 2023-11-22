@@ -1,0 +1,606 @@
+---
+title: <center><span>Minería de Datos en la Industria de Telefonía Móvil<span>:</span> Análisis de clientes peruanos entre septiembre del 2018 y mayo del 2019.</span></center>
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    toc-title: Contenido
+    anchor_sections: TRUE # Mostrar anclaje de la sección al pasar el mouse
+    code_download: TRUE # Permite a los lectores descargar el qmd
+    code_folding: TRUE # Permite a los lectores cambiar a none, hide or show
+    fig_caption: TRUE # Las imagenes se renderizan con caption
+    theme: journal  #superhero cyborg, darkly, journal, vapor. Library "bslib"
+    # runtime: shiny # sirve para que la librería shiny interactiva funcione. library("shiny")
+    number-sections: true
+    embed-resources: true
+    author-title: Autores
+
+author: 
+  - Arturo Barrantes Chuquimia (Líder)
+  - Sheyla Sanchez Arauco 
+  - Andrea Maricielo Pérez Castro 
+  - Alejandro Rojas Alvarez
+  - Luis David Acedo Lopez
+editor: visual
+---
+
+# **Tema: Minería de Datos en la Industria de Telefonía Móvil**
+
+Análisis de clientes peruanos entre septiembre del 2018 y mayo del 2019
+
+## **Introducción**
+
+En el contexto empresarial, analizar una base de datos con información de los clientes puede llegar a ser crucial para el crecimiento de una empresa; así como del uso correcto de los recursos.\
+A lo largo de este trabajo, se analizará el comportamiento de los clientes de una empresa de telefonía móvil. El objetivo será encontrar *insights* con el fin de optimizar nuestros esfuerzos hacia el crecimiento empresarial.
+
+## **Objetivos:**
+
+1.  Analizar dos eventos y la dependencia o independencia entre la cantidad de llamadas que un usuario recibe durante un mes y la cantidad de llamadas que un usuario realiza a lo largo de aquel tiempo.
+2.  Analizar la cantidad de llamadas entrantes y salientes de un usuario durante un mes, y el tiempo total de llamadas entrantes y salientes que recibe un usuario durante el periodo, con el objetivo de hallar un modelo probabilístico adecuado, junto a parámetros pertinentes.
+
+## Limpieza y carga de datos:
+
+```{r, liberías, message=FE_1LSE}
+if(!require(readr)){install.packages("readr");library(readr)}
+if(!require(ggplot2)){install.packages("ggplot2");library(ggplot2)}
+if(!require(ggthemes)){install.packages("ggthemes");library(ggthemes)}
+if(!require(ggrepel)){install.packages("ggrepel");library(ggrepel)}
+if(!require(tidyverse)){install.packages("tidyverse");library(tidyverse)}
+if(!require(forcats)){install.packages("forcats");library(forcats)}
+if(!require(ggmosaic)){install.packages("ggmosaic");library(ggmosaic)}
+if(!require(fitdistrplus)){install.packages("fitdistrplus");library(fitdistrplus)}#comentar
+if(!require(rriskDistributions)){install.packages("rriskDistributions");library(rriskDistributions)}#comentar
+if(!require(fastGraph)){install.packages("fastGraph")};library(fastGraph)#comentar
+if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
+```
+
+```{r, carga-DF}
+DF <- read_csv("DataLimpia.csv"
+               , col_types = cols(.default = col_guess()
+                                  , CHIP=col_factor(levels = c("2G","3G","4G"))
+                                  , PERIODO=col_date(format = "%Y%m")
+                                  )
+               )
+```
+
+## Resultados:
+
+### OBJETIVO 1:
+
+#### **Variable discreta 1:**
+
+La variable 1 será una forma de referirnos a la variable `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
+
+Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que lo llamaron durante el mes.
+
+Dado que esta es una variable cuantitativa discreta con valores enteros positivos, el espacio de resultados teóricos para esta variable es:
+
+$$\Omega_1 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 6820\}$$
+
+Hallando las probabilidades empíricas de todos los eventos atómicos de la variable 1:
+
+```{r}
+DF %>%   
+  select(ID,LLAMADAS_IN_TOT) %>%   
+  group_by(LLAMADAS_IN_TOT) %>%   
+  summarise(n = n()) -> E_1 
+```
+
+```{r}
+tail(E_1) 
+E_1 
+```
+
+Eliminando la ultima columna que representa los valores n/a
+
+```{r}
+E_1 <- E_1[-nrow(E_1), ] 
+```
+
+Hallando la probabilidad empírica para cada evento atómico:
+
+```{r}
+Tot1 <- sum(E_1$n) 
+E_1$P <- E_1$n / Tot1
+```
+
+```{r}
+head(E_1)
+```
+
+Finalmente podemos demostrar que la suma de todas las probabilidades de cada evento dan un total de 0:
+
+```{r}
+E_1 
+sum(E_1$P)
+```
+
+En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio.
+
+```{r}
+rename(E_1, "Eventos Atómicos" = LLAMADAS_IN_TOT, "Probabilidades atómicas" = P,"Frecuencia de repeticiones" = n) -> E_1_ 
+head(E_1_)
+```
+
+Ahora podemos definir los eventos atómicos como:
+
+$$ \begin{align*} & E_{1_i}\, \text{el evento atómico i del experimento 1 se define como}\\ & E_{1_i} : \text{Te llaman }\textit{i }\text{veces durante el mes}\quad i\in\text{Eventos Atómicos}_1 \end{align*} $$
+
+$\text{Eventos atómicos}_1$ Es un conjunto que representa a la columna Eventos atómicos de $E_1$.
+
+En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio. El nombre representa el experimento 1 sin intención de ser algo específico.
+
+#### **Variable discreta 2:**
+
+La variable 2 será una forma de referirnos a la variable `LLAMADAS_OUT_TOT` que es la cantidad de llamadas que un usuario realiza a lo largo de un mes.
+
+Definimos un experimento $\{\Omega_2, \mathcal{F}_2, \mathbb{P}_2\}$.
+
+De la misma forma que la anterior variable, esta también es una variable numérica discreta, el espacio de resultados teóricos para esta variable es:
+
+$$\Omega_2 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 8308\}$$
+
+Hallando las probabilidades empíricas de todos los eventos atómicos de la variable 1:
+
+```{r}
+DF %>%   
+  select(ID,LLAMADAS_OUT_TOT) %>%   
+  group_by(LLAMADAS_OUT_TOT) %>%   
+  summarise(n = n()) -> E_2
+```
+
+Eliminando la ultima columna que representa los valores n/a
+
+```{r}
+E_2 <- E_2[-nrow(E_2), ]
+```
+
+Hallando la probabilidad empírica para cada evento atómico:
+
+```{r}
+Tot2 <- sum(E_2$n) 
+E_2$P <- E_2$n / Tot2
+```
+
+```{r}
+head(E_2)
+```
+
+Finalmente podemos demostrar que la suma de todas las probabilidades de cada evento dan un total de 0:
+
+```{r}
+E_2 
+sum(E_2$P)
+```
+
+```{r}
+rename(E_2, "Eventos Atómicos" = LLAMADAS_OUT_TOT, "Probabilidades atómicas" = P,"Frecuencia de repeticiones" = n) -> E_2_ 
+head(E_2_)
+```
+
+Ahora podemos definir los eventos atómicos como:
+
+$$ \begin{align*} & E_{2_i}\, \text{el evento atómico i del experimento 2 se define como}\\ & E_{2_i} : \text{Haces una llamada }\textit{i }\text{veces durante el mes}\quad i\in\text{Eventos Atómicos}_2 \end{align*} $$
+
+$\text{Eventos atómicos}_2$ Es un conjunto que representa a la columna Eventos atómicos de $E_2$.
+
+```{r}
+E_2
+```
+
+En el DataFrame `E_2` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio. El nombre representa el experimento 2 sin intención de ser algo específico.
+
+#### **Definición de eventos y análisis de independencia:**
+
+Definiremos 2 eventos, $E_1$ y $E_2$.
+
+$E_1$: De $\mathcal{F}_1$, consideramos el evento $E_1$ que consiste en elegir un usuario al azar y que lo hayan llamado 50 veces o menos durante el mes.
+
+$E_2$: De $\mathcal{F}_2$, consideramos el evento $E_2$ que consiste en elegir un usuario al azar y que el usuario haya realizado una llamada 50 veces o menos durante el mes.
+
+Podemos calcular $|E_1|$ como la cantidad de usuarios a los que llamaron 0, 1, 2, 3, ...,49 o 50 veces durante el mes.
+
+Similarmente, calcular $|E_2|$ como la cantidad de usuarios que realizaron llamadas 0, 1, 2, 3, ...,49 o 50 veces durante el mes.
+
+Dados los eventos $E_1$ y $E_2$, diremos que son *independientes* si se cumple cualquiera de las siguientes tres igualdades.
+
+1.  $\mathbb{P}(E_1 \cap E_2) = \mathbb{P}(E_1)*\mathbb{P}(E_2)$
+
+2.  $\mathbb{P}(E_1 | E_2) = \mathbb{P}(E_1)$
+
+3.  $\mathbb{P}(E_2 | E_1) = \mathbb{P}(E_2)$
+
+Calculando las probabilidades de ambos eventos:
+
+Podemos entonces calcular $\mathbb{P}_{E_1}$ como $\tfrac{|E_1|}{|\Omega_1|}$.
+
+```{r}
+P.E_1 <- sum(E_1$P[E_1$LLAMADAS_IN_TOT <= 50])
+P.E_1
+```
+
+De la misma manera, podemos calcular $\mathbb{P}_{E_2}$ como $\tfrac{|E_2|}{|\Omega_2|}$.
+
+```{r}
+P.E_2 <- sum(E_2$P[E_2$LLAMADAS_OUT_TOT <= 50])
+P.E_2
+```
+
+Al tener $\mathbb{P}_{E_1}$ y $\mathbb{P}_{E_2}$, ahora podemos utilizar las igualdades de arriba para verificar la independencia de los eventos:
+
+Para la igualdad 1:
+
+$$\mathbb{P}(E_1 \cap E_2) = \mathbb{P}(E_1)*\mathbb{P}(E_2)$$
+
+```{r}
+nrow(DF[DF$LLAMADAS_IN_TOT <= 50 & DF$LLAMADAS_OUT_TOT <= 50, ]) / nrow(DF) == P.E_1 * P.E_2
+P.inter <- sum((DF$LLAMADAS_IN_TOT <= 50) & (DF$LLAMADAS_OUT_TOT <= 50), na.rm = TRUE)/sum(!is.na(DF$LLAMADAS_IN_TOT) & !is.na(DF$LLAMADAS_OUT_TOT))
+P.E_1 * P.E_2
+P.inter
+```
+
+Entonces los eventos no son independientes
+
+Para la igualdad 2:
+
+$$\mathbb{P}(E_1 | E_2) = \mathbb{P}(E_1)$$
+
+```{r}
+inte <- sum(DF$LLAMADAS_IN_TOT <= 50 & DF$LLAMADAS_OUT_TOT <= 50, na.rm = TRUE) / sum(!is.na(DF$LLAMADAS_IN_TOT) & !is.na(DF$LLAMADAS_OUT_TOT))
+inte / P.E_2 == P.E_1
+inte / P.E_2
+P.E_1
+```
+
+Para la igualdad 3:
+
+$$\mathbb{P}(E_2 | E_1) = \mathbb{P}(E_2)$$
+
+```{r}
+inte / P.E_1 == P.E_2
+inte / P.E_1
+P.E_2
+```
+
+Mediante las 3 igualdades pudimos verificar que los eventos son dependientes.
+
+Esto significa que la población de las personas que llamaron menos de 51 veces y la población de las personas que recibieron llamadas menos de 51 veces están relacionadas, es decir que hay personas que llamaron menos de 51 veces y que también recibieron llamadas menos de 51 veces.
+
+### OBJETIVO 2:
+
+#### Análisis de variables discretas:
+
+#### Variable discreta 1:
+
+La variable 1 discreta será `DIAS_LLAMADAS_IN_TOT`, que es la cantidad de días en los que un usuario recibe llamadas durante el mes.
+
+Definimos un experimento $\epsilon_3$ determinado por $\{\Omega_3, \mathcal{F}_3, \mathbb{P}_3\}$ que consiste en elegir una persona de la muestra y anotar la cantidad de días que lo llamaron durante el mes.
+
+Definimos la variable aleatoria $X_3$, buscaremos un modelo al que se distribuya correctamente.
+
+```{r}
+X_3 <- DF$DIAS_LLAMADAS_IN_TOT
+X_3 <- X_3[!is.na(X_3)]
+descdist(X_3, discrete = TRUE)
+```
+
+Observamos que sigue una distribución $\mathsf{Poisson}$, calcularemos sus parámetros. Podemos hacerlo de dos maneras.
+
+```{r}
+fitdist(X_3, "pois")
+```
+
+y
+
+definimos $\lambda$ como $25.62425$
+
+```{r}
+l = mean(X_3)
+```
+
+Entonces $X_3 \sim \mathsf{Pois}(25.62425)$.
+
+Podemos calcular su función de masa de probabilidad como.
+
+$$
+\mathbb{P}(\mathbb{X} = x) = p(x) =   
+\begin{cases} 
+  \frac{\mathrm{e^{-\lambda}\lambda^x}}{x!}, & \forall~x > 0; \\
+  0, & \text{en caso contrario}
+\end{cases}
+$$
+
+```{r}
+DF %>% 
+  group_by(DIAS_LLAMADAS_IN_TOT) %>% 
+  count() %>% 
+  rename(Frecuencia = n) -> probDias
+probDias <- probDias[-nrow(probDias), ]
+probDias$P <- probDias$Frecuencia / sum(probDias$Frecuencia)
+sum(probDias$P)
+```
+
+```{r}
+plot(probDias$DIAS_LLAMADAS_IN_TOT 
+     ,  probDias$P
+     , type = "h", col="red", main = "Comparación de la variable 'DIAS_LLAMADAS_IN_TOT' y Poisson", xlab = "Cantidad de días de llamadas", ylab = "Probabilidad"
+     #, ylim = c(0,0.2) 
+     )
+
+points(probDias$DIAS_LLAMADAS_IN_TOT,  probDias$P,pch = 20, col="red")
+
+lines(dpois(0:31, l), col="blue", type="l", lwd = 2, lty = 2)
+
+legend("topleft", legend = c("Función de probabilidad", "Distribución de Poisson"), col = c("red", "blue"), lwd = 2, lty = c(1,2) )
+```
+```{r}
+hist(DF$DIAS_LLAMADAS_IN_TOT, breaks = 31)
+```
+
+
+```{r}
+P.E_1
+```
+
+Tomaremos la suposición de que cada evento es independiente del anterior, lo cual es probable.
+
+Realizando la grafica de frecuencias para la variable `LLAMADAS_IN_TOT`
+
+Con `P.E_2` probabilidad podemos modelar una variable binomial.
+
+$$ X_1 \sim \mathsf{Binom}(100,0.1063465) $$
+
+Ahora, queremos
+
+$$P(X_1 \geq x)$$
+
+Donde:
+
+$x$: \# de exitos de $E_1$
+
+$n$: \# de veces que se repite el experimento
+
+$p$: probabilidad de éxito de $E_1$
+
+Si se desea hallar la probabilidad de que si al repetir el experimento $\epsilon_1$ 100 veces, por lo menos 10 de ellos hayan recibido menos de 51 llamadas durante el mes podemos usar la función `pbinom` para calcularlo.
+
+```{r}
+pbinom(9,100,P.E_1,lower.tail=FALSE)# = p(X>9) 
+```
+
+Hallando la esperanza y varianza:
+
+```{r}
+#𝑬(𝑿)=𝒏𝒑 
+Es_1<-100*P.E_1 
+Es_1  
+#𝑽(𝑿)=𝒏.𝒑.𝒒  
+V_1<-100*P.E_1*(1-P.E_1) 
+V_1
+```
+
+Se espera que al repetir el experimento $\epsilon_1$ 100 veces, Es_1 de ellos hayan recibido menos de 50 llamadas durante el mes.
+
+#### Variable discreta 2:
+
+La variable 2 discreta será `LLAMADAS_OUT_TOT`, que es la cantidad de llamadas que un usuario realiza durante un mes.
+
+$E_2$: De $\mathcal{F}_2$, consideramos el evento $E_2$ que consiste en elegir un usuario al azar y que el usuario haya llamado menos de 51 veces durante el mes.
+
+```{r}
+P.E_2
+```
+
+Tomaremos la suposición de que cada evento es independiente del anterior, lo cual es probable.
+
+Con `P.E_2` probabilidad podemos modelar una variable binomial.
+
+$$ X_2 \sim \mathsf{Binom}(100,0.1063465) $$
+
+Ahora, queremos
+
+$$P(X_2 \geq 10)$$
+
+Donde:
+
+$x$: \# de exitos de $X_2$
+
+$n$: \# de veces que se repite el experimento
+
+$p$: probabilidad de éxito de $E_2$
+
+Si se desea hallar la probabilidad de que si al repetir el experimento $\epsilon_2$ 100 veces, por lo menos 10 de ellos hayan llamado menos de 51 veces durante el mes podemos usar la función `pbinom` para calcularlo.
+
+```{r}
+pbinom(9,100,P.E_2,lower.tail=FALSE)# = p(X>9)
+```
+
+Hallando el esperado y varianza:
+
+```{r}
+#𝑬(𝑿)=𝒏𝒑  
+Es_2<-100*P.E_2 
+Es_2 
+#𝑽(𝑿)=𝒏.𝒑.𝒒   
+V_2<-100*P.E_2*(1-P.E_2) 
+V_2
+```
+
+Se espera que al repetir el experimento $\epsilon_1$ 100 veces, Es_2 de ellos hayan recibido menos de 50 llamadas durante el mes.
+
+#### Análisis de variables continuas:
+
+#### Variable continua 3:
+
+La variable 3 continua será `TIEMPO_LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
+
+Eligiendo el modelo:
+
+```{r}
+x <-DF$TIEMPO_LLAMADAS_IN_TOT 
+x <- x[!is.na(x)] 
+x <- x[x > 1] #fit.cont(x) # rriskDistributions 
+descdist(x) # fitdistplus
+```
+
+Se decidió tomar el modelo *log normal*.
+
+```{r}
+hist(log(DF$TIEMPO_LLAMADAS_IN_TOT))
+```
+
+```{r}
+Z_3 <- log(x)
+```
+
+Para verificar que esto cumple, podemos mirar la centralidad.
+
+```{r}
+median(Z_3) 
+mean(Z_3)
+```
+
+Aproximadamente son parecidas, esto fue necesario verificarlo más no es suficiente.
+
+Para calcular los parámetros, se hará de dos formas.
+
+```{r}
+fitdist(Z_3,"norm")
+```
+
+y
+
+```{r}
+m <- mean(Z_3) 
+s <- sd(Z_3) 
+m 
+s
+```
+
+Para verificar si es una buena elección, podemos graficarlo.
+
+```{r}
+hist(Z_3,breaks = 50 , prob = TRUE) 
+curve(dnorm(x, mean = m, sd = s), add = TRUE, col = "red", lwd = 2)
+```
+
+Para el calculo de la esperanza y varianza, como nuestra distribución se distribuye normal con parámetros `m` y `s` :
+
+La esperanza y la varianza serían:
+
+```{r, results=hold}
+Esperanza_X <- m 
+Varianza_X <- s^2 
+sprintf("E(X_3) =  %f",Esperanza_X) 
+sprintf("Var(X_3) = %f",Varianza_X)
+```
+
+Al escoger a un usuario de manera aleatoria, se esperaría que haya llamado aproximadamente 237,14 minutos durante el mes.
+
+Ya que tenemos un modelo, podemos calcular probabilidades.
+
+¿Cuál es la probabilidad de que al escoger un usuario de manera aleatoria, haya llamado menos de 420 minutos al mes (6h y 30m)?
+
+Podemos calcular eso usando la función `pnorm` y el parámetro a calcular tendrá que pasarse en `log` debido a la transformación que fue hecha.
+
+```{r}
+pnorm(log(420),m,s)
+```
+
+También se puede ver gráficamente.
+
+```{r}
+shadeDist(log(420),"dnorm",m,s)
+```
+
+#### Variable continua 4:
+
+La variable 4 continua será `DATOS_4G`, que es la cantidad de datos 4G que un usuario utiliza durante un mes.
+
+Eligiendo el modelo:
+
+```{r}
+hist(DF$DATOS_4G) 
+datos_4g <- DF$DATOS_4G 
+descdist(datos_4g)
+```
+
+```{r}
+datos_4g <- datos_4g[datos_4g!=0] 
+datos_4g <- datos_4g[!is.na(datos_4g)] 
+datos_4g <- datos_4g[datos_4g > 1] 
+datos_4g2 <- ((datos_4g - min(datos_4g)) / (max(datos_4g)-min(datos_4g))) #fitdist(datos_4g2,"beta") #fitdist(datos_4g,"gamma") fitdist(datos_4g,"lnorm")
+```
+
+Pese a los intentos, la variable no se pudo calcular como una distribución gamma ni beta.
+
+Por ello, se decidió tomar el modelo *log normal*.
+
+```{r}
+Z_4 <- log(datos_4g)
+```
+
+Para verificar que esto cumple, podemos mirar la centralidad.
+
+```{r}
+median(Z_4) 
+mean(Z_4)
+```
+
+Aproximadamente son parecidas, esto fue necesario verificarlo más no es suficiente.
+
+Para calcular los parámetros, se hará de dos formas.
+
+```{r}
+fitdist(Z_4,"norm")
+```
+
+y
+
+```{r}
+m <- mean(Z_4) 
+s <- sd(Z_4) 
+s;m
+```
+
+Vimos que estos parámetros coinciden con los anteriormente calculados.
+
+Diremos:
+
+$$ X_3 \sim \mathsf{Norm}(s,m) $$
+
+Para verificar si es una buena elección, podemos graficarlo:
+
+```{r}
+hist(Z_4,breaks = 50 , prob = TRUE) 
+curve(dnorm(x, mean = m, sd = s), add = TRUE, col = "red", lwd = 2)
+```
+
+Como nuestra distribución se distribuye normal con parámetros `m` y `s`, la esperanza y la varianza serían:
+
+```{r, results=hold}
+Esperanza_X <- m 
+Varianza_X <- s^2 
+sprintf("E(X_4) =  %f",Esperanza_X) 
+sprintf("Var(X_4) = %f",Varianza_X)
+```
+
+Al escoger a un usuario de manera aleatoria, se esperaría que haya gastado 5361.5Mbi o 5.361Gbi de datos 4G durante el mes.
+
+Ya que tenemos un modelo, podemos calcular probabilidades.
+
+¿Cuál es la probabilidad de que al escoger un usuario de manera aleatoria, este haya gastado menos de 10Gbi en datos al mes(10000Mbi)?
+
+Podemos calcular eso usando la función `pnorm` y el parámetro a calcular tendrá que pasarse en `log` debido a la transformación que fue hecha.
+
+```{r}
+pnorm(log(10000),m,s)
+```
+
+También se puede ver gráficamente.
+
+```{r}
+shadeDist(log(10000),"dnorm",m,s)
+```
+
+## Conclusiones:

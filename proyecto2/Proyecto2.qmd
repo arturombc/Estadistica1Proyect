@@ -26,17 +26,22 @@ editor: visual
 
 ```{r, liberías, message=FE_1LSE}
 if(!require(readr)){install.packages("readr");library(readr)}
-if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
 if(!require(ggplot2)){install.packages("ggplot2");library(ggplot2)}
 if(!require(ggthemes)){install.packages("ggthemes");library(ggthemes)}
 if(!require(ggrepel)){install.packages("ggrepel");library(ggrepel)}
 if(!require(tidyverse)){install.packages("tidyverse");library(tidyverse)}
 if(!require(forcats)){install.packages("forcats");library(forcats)}
 if(!require(ggmosaic)){install.packages("ggmosaic");library(ggmosaic)}
-if(!require(fitdistrplus)){install.packages("fitdistrplus");library(fitdistrplus)}
-if(!require(rriskDistributions)){install.packages("rriskDistributions");library(rriskDistributions)}
-if(!require(fastGraph)){install.packages("fastGraph")};library(fastGraph)
+#if(!require(fitdistrplus)){install.packages("fitdistrplus");library(fitdistrplus)}
+#if(!require(rriskDistributions)){install.packages("rriskDistributions");library(rriskDistributions)}
+#if(!require(fastGraph)){install.packages("fastGraph")};library(fastGraph)
 if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
+```
+
+```{r}
+#detach("package:fitdistrplus", unload=TRUE)
+#detach("package:rriskDistributions", unload=TRUE)
+#detach("package:fastGraph", unload=TRUE)
 ```
 
 ```{r, carga-DF}
@@ -67,7 +72,8 @@ DF %>% group_by(grupo_llamadas) %>% summarise(media_contactos = mean(CONTACTOS_L
 
 ### **Definición de experimento aleatorio para la variable 1**
 
-Elijo una persona de la muestra y anoto la cantidad de veces que lo llamaron durante el mes.
+Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que lo llamaron durante el mes.
+
 
 ### **Espacio de resultados teórico para la variable 1**
 
