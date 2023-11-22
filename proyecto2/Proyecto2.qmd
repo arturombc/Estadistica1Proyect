@@ -37,12 +37,12 @@ if(!require(ggmosaic)){install.packages("ggmosaic");library(ggmosaic)}
 #if(!require(fastGraph)){install.packages("fastGraph")};library(fastGraph)
 if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
 ```
+
 ```{r}
 #detach("package:fitdistrplus", unload=TRUE)
 #detach("package:rriskDistributions", unload=TRUE)
 #detach("package:fastGraph", unload=TRUE)
 ```
-
 
 ```{r, carga-DF}
 DF <- read_csv("DataLimpia.csv"
@@ -63,7 +63,6 @@ DF$DATOS_TOTAL
 DF$grupo_llamadas <- cut(DF$LLAMADAS_OUT_TOT, breaks = c(0, 10, 20, 30, 40, 50, Inf), labels = c("0-10", "11-20", "21-30", "31-40", "41-50", "Más de 50"))
 DF %>% group_by(grupo_llamadas) %>% summarise(media_contactos = mean(CONTACTOS_LLAMADAS_OUT_TOT))
 ```
-
 
 # **Parte 1**
 
