@@ -19,8 +19,8 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 
 ## **Objetivos:**
 
-1.  Analizar la dependencia o independencia entre la cantidad de llamadas que un usuario recibe durante un mes y la cantidad de llamadas que un usuario realiza a lo largo de aquel tiempo.
-2.  Analizar la cantidad de llamadas entrantes y salientes de un usuario durante un mes, y el tiempo total de llamadas entrantes y salientes que recibe un usuario durante el periodo, con el objetivo de hallar un modelo probabilístico adecuado, junto a parámetros pertinentes .
+1.  Analizar dos eventos y la dependencia o independencia entre la cantidad de llamadas que un usuario recibe durante un mes y la cantidad de llamadas que un usuario realiza a lo largo de aquel tiempo.
+2.  Analizar la cantidad de llamadas entrantes y salientes de un usuario durante un mes, y el tiempo total de llamadas entrantes y salientes que recibe un usuario durante el periodo, con el objetivo de hallar un modelo probabilístico adecuado, junto a parámetros pertinentes.
 
 ## Limpieza y carga de datos:
 
@@ -51,21 +51,17 @@ DF <- read_csv("DataLimpia.csv"
 
 ### OBJETIVO 1:
 
+#### Variable discreta 1:
+
 La variable 1 será una forma de referirnos a la variable `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
 
-La variable 2 será una forma de referirnos a la variable `LLAMADAS_OUT_TOT` que es la cantidad de llamadas que un usuario realiza a lo largo de un mes.
-
-### **Definición de experimento aleatorio para la variable 1**
-
 Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ que consiste en que elijo una persona de la muestra y anoto la cantidad de veces que lo llamaron durante el mes.
-
-### **Espacio de resultados teórico para la variable 1**
 
 Dado que esta es una variable cuantitativa discreta con valores enteros positivos, el espacio de resultados teóricos para esta variable es:
 
 $$\Omega_1 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 6820\}$$
 
-### **Cálculo de la probabilidad empírica de todos los eventos atómicos de la variable 1**
+Hallando las probabilidades empíricas de todos los eventos atómicos de la variable 1:
 
 ```{r}
 DF %>%   
@@ -80,17 +76,13 @@ E_1
 sum(E_1$P) 
 ```
 
-Seleccionar una persona de mi estudio que ha recibido 0 llamadas durante el mes.
-
-E_n el evento de atomico de que lo hayan llamado n veces al mes.
+Eliminando la ultima columna que representa los valores n/a
 
 ```{r}
 E_1 <- E_1[-nrow(E_1), ] 
 ```
 
-```{r}
-tail(E_1)
-```
+Hallando la probabilidad empírica para cada evento atómico:
 
 ```{r}
 Tot1 <- sum(E_1$n) 
@@ -100,6 +92,8 @@ E_1$P <- E_1$n / Tot1
 ```{r}
 head(E_1)
 ```
+
+Finalmente podemos demostrar que la suma de todas las probabilidades de cada evento dan un total de 0:
 
 ```{r}
 E_1 
@@ -119,11 +113,67 @@ $$ \begin{align*} & E_{1_i}\, \text{el evento atómico i del experimento 1 se de
 
 $\text{Eventos atómicos}_1$ Es un conjunto que representa a la columna Eventos atómicos de $E_1$.
 
+En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio. El nombre representa el experimento 1 sin intención de ser algo específico.
+
+#### Variable discreta 2:
+
+La variable 2 será una forma de referirnos a la variable `LLAMADAS_OUT_TOT` que es la cantidad de llamadas que un usuario realiza a lo largo de un mes.
+
+Definimos un experimento $\{\Omega_2, \mathcal{F}_2, \mathbb{P}_2\}$.
+
+De la misma forma que la anterior variable, esta también es una variable nuḿerica discreta, el espacio de resultados teóricos para esta variable es:
+
+$$\Omega_2 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 8308\}$$
+
+Hallando las probabilidades empíricas de todos los eventos atómicos de la variable 1:
+
 ```{r}
-E_1
+DF %>%   
+  select(ID,LLAMADAS_OUT_TOT) %>%   
+  group_by(LLAMADAS_OUT_TOT) %>%   
+  summarise(n = n()) -> E_2
 ```
 
-En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio. El nombre representa el experimento 1 sin intención de ser algo específico.
+Eliminando la ultima columna que representa los valores n/a
+
+```{r}
+E_2 <- E_2[-nrow(E_2), ]
+```
+
+Hallando la probabilidad empírica para cada evento atómico:
+
+```{r}
+Tot2 <- sum(E_2$n) 
+E_2$P <- E_2$n / Tot2
+```
+
+```{r}
+head(E_2)
+```
+
+Finalmente podemos demostrar que la suma de todas las probabilidades de cada evento dan un total de 0:
+
+```{r}
+E_2 
+sum(E_2$P)
+```
+
+```{r}
+rename(E_2, "Eventos Atómicos" = LLAMADAS_OUT_TOT, "Probabilidades atómicas" = P,"Cantidad de repeticiones" = n) -> E_2_ 
+head(E_2_)
+```
+
+Ahora podemos definir los eventos atómicos como:
+
+$$ \begin{align*} & E_{2_i}\, \text{el evento atómico i del experimento 2 se define como}\\ & E_{2_i} : \text{Haces una llamada }\textit{i }\text{veces durante el mes}\quad i\in\text{Eventos Atómicos}_2 \end{align*} $$
+
+$\text{Eventos atómicos}_2$ Es un conjunto que representa a la columna Eventos atómicos de $E_2$.
+
+```{r}
+E_2
+```
+
+En el DataFrame `E_2` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio. El nombre representa el experimento 2 sin intención de ser algo específico.
 
 ### OBJETIVO 2:
 
