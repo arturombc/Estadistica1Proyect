@@ -40,18 +40,18 @@ A lo largo de este trabajo, se analizará el comportamiento de los clientes de u
 
 ## Limpieza y carga de datos:
 
-```{r, liberías, message=FE_1LSE}
+```{r, liberías, message=FALSE}
 if(!require(readr)){install.packages("readr");library(readr)}
 if(!require(ggplot2)){install.packages("ggplot2");library(ggplot2)}
 if(!require(ggthemes)){install.packages("ggthemes");library(ggthemes)}
 if(!require(ggrepel)){install.packages("ggrepel");library(ggrepel)}
-if(!require(tidyverse)){install.packages("tidyverse");library(tidyverse)}
 if(!require(forcats)){install.packages("forcats");library(forcats)}
 if(!require(ggmosaic)){install.packages("ggmosaic");library(ggmosaic)}
 if(!require(fitdistrplus)){install.packages("fitdistrplus");library(fitdistrplus)}#comentar
 if(!require(rriskDistributions)){install.packages("rriskDistributions");library(rriskDistributions)}#comentar
 if(!require(fastGraph)){install.packages("fastGraph")};library(fastGraph)#comentar
 if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
+if(!require(tidyverse)){install.packages("tidyverse");library(tidyverse)}
 ```
 
 ```{r, carga-DF}
@@ -67,7 +67,7 @@ DF <- read_csv("DataLimpia.csv"
 
 ### OBJETIVO 1:
 
-#### Variable discreta 1:
+#### **Variable discreta 1:**
 
 La variable 1 será una forma de referirnos a la variable `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
 
@@ -130,7 +130,7 @@ $\text{Eventos atómicos}_1$ Es un conjunto que representa a la columna Eventos 
 
 En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio. El nombre representa el experimento 1 sin intención de ser algo específico.
 
-#### Variable discreta 2:
+#### **Variable discreta 2:**
 
 La variable 2 será una forma de referirnos a la variable `LLAMADAS_OUT_TOT` que es la cantidad de llamadas que un usuario realiza a lo largo de un mes.
 
@@ -194,9 +194,9 @@ En el DataFrame `E_2` tenemos las probabilidades atómicas de cada uno de los re
 
 Definiremos 2 eventos, $E_1$ y $E_2$.
 
-$E_1$: De $\mathcal{F}_1$, consideramos el evento $E_1$ que consiste en elegir un usuario al azar y que lo hayan llamado menos de 50 veces durante el mes.
+$E_1$: De $\mathcal{F}_1$, consideramos el evento $E_1$ que consiste en elegir un usuario al azar y que lo hayan llamado 50 veces o menos durante el mes.
 
-$E_2$: De $\mathcal{F}_2$, consideramos el evento $E_2$ que consiste en elegir un usuario al azar y que el usuario haya llamado menos de 50 veces durante el mes.
+$E_2$: De $\mathcal{F}_2$, consideramos el evento $E_2$ que consiste en elegir un usuario al azar y que el usuario haya realizado una llamada 50 veces o menos durante el mes.
 
 Podemos calcular $|E_1|$ como la cantidad de usuarios a los que llamaron 0, 1, 2, 3, ...,49 o 50 veces durante el mes.
 
@@ -215,14 +215,14 @@ Calculando las probabilidades de ambos eventos:
 Podemos entonces calcular $\mathbb{P}_{E_1}$ como $\tfrac{|E_1|}{|\Omega_1|}$.
 
 ```{r}
-P.E_1 <- sum(E_1$P[E_1$LLAMADAS_IN_TOT %in% 0:50])
+P.E_1 <- sum(E_1$P[E_1$LLAMADAS_IN_TOT <= 50])
 P.E_1
 ```
 
 De la misma manera, podemos calcular $\mathbb{P}_{E_2}$ como $\tfrac{|E_2|}{|\Omega_2|}$.
 
 ```{r}
-P.E_2 <- sum(E_2$P[E_2$LLAMADAS_OUT_TOT %in% 0:50])
+P.E_2 <- sum(E_2$P[E_2$LLAMADAS_OUT_TOT <= 50])
 P.E_2
 ```
 
@@ -233,9 +233,10 @@ Para la igualdad 1:
 $$\mathbb{P}(E_1 \cap E_2) = \mathbb{P}(E_1)*\mathbb{P}(E_2)$$
 
 ```{r}
-nrow(DF[DF$LLAMADAS_IN_TOT %in% 0:50 & DF$LLAMADAS_OUT_TOT %in% 0:50, ]) / nrow(DF) == P.E_1 * P.E_2
-nrow(DF[DF$LLAMADAS_IN_TOT %in% 0:50 & DF$LLAMADAS_OUT_TOT %in% 0:50, ]) / nrow(DF) 
+nrow(DF[DF$LLAMADAS_IN_TOT <= 50 & DF$LLAMADAS_OUT_TOT <= 50, ]) / nrow(DF) == P.E_1 * P.E_2
+P.inter <- sum((DF$LLAMADAS_IN_TOT <= 50) & (DF$LLAMADAS_OUT_TOT <= 50), na.rm = TRUE)/sum(!is.na(DF$LLAMADAS_IN_TOT) & !is.na(DF$LLAMADAS_OUT_TOT))
 P.E_1 * P.E_2
+P.inter
 ```
 
 Entonces los eventos no son independientes
@@ -245,7 +246,7 @@ Para la igualdad 2:
 $$\mathbb{P}(E_1 | E_2) = \mathbb{P}(E_1)$$
 
 ```{r}
-inte <- nrow(DF[DF$LLAMADAS_IN_TOT %in% 0:50 & DF$LLAMADAS_OUT_TOT %in% 0:50, ]) / nrow(DF)
+inte <- sum(DF$LLAMADAS_IN_TOT <= 50 & DF$LLAMADAS_OUT_TOT <= 50, na.rm = TRUE) / sum(!is.na(DF$LLAMADAS_IN_TOT) & !is.na(DF$LLAMADAS_OUT_TOT))
 inte / P.E_2 == P.E_1
 inte / P.E_2
 P.E_1
@@ -271,57 +272,139 @@ Esto significa que la población de las personas que llamaron menos de 51 veces 
 
 #### Variable discreta 1:
 
-La variable 1 discreta será `LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
+La variable 1 discreta será `DIAS_LLAMADAS_IN_TOT`, que es la cantidad de días en los que un usuario recibe llamadas durante el mes.
 
-$E_1$: De $\mathcal{F}_1$, consideramos el evento $E_1$ que consiste en elegir un usuario al azar y que el usuario haya recibido menos de 51 veces durante el mes.
+Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ que consiste en elegir una persona de la muestra y anotar la cantidad de días que lo llamaron durante el mes.
 
-```{r}
-P.E_1
-```
+$$
+\Omega_1 = [31] =\{ \text{ Número total de días del mes que lo llamaron } \} \\
+|\mathcal{F_1}| = 2^{|\Omega_1|} \\
+\mathbb{P_1}(n) = \{ \text{ Probabilidad de que lo llamen n veces en el mes } \} 
+$$
 
-Tomaremos la suposición de que cada evento es independiente del anterior, lo cual es probable.
-
-Realizando la grafica de frecuencias para la variable `LLAMADAS_IN_TOT`
-
-Con `P.E_2` probabilidad podemos modelar una variable binomial.
-
-$$ X_1 \sim \mathsf{Binom}(100,0.1063465) $$
-
-Ahora, queremos
-
-$$P(X_1 \geq x)$$
-
-Donde:
-
-$x$: \# de exitos de $E_1$
-
-$n$: \# de veces que se repite el experimento
-
-$p$: probabilidad de éxito de $E_1$
-
-Si se desea hallar la probabilidad de que si al repetir el experimento $\epsilon_1$ 100 veces, por lo menos 10 de ellos hayan recibido menos de 51 llamadas durante el mes podemos usar la función `pbinom` para calcularlo.
+Definimos la variable aleatoria $X_1$, buscaremos un modelo al que se distribuya correctamente.
 
 ```{r}
-pbinom(9,100,P.E_1,lower.tail=FALSE)# = p(X>9) 
+X_1 <- DF$DIAS_LLAMADAS_IN_TOT
+X_1 <- X_1[!is.na(X_1)]
+descdist(X_1, discrete = TRUE)
 ```
 
-Hallando la esperanza y varianza:
+Observamos que sigue una distribución $\mathsf{Poisson}$, calcularemos sus parámetros. Podemos hacerlo de dos maneras.
 
 ```{r}
-#𝑬(𝑿)=𝒏𝒑 
-Es_1<-100*P.E_1 
-Es_1  
-#𝑽(𝑿)=𝒏.𝒑.𝒒  
-V_1<-100*P.E_1*(1-P.E_1) 
-V_1
+fitdist(X_1, "pois")
 ```
 
-Se espera que al repetir el experimento $\epsilon_1$ 100 veces, Es_1 de ellos hayan recibido menos de 50 llamadas durante el mes.
+y
+
+definimos $\lambda$ como $25.62425$
+
+```{r}
+l = mean(X_1)
+```
+
+Entonces $X_1 \sim \mathsf{Pois}(25.62425)$.
+
+Podemos calcular su función de masa de probabilidad como.
+
+$$
+\mathbb{P}(\mathbb{X_1} = x) = p(x) =   
+\begin{cases} 
+  \frac{\mathrm{e^{-\lambda}\lambda^x}}{x!}, & \forall~x > 0; \\
+  0, & \text{en caso contrario}
+\end{cases}
+$$
+
+```{r}
+DF %>% 
+  group_by(DIAS_LLAMADAS_IN_TOT) %>% 
+  count() %>% 
+  rename(Frecuencia = n) -> probDias
+probDias <- probDias[-nrow(probDias), ]
+probDias$P <- probDias$Frecuencia / sum(probDias$Frecuencia)
+```
+
+Para verificar que la suma de las probabilidades es 1, usamos la fórmula $\sum_{x\in \Omega_1} = 1$.
+
+```{r}
+sum(probDias$P)
+```
+
+Ahora podemos ver la comparación de la variable con la función de masa de probabilidad de la variable $X_1$.
+
+```{r}
+plot(probDias$DIAS_LLAMADAS_IN_TOT 
+     ,  probDias$P
+     , type = "h", col="red", main = "Comparación de la variable 'DIAS_LLAMADAS_IN_TOT' y Poisson", xlab = "Cantidad de días de llamadas", ylab = "Probabilidad"
+     #, ylim = c(0,0.2) 
+     )
+
+points(probDias$DIAS_LLAMADAS_IN_TOT,  probDias$P,pch = 20, col="red")
+
+lines(dpois(0:31, l), col="blue", type="l", lwd = 2, lty = 2)
+
+legend("topleft", legend = c("Función de probabilidad", "Distribución de Poisson"), col = c("red", "blue"), lwd = 2, lty = c(1,2) )
+```
+
+Aunque no se ajuste perfecto, es la mejor poisson que se acerca a los datos.
+
+Ahora podemos ver la función acumulada.
+
+```{r}
+acumulada <- ecdf(probDias$DIAS_LLAMADAS_IN_TOT)
+
+ecdf_acumulada <- acumulada(1:31)
+plot(ecdf_acumulada, 
+     main = "Función de masa de probabilidad acumulada", 
+     xlab = "Cantidad de días", 
+     ylab = "Probabilidad acumulada",
+     type = "s",
+     col = "blue"
+)
+```
+
+Calculando la Esperanza y la Varianza.
+
+```{r}
+EX_1 <- l
+VarX_1 <- l 
+sprintf("E(X_1) =  %f",EX_1) 
+sprintf("Var(X_1) = %f",VarX_1)
+```
+
+Se espera que en promedio recibas llamadas 25 días al mes.
+
+
+Calculando la probabilidad de que te llamen 15 días o menos durante el mes.
+
+Queremos $P(X_3 \leq 15)$
+
+```{r}
+ppois(15,l) # = p(X<15) 
+```
+
+Hay un 1% de probabilidad de que te llamen 15 días o menos durante el mes.
 
 #### Variable discreta 2:
 
 La variable 2 discreta será `LLAMADAS_OUT_TOT`, que es la cantidad de llamadas que un usuario realiza durante un mes.
 
+Definimos un experimento $\epsilon_2$ determinado por $\{\Omega_2, \mathcal{F}_2, \mathbb{P}_2\}$ que consiste en elegir una persona de la muestra y anotar la cantidad de días que lo llamaron durante el mes.
+
+$$
+\Omega_2 = [31] =\{ \text{ Número de llamadas que realizó durante el mes } \} \\
+|\mathcal{F_2}| = 2^{|\Omega_2|} \\
+\mathbb{P_2}(n) = \{ \text{ Probabilidad de que halla llamado n veces durante el mes } \} 
+$$
+
+Definimos la variable aleatoria $X_2$, buscaremos un modelo al que se distribuya correctamente.
+
+```{r}
+X_2 <- DF$LLAMADAS_OUT_TOT
+X_2 <- X_2[!is.na(X_2)]
+descdist(X_2, discrete = TRUE)
+```
 $E_2$: De $\mathcal{F}_2$, consideramos el evento $E_2$ que consiste en elegir un usuario al azar y que el usuario haya llamado menos de 51 veces durante el mes.
 
 ```{r}
@@ -330,27 +413,23 @@ P.E_2
 
 Tomaremos la suposición de que cada evento es independiente del anterior, lo cual es probable.
 
-Con `P.E_2` probabilidad podemos modelar una variable binomial.
+Con `P.E_2` probabilidad podemos modelar una variable binomial, consideramos que nuestra muestra toma 100 intentos.
 
 $$ X_2 \sim \mathsf{Binom}(100,0.1063465) $$
 
-Ahora, queremos
-
-$$P(X_2 \geq 10)$$
-
-Donde:
-
-$x$: \# de exitos de $X_2$
-
-$n$: \# de veces que se repite el experimento
-
-$p$: probabilidad de éxito de $E_2$
-
-Si se desea hallar la probabilidad de que si al repetir el experimento $\epsilon_2$ 100 veces, por lo menos 10 de ellos hayan llamado menos de 51 veces durante el mes podemos usar la función `pbinom` para calcularlo.
-
 ```{r}
-pbinom(9,100,P.E_2,lower.tail=FALSE)# = p(X>9)
+plot(1:100,
+     dbinom(1:100,100,P.E_2),
+     main = "Función de masa de probabilidad",
+     xlab = "Rango de edad",
+     ylab = "Probabilidad",
+     type = "h",
+     col = "red",
+     lwd = 2
+)
 ```
+
+Vemos la distribución de nuestra variable.
 
 Hallando el esperado y varianza:
 
@@ -363,7 +442,18 @@ V_2<-100*P.E_2*(1-P.E_2)
 V_2
 ```
 
-Se espera que al repetir el experimento $\epsilon_1$ 100 veces, Es_2 de ellos hayan recibido menos de 50 llamadas durante el mes.
+
+
+
+Si se desea hallar la probabilidad de que si al repetir el experimento $\epsilon_2$ 100 veces, por lo menos 10 de ellos hayan llamado menos de 51 veces durante el mes podemos usar la función `pbinom` para calcularlo.
+
+Queremos 
+
+$$P(X_2 \geq 10)$$
+
+```{r}
+pbinom(9,100,P.E_2,lower.tail=FALSE)# = p(X>9)
+```
 
 #### Análisis de variables continuas:
 
@@ -425,7 +515,7 @@ Para el calculo de la esperanza y varianza, como nuestra distribución se distri
 
 La esperanza y la varianza serían:
 
-```{r, results=hold}
+```{r}
 Esperanza_X <- m 
 Varianza_X <- s^2 
 sprintf("E(X_3) =  %f",Esperanza_X) 
@@ -515,7 +605,7 @@ curve(dnorm(x, mean = m, sd = s), add = TRUE, col = "red", lwd = 2)
 
 Como nuestra distribución se distribuye normal con parámetros `m` y `s`, la esperanza y la varianza serían:
 
-```{r, results=hold}
+```{r}
 Esperanza_X <- m 
 Varianza_X <- s^2 
 sprintf("E(X_4) =  %f",Esperanza_X) 
@@ -541,3 +631,8 @@ shadeDist(log(10000),"dnorm",m,s)
 ```
 
 ## Conclusiones:
+
++ El estudio muestra una correlación entre recibir menos de 50 llamadas al mes y que realices llamadas menos de 50 veces al mes.
++ Al escoger a un usuario de manera aleatoria, se esperaría que haya gastado 5361.5Mbi o 5.361Gbi de datos 4G durante el mes.
++ Al escoger a un usuario de manera aleatoria, se esperaría que haya llamado aproximadamente 237,14 minutos durante el mes.
++ Hay un 1% de probabilidad de que te llamen 15 días o menos durante el mes.

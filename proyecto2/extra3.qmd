@@ -23,6 +23,7 @@ library(fitdistrplus)
 ```{r}
 descdist(X, boot = 50)
 ```
+
 ```{r}
 FDN <- fitdist(X, "norm")
 FDG <- fitdist(X, "gamma")
@@ -31,6 +32,7 @@ FDG <- fitdist(X, "gamma")
 ```{r}
 plot(FDN)
 ```
+
 ```{r}
 plot(FDG)
 ```
@@ -53,7 +55,7 @@ descdist(x1,discrete = T )
 hist(x1)
 #fitdist(x1, discrete = T, distr = "binom") #<- Puede estar mal
 ```
+
 ```{r}
 hist(DF$LLAMADAS_OUT_TOT)
 ```
-

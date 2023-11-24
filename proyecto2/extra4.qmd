@@ -3,3 +3,26 @@ title: "extra4"
 format: html
 editor: visual
 ---
+
+```{r}
+datos <- c(1, 2, 3, 4, 5)
+F <- ecdf(datos)
+plot(F)
+```
+
+```{r}
+datos1 <- rnorm(100)
+datos2 <- runif(100)
+F1 <- ecdf(datos1)
+F2 <- ecdf(datos2)
+plot(F1, col="red")
+lines(F2, col="blue")
+
+```
+
+```{r}
+datos <- rnorm(100)
+F <- ecdf(datos)
+F(0.5)  # Esto te dará la proporción de datos que es menor o igual a 0.5
+```
+
