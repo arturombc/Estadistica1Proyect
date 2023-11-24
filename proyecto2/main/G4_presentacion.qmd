@@ -296,31 +296,31 @@ P.E_2
 
 La variable: `DIAS_LLAMADAS_IN_TOT`
 
-Definimos un experimento $\epsilon_3$ determinado por $\{\Omega_3, \mathcal{F}_3, \mathbb{P}_3\}$ como la cantidad de veces que te llaman durante un mes.
+Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ como la cantidad de veces que te llaman durante un mes.
 
 Al tratarse de eventos en un tiempo determinado, podemos intuir que se trata de una poisson.
 
 **Elección del modelo**
 
 ```{r, results='hide'}
-X_3 <- DF$DIAS_LLAMADAS_IN_TOT
-X_3 <- X_3[!is.na(X_3)]
+X_1 <- DF$DIAS_LLAMADAS_IN_TOT
+X_1 <- X_1[!is.na(X_1)]
 ```
 
-Definimos $\lambda$ como $\bar{X_3}$ que es igual a `r mean(X_3)`
+Definimos $\lambda$ como $\bar{X_1}$ que es igual a `r mean(X_1)`
 
-Tomaremos este valor aún sabiendo que `r mean(X_3)` difiere de `r var(X_3)` considerablemente.
+Tomaremos este valor aún sabiendo que `r mean(X_1)` difiere de `r var(X_1)` considerablemente.
 
 ```{r, results='hide'}
-l = mean(X_3)
+l = mean(X_1)
 ```
 
-Entonces $X_3 \sim \mathsf{Pois}(25.62425)$.
+Entonces $X_1 \sim \mathsf{Pois}(25.62425)$.
 
 Podemos calcular su función de masa de probabilidad como.
 
 $$
-\mathbb{P}(\mathbb{X} = x) = p(x) =   
+\mathbb{P}(\mathbb{X}_1 = x) = p(x) =   
 \begin{cases} 
   \frac{\mathrm{e^{-\lambda}\lambda^x}}{x!}, & \forall~x > 0; \\
   0, & \text{en caso contrario}
@@ -351,6 +351,26 @@ lines(dpois(0:31, l), col="blue", type="l", lwd = 2, lty = 2)
 
 legend("topleft", legend = c("Función de probabilidad", "Distribución de Poisson"), col = c("red", "blue"), lwd = 2, lty = c(1,2) )
 ```
+
+
+:::
+
+::: {.fragment}
+
+```{r}
+probAcumulada <- ecdf(probDias$DIAS_LLAMADAS_IN_TOT)
+
+ecdf_datos <- probAcumulada(-5:36)
+
+plot(ecdf_datos, 
+     main = "Función de masa de probabilidad acumulada", 
+     xlab = "Cantidad de lenguajes usados", 
+     ylab = "Probabilidad acumulada",
+     type = "s",
+     col = "blue",
+)
+```
+
 :::
 
 ## Variable continua 3: {.smaller}

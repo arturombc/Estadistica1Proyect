@@ -149,7 +149,7 @@ DF %>%
   summarise(n = n()) -> E_2
 ```
 
-Eliminando la ultima columna que representa los valores n/a
+Eliminando la ultima columna que representa los valores NA.
 
 ```{r}
 E_2 <- E_2[-nrow(E_2), ]
@@ -237,6 +237,10 @@ nrow(DF[DF$LLAMADAS_IN_TOT <= 50 & DF$LLAMADAS_OUT_TOT <= 50, ]) / nrow(DF) == P
 P.inter <- sum((DF$LLAMADAS_IN_TOT <= 50) & (DF$LLAMADAS_OUT_TOT <= 50), na.rm = TRUE)/sum(!is.na(DF$LLAMADAS_IN_TOT) & !is.na(DF$LLAMADAS_OUT_TOT))
 P.E_1 * P.E_2
 P.inter
+```
+
+```{r}
+ggplot(DF, aes(LLAMADAS_IN_TOT[!is.na(LLAMADAS_IN_TOT) & LLAMADAS_IN_TOT <= 50],LLAMADAS_OUT_TOT[!is.na(LLAMADAS_OUT_TOT) & LLAMADAS_OUT_TOT <= 50 ]))
 ```
 
 Entonces los eventos no son independientes
@@ -367,13 +371,13 @@ plot(ecdf_acumulada,
 Calculando la Esperanza y la Varianza.
 
 ```{r}
-EX_1 <- l
-VarX_1 <- l 
+EX_1 <- mean(X_1)
+VarX_1 <- var(X_1)
 sprintf("E(X_1) =  %f",EX_1) 
 sprintf("Var(X_1) = %f",VarX_1)
 ```
 
-Se espera que en promedio recibas llamadas 25 días al mes.
+Se espera que en promedio recibas llamadas 25 días al mes. Podemos ver que la varianza está considerablemente alejada de la media lo que da indicios de que aunque la distribución pareciera la más adecuada, podría no ser la correcta.
 
 Calculando la probabilidad de que te llamen 15 días o menos durante el mes.
 
