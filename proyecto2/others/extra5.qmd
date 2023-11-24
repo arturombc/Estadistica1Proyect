@@ -1,0 +1,150 @@
+---
+title: "extra5"
+format: html
+editor: visual
+---
+
+```{r}
+library(plotly)
+datos <- data.frame(
+  `Grupos etarios` = c("Grupo etario 1", "Grupo etario 2", "Grupo etario 3"),
+  Frecuencias = c(122, 42, 3),
+  `Probabilidad empírica` = c(0.73054, 0.2515, 0.01796),
+  `Porcentaje equivalente` = c(73.05, 25.15, 1.8)
+)
+
+```
+
+```{r}
+tabla_plotly <- plot_ly(datos, type = 'table',
+        header = list(values = colnames(datos)),
+        cells = list(values = rbind(datos$`Grupos etarios`, datos$Frecuencias,
+                                   datos$`Probabilidad empírica`, datos$`Porcentaje equivalente`)))
+```
+
+```{r}
+htmlwidgets::saveWidget(tabla_plotly, "tabla.html")
+```
+
+```{r}
+htmltools::includeHTML("tabla.html")
+```
+
+```{r}
+library(plotly)
+
+# Datos para la tabla
+grupos_etarios <- c("Grupo etario 1", "Grupo etario 2", "Grupo etario 3")
+frecuencias <- c(122, 42, 3)
+probabilidad_empirica <- c(0.73054, 0.2515, 0.01796)
+porcentaje_equivalente <- c(73.05, 25.15, 1.8)
+porcentaje_equivalente <- sprintf("%.2f%%", c(73.05, 25.15, 1.8))
+
+# Crear un data frame con los datos
+datos <- data.frame(Grupos_etarios = grupos_etarios,
+                    Frecuencias = frecuencias,
+                    Probabilidad_empirica = probabilidad_empirica,
+                    Porcentaje_equivalente = porcentaje_equivalente)
+
+# Usar plotly para crear la tabla
+fig <- plot_ly(type = 'table',
+               header = list(
+                 values = names(datos),
+                 fill = list(color = '#0074D9'), 
+                 line = list(color = 'white'), 
+                 align = 'center',
+                 font = list(color = 'white', size = 12)
+               ),
+               cells = list(
+                 values = rbind(grupos_etarios, frecuencias, probabilidad_empirica, porcentaje_equivalente),
+                 line = list(color = 'lightgray'), 
+                 align = 'center'
+               ))
+fig
+```
+
+```{r}
+memoria_lista <- list(a = 1:3, b = 4:6)
+memoria_lista[["a"]] == 1:3
+memoria_lista["a"] == 1:3
+memoria_lista$a == 1:3
+```
+
+```{r}
+mi_lista <- list(a = 1:3, b = 4:6)
+nombre_elemento <- "a"
+mi_lista[[nombre_elemento]]
+mi_lista$nombre_elemento
+mi_lista[nombre_elemento]
+```
+
+
+```{r}
+datos <- rnorm(100) 
+plot(ecdf(datos))
+plot(density(datos)) 
+```
+
+```{r}
+c(TRUE, FALSE, TRUE) & c(TRUE, TRUE, FALSE)  # Devuelve: TRUE FALSE FALSE
+TRUE && FALSE
+```
+
+
+```{r}
+# Generar algunos datos para el eje x e y
+x <- 1:10
+y <- x^2
+
+# Abrir un dispositivo gráfico para dibujar múltiples gráficas
+par(mfrow=c(2, 2))
+
+# Ejemplo 1: Línea sólida
+plot(x, y, type = "l", lty = 1)  # o lty = "solid"
+
+# Ejemplo 2: Línea discontinua
+plot(x, y, type = "l", lty = 2)  # o lty = "dashed"
+
+# Ejemplo 3: Línea punteada
+plot(x, y, type = "l", lty = 3)  # o lty = "dotted"
+
+# Ejemplo 4: Línea punto y raya
+plot(x, y, type = "l", lty = 4)  # o lty = "dotdash"
+
+# Restaurar la configuración gráfica
+par(mfrow=c(1, 1))
+
+```
+
+```{r}
+datos <- rnorm(100) 
+plot(ecdf(datos))
+lines(density(datos), add = TRUE)
+```
+
+```{r}
+# Supongamos que tienes algunos datos
+datos <- rnorm(100)  # 100 números aleatorios con distribución normal
+
+# Calcular la densidad
+dens <- density(datos)
+
+# Dibujar la curva de densidad
+plot(dens, main = "Densidad con área rellena", xlab = "Valor", ylab = "Densidad")
+
+# Rellenar el área bajo la curva
+polygon(dens, col = "lightblue", border = "black")
+```
+
+
+```{r}
+datos <- rnorm(100000) 
+
+F_empirica <- ecdf(datos)
+
+densidad <- density(datos)
+
+plot(F_empirica, main = "ECDF y Densidad", xlab = "Datos", ylab = "ECDF / Densidad")
+lines(densidad, col = "blue") 
+```
+

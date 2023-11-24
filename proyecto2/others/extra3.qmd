@@ -47,7 +47,7 @@ GOFL <- gofstat(list(FDN, FDG), fitnames = list("Nomal", "Gamma"))
 
 ```{r}
 x <- DF$LLAMADAS_OUT_TOT[!is.na(DF$LLAMADAS_OUT_TOT)]
-x1 <- ceiling(log(x))
+x1 <- floor(log(x))
 x1[x1 == -Inf] <- NA
 x1[x1 == Inf] <- NA
 x1 <- x1[!is.na(x1)]
@@ -59,3 +59,23 @@ hist(x1)
 ```{r}
 hist(DF$LLAMADAS_OUT_TOT)
 ```
+
+
+
+
+```{r}
+x <- DF$DIAS_LLAMADAS_IN_TOT[!is.na(DF$DIAS_LLAMADAS_IN_TOT)]
+descdist(x,discrete = T )
+hist(x)
+hist(1:31,dpois(1:31,mean(x)))
+```
+
+
+
+```{r}
+X <- DF$LLAMADAS_OUT_TOT[!is.na(DF$LLAMADAS_OUT_TOT)]
+descdist(X
+         , discrete = TRUE
+)
+```
+
