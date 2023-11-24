@@ -1,5 +1,10 @@
 ---
 title: "Minería de Datos en la Industria de Telefonía Móvil: Análisis de clientes peruanos entre septiembre del 2018 y mayo del 2019"
+fontSize: 0.5
+title-slide-attributes:
+    data-background-image: telefono.jpg
+    data-background-size: contain
+    data-background-opacity: "0.5"
 format:
   revealjs:
     transition: slide
@@ -19,13 +24,11 @@ if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
 if(!require(ggplot2)){install.packages("ggplot2");library(ggplot2)}
 if(!require(ggthemes)){install.packages("ggthemes");library(ggthemes)}
 if(!require(ggrepel)){install.packages("ggrepel");library(ggrepel)}
-if(!require(tidyverse)){install.packages("tidyverse");library(tidyverse)}
 if(!require(forcats)){install.packages("forcats");library(forcats)}
 if(!require(ggmosaic)){install.packages("ggmosaic");library(ggmosaic)}
-if(!require(fastGraph)){install.packages("fastGraph")};library(fastGraph)
+if(!require(tidyverse)){install.packages("tidyverse");library(tidyverse)}
+if(!require(fastGraph)){install.packages("fastGraph");library(fastGraph)}
 ```
-
-# Evento 1
 
 ```{r}
 DF <- read_csv("DataLimpia.csv"
@@ -36,194 +39,382 @@ DF <- read_csv("DataLimpia.csv"
                )
 ```
 
-```{r}
+## **Grafico de variable numerica continua e histograma:**
 
+```{r histograma1, warning=FALSE}
+xlim_min <- -1
+xlim_max <- (quantile(DF$DATOS_4G, 0.75) + 1.5*IQR(DF$DATOS_4G, na.rm = TRUE))/1000
+
+ggplot(DF, aes(DATOS_4G/1000)) +
+  geom_histogram(aes(fill=..count..),binwidth = 0.5) +
+  xlim(xlim_min,xlim_max) +
+  xlab("Datos en GB") +
+  ylab("Cantidad de usuarios") +
+  scale_fill_gradient(low = "red", high = "yellow") +
+  theme_solarized()
+```
+
+## Grafico de una variable categórica ordinal:
+
+```{r}
+ggplot(DF, aes(DF$PERIODO)) +
+  geom_bar(color = "black", fill = "skyblue") +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.text.x = element_text(angle = -90, hjust = 0, vjust = 1)) +
+  ylab("Cantidad de registros") +
+  xlab("Periodo") +
+  labs(title = "Distribución de registros por período"
+       )
+```
+
+## Grafico de variable categorica vs categorica:
+
+```{r mosaic1,warning=FALSE}
+ggplot(data = DF) +
+  geom_mosaic(aes(x = product(OS), fill = CHIP)) +
+  theme_mosaic() +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.text.x = element_text(angle = -90, hjust = 0, vjust = 1)) +
+  labs(title = "Tabla de Chip vs Sistema Operativo")
+```
+
+## G**ráfico de variable numérica vs numérica:**
+
+```{r}
+DF %>%
+  group_by(ID) %>%
+  summarise(LLAMADAS_IN_TOTAL_PERIODOS=sum(LLAMADAS_IN_TOT,na.rm=TRUE),
+            LLAMADAS_OUT_TOTAL_PERIODOS=sum(LLAMADAS_OUT_TOT,na.rm=TRUE)
+            ) -> resultado_final
+
+modelo <- lm(LLAMADAS_OUT_TOTAL_PERIODOS  ~ LLAMADAS_IN_TOTAL_PERIODOS, data = resultado_final)
+residuos <- residuals(modelo)
+valores_atipicos <- boxplot.stats(residuos)$out
+DF_LLAMADAS<- resultado_final[!(residuos %in% valores_atipicos), ]
+nuevo_modelo <- lm(LLAMADAS_OUT_TOTAL_PERIODOS  ~ LLAMADAS_IN_TOTAL_PERIODOS, data = DF_LLAMADAS)
+
+ggplot(DF_LLAMADAS, aes(x = DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, y = DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS)) +
+  geom_point(shape = 16, color = "lightgreen") +
+  geom_smooth(method = "lm", se = FALSE, color = "darkgreen") +
+  labs(x = "Cantidad de llamadas entrantes en total de 9 meses ", y = "Cantidad de llamadas salientes en total de 9 meses",
+       title = "Cantidad total de llamadas entrantes vs salientes") + 
+  theme_economist()
+```
+
+```{r, results='hide'}
 summary(DF$LLAMADAS_IN_TOT)
 summary(DF$LLAMADAS_OUT_TOT)
 ```
 
-## **Variable 1** {.smaller}
-
-`LLAMADAS_IN_TOT`: Cantidad de llamadas que un usuario recibe durante un mes.
-
-**Definición de experimento aleatorio**
-
-Elijo una persona de la muestra y anoto la cantidad de veces que la llamaron durante el mes.
-
-**Espacio de resultados teórico**
-
-$$\Omega_1 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 6820\}$$
-
-**Cálculo de la probabilidad empírica de todos los eventos atómicos**
-
-```{r}
-E_1<-DF %>%
-  select(ID,LLAMADAS_IN_TOT) %>%
-  group_by(LLAMADAS_IN_TOT) %>%
-  summarise(n = n())
+```{r, results='hide'}
+DF %>%   
+  select(ID,LLAMADAS_IN_TOT) %>%   
+  group_by(LLAMADAS_IN_TOT) %>%   
+  summarise(n = n()) -> E_1 
 ```
 
-```{r}
-tail(E_1)
+```{r, results='hide'}
+tail(E_1) 
+E_1 
 ```
 
-Seleccionar una persona de mi estudio que ha recibido 0 llamadas durante el mes.
-
-E_n el evento de atomico de que lo hayan llamado n veces al mes.
-
-```{r}
+```{r, results='hide'}
 E_1 <- E_1[-nrow(E_1), ] 
-E_1
 ```
 
-```{r}
-tail(E_1)
-```
-
-```{r}
+```{r, results='hide'}
 Tot1 <- sum(E_1$n) 
 E_1$P <- E_1$n / Tot1
 ```
 
-```{r}
-E_1 <- rename(E_1, "Eventos Atómicos" = LLAMADAS_IN_TOT, "Probabilidades atómicas"= P,"Cantidad de repeticiones" = n) 
+```{r, results='hide'}
 head(E_1)
 ```
 
-Ahora podemos definir los eventos atómicos como:
-
-$$ \begin{align*} & E_{1_i}\, \text{Te llaman }\textit{i }\text{veces durante el mes}\quad i\in\text{Eventos Atómicos}_1 \end{align*} $$
-
-$\text{Eventos atómicos}_1$ Es un conjunto que representa a la columna Eventos atómicos de $E_1$.
-
-```{r}
-E_1
+```{r, results='hide'}
+E_1 
+sum(E_1$P)
 ```
 
-En el DataFrame `E_1` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio. El nombre representa el experimento 1 sin intención de ser algo específico.
-
-## **Variable 2** {.smaller}
-
-`LLAMADAS_OUT_TOT` : Cantidad de llamadas que un usuario realiza en un mes.
-
-**Definición de experimento aleatorio**
-
-$\{\Omega_2, \mathcal{F}_2, \mathbb{P}_2\}$.
-
-**Espacio de resultados teórico**
-
-$$\Omega_2 = \{x \in \mathbb{N}\,| x \geq 0\ \land x \leq 8308\}$$
-
-**Cálculo de la probabilidad empírica de todos los eventos atómicos de la variable 2**
-
-```{r}
-DF %>%   select(ID,LLAMADAS_OUT_TOT) %>%   group_by(LLAMADAS_OUT_TOT) %>%   summarise(n = n()) -> E_2
+```{r, results='hide'}
+rename(E_1, "Eventos Atómicos" = LLAMADAS_IN_TOT, "Probabilidades atómicas" = P,"Frecuencia de repeticiones" = n) -> E_1_
+head(E_1_)
 ```
 
-```{r}
+```{r, results='hide'}
+DF %>%   
+  select(ID,LLAMADAS_OUT_TOT) %>%   
+  group_by(LLAMADAS_OUT_TOT) %>%   
+  summarise(n = n()) -> E_2
+```
+
+```{r, results='hide'}
 E_2 <- E_2[-nrow(E_2), ]
 ```
 
 ```{r, results='hide'}
-tail(E_2)
-```
-
-```{r}
 Tot2 <- sum(E_2$n) 
 E_2$P <- E_2$n / Tot2
 ```
 
-```{r}
-E_2 <- rename(E_2, "Eventos Atómicos" = LLAMADAS_OUT_TOT, "Probabilidades atómicas"= P,"Cantidad de repeticiones" = n) 
+```{r, results='hide'}
 head(E_2)
 ```
 
-Ahora podemos definir los eventos atómicos como:
-
-$$ \begin{align*} & E_{2_i}\, \text{el evento atómico i del experimento 2 se define como}\\ & E_{2_i} : \text{Haces una llamada }\textit{i }\text{veces durante el mes}\quad i\in\text{Eventos Atómicos}_2 \end{align*} $$
-
-$\text{Eventos atómicos}_2$ Es un conjunto que representa a la columna Eventos atómicos de $E_2$.
-
-```{r}
-head(E_2)
+```{r, results='hide'}
+E_2 
+sum(E_2$P)
 ```
 
-En el DataFrame `E_2` tenemos las probabilidades atómicas de cada uno de los resultados del experimento aleatorio.
+```{r, results='hide'}
+rename(E_2, "Eventos Atómicos" = LLAMADAS_OUT_TOT, "Probabilidades atómicas" = P,"Frecuencia de repeticiones" = n) -> E_2_ 
+head(E_2_)
+```
 
-## Variable 3 {.smaller}
+```{r, results='hide'}
+E_2
+```
 
-`TIEMPO_LLAMADAS_IN_TOT`: Cantidad de llamadas que un usuario recibe en un mes.
+```{r, results='hide'}
+P.E_1 <- sum(E_1$P[E_1$LLAMADAS_IN_TOT <= 50])
+P.E_1
+```
 
-**Elección de modelo**
+```{r, results='hide'}
+P.E_2 <- sum(E_2$P[E_2$LLAMADAS_OUT_TOT <= 50])
+P.E_2
+```
 
-```{r, fig.align='center'}
+```{r, results='hide'}
+nrow(DF[DF$LLAMADAS_IN_TOT <= 50 & DF$LLAMADAS_OUT_TOT <= 50, ]) / nrow(DF) == P.E_1 * P.E_2
+P.inter <- sum((DF$LLAMADAS_IN_TOT <= 50) & (DF$LLAMADAS_OUT_TOT <= 50), na.rm = TRUE)/sum(!is.na(DF$LLAMADAS_IN_TOT) & !is.na(DF$LLAMADAS_OUT_TOT))
+P.E_1 * P.E_2
+P.inter
+```
+
+```{r, results='hide'}
+inte <- sum(DF$LLAMADAS_IN_TOT <= 50 & DF$LLAMADAS_OUT_TOT <= 50, na.rm = TRUE) / sum(!is.na(DF$LLAMADAS_IN_TOT) & !is.na(DF$LLAMADAS_OUT_TOT))
+inte / P.E_2 == P.E_1
+inte / P.E_2
+P.E_1
+```
+
+```{r}
+inte / P.E_1 == P.E_2
+inte / P.E_1
+P.E_2
+```
+
+## Variable discreta 1: {.smaller}
+
+La variable: `DIAS_LLAMADAS_IN_TOT`
+
+Definimos un experimento $\epsilon_3$ determinado por $\{\Omega_3, \mathcal{F}_3, \mathbb{P}_3\}$ .
+
+**Elección del modelo**
+
+```{r}
 if(!require(fitdistrplus)){install.packages("fitdistrplus");library(fitdistrplus)}
-x <-DF$TIEMPO_LLAMADAS_IN_TOT
-x <- x[!is.na(x)]
-x <- x[x > 1]
-#fit.cont(x) # rriskDistributions
+X_3 <- DF$DIAS_LLAMADAS_IN_TOT
+X_3 <- X_3[!is.na(X_3)]
+descdist(X_3, discrete = TRUE)
+```
+
+Observamos que sigue una distribución $\mathsf{Poisson}$, calcularemos sus parámetros. Podemos hacerlo de dos maneras.
+
+```{r}
+fitdist(X_3, "pois")
+```
+
+y
+
+definimos $\lambda$ como $25.62425$
+
+```{r}
+l = mean(X_3)
+```
+
+Entonces $X_3 \sim \mathsf{Pois}(25.62425)$.
+
+Podemos calcular su función de masa de probabilidad como.
+
+$$
+\mathbb{P}(\mathbb{X} = x) = p(x) =   
+\begin{cases} 
+  \frac{\mathrm{e^{-\lambda}\lambda^x}}{x!}, & \forall~x > 0; \\
+  0, & \text{en caso contrario}
+\end{cases}
+$$
+
+```{r}
+DF %>% 
+  group_by(DIAS_LLAMADAS_IN_TOT) %>% 
+  count() %>% 
+  rename(Frecuencia = n) -> probDias
+probDias <- probDias[-nrow(probDias), ]
+probDias$P <- probDias$Frecuencia / sum(probDias$Frecuencia)
+sum(probDias$P)
+```
+
+```{r}
+plot(probDias$DIAS_LLAMADAS_IN_TOT 
+     ,  probDias$P
+     , type = "h", col="red", main = "Comparación de la variable 'DIAS_LLAMADAS_IN_TOT' y Poisson", xlab = "Cantidad de días de llamadas", ylab = "Probabilidad"
+     #, ylim = c(0,0.2) 
+     )
+
+points(probDias$DIAS_LLAMADAS_IN_TOT,  probDias$P,pch = 20, col="red")
+
+lines(dpois(0:31, l), col="blue", type="l", lwd = 2, lty = 2)
+
+legend("topleft", legend = c("Función de probabilidad", "Distribución de Poisson"), col = c("red", "blue"), lwd = 2, lty = c(1,2) )
+```
+
+```{r}
+hist(DF$DIAS_LLAMADAS_IN_TOT, breaks = 31)
+```
+
+```{r}
+P.E_1
+```
+
+Tomaremos la suposición de que cada evento es independiente del anterior, lo cual es probable.
+
+Realizando la grafica de frecuencias para la variable `LLAMADAS_IN_TOT`
+
+Con `P.E_2` probabilidad podemos modelar una variable binomial.
+
+$$ X_1 \sim \mathsf{Binom}(100,0.1063465) $$
+
+Ahora, queremos
+
+$$P(X_1 \geq x)$$
+
+Donde:
+
+$x$: \# de exitos de $E_1$
+
+$n$: \# de veces que se repite el experimento
+
+$p$: probabilidad de éxito de $E_1$
+
+Si se desea hallar la probabilidad de que si al repetir el experimento $\epsilon_1$ 100 veces, por lo menos 10 de ellos hayan recibido menos de 51 llamadas durante el mes podemos usar la función `pbinom` para calcularlo.
+
+```{r}
+pbinom(9,100,P.E_1,lower.tail=FALSE)# = p(X>9) 
+```
+
+Hallando la esperanza y varianza:
+
+```{r}
+#𝑬(𝑿)=𝒏𝒑 
+Es_1<-100*P.E_1 
+Es_1  
+#𝑽(𝑿)=𝒏.𝒑.𝒒  
+V_1<-100*P.E_1*(1-P.E_1) 
+V_1
+```
+
+Se espera que al repetir el experimento $\epsilon_1$ 100 veces, Es_1 de ellos hayan recibido menos de 50 llamadas durante el mes.
+
+```{r, results='hide'}
+P.E_2
+```
+
+```{r, results='hide'}
+pbinom(9,100,P.E_2,lower.tail=FALSE)# = p(X>9)
+```
+
+```{r, results='hide'}
+#𝑬(𝑿)=𝒏𝒑  
+Es_2<-100*P.E_2 
+Es_2 
+#𝑽(𝑿)=𝒏.𝒑.𝒒   
+V_2<-100*P.E_2*(1-P.E_2) 
+V_2
+```
+
+## Variable continua 3: {.smaller}
+
+La variable 3 continua será `TIEMPO_LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
+
+Eligiendo el modelo:
+
+```{r}
+x <-DF$TIEMPO_LLAMADAS_IN_TOT 
+x <- x[!is.na(x)] 
+x <- x[x > 1] #fit.cont(x) # rriskDistributions 
 descdist(x) # fitdistplus
 ```
 
-## **Variable 3** {.smaller}
+Se decidió tomar el modelo *log normal*.
 
-```{r, fig.align='center'}
+```{r}
 hist(log(DF$TIEMPO_LLAMADAS_IN_TOT))
 ```
 
 ```{r}
-Z <- log(x)
+Z_3 <- log(x)
 ```
 
-```{r, results='hide'}
-median(Z)
-mean(Z)
-```
-
-Aproximadamente son parecidas
-
-## **Variable 3** {.smaller}
-
-**Cálculo de parámetros**
+Para verificar que esto cumple, podemos mirar la centralidad.
 
 ```{r}
-fitdist(Z,"norm")
+median(Z_3) 
+mean(Z_3)
 ```
 
+Aproximadamente son parecidas, esto fue necesario verificarlo más no es suficiente.
+
+Para calcular los parámetros, se hará de dos formas.
+
 ```{r}
-m <- mean(Z)
-s <- sd(Z)
-m
+fitdist(Z_3,"norm")
+```
+
+y
+
+```{r}
+m <- mean(Z_3) 
+s <- sd(Z_3) 
+m 
 s
 ```
 
-**Gráfico de verificación**
+Para verificar si es una buena elección, podemos graficarlo.
 
-```{r, fig.width=9, fig.height=3.5, fig.align='center'}
-hist(Z,breaks = 50 , prob = TRUE)
+```{r}
+hist(Z_3,breaks = 50 , prob = TRUE) 
 curve(dnorm(x, mean = m, sd = s), add = TRUE, col = "red", lwd = 2)
 ```
 
-## **Variable 3** {.smaller}
+Para el calculo de la esperanza y varianza, como nuestra distribución se distribuye normal con parámetros `m` y `s` :
 
-**Cálculo de la esperanza y varianza**
+La esperanza y la varianza serían:
 
 ```{r}
-Esperanza_X <- m
-Varianza_X <- s^2
-sprintf("E(X_3) =  %f",Esperanza_X)
+Esperanza_X <- m 
+Varianza_X <- s^2 
+sprintf("E(X_3) =  %f",Esperanza_X) 
 sprintf("Var(X_3) = %f",Varianza_X)
 ```
 
-**Cálculo de probabilidades**
+Al escoger a un usuario de manera aleatoria, se esperaría que haya llamado aproximadamente 237,14 minutos durante el mes.
 
-¿Cuál es la probabilidad de que alguien llame menos de 420 minutos al mes (6h y 30m)?
+Ya que tenemos un modelo, podemos calcular probabilidades.
 
-```{r, results='hide'}
+¿Cuál es la probabilidad de que al escoger un usuario de manera aleatoria, haya llamado menos de 420 minutos al mes (6h y 30m)?
+
+Podemos calcular eso usando la función `pnorm` y el parámetro a calcular tendrá que pasarse en `log` debido a la transformación que fue hecha.
+
+```{r}
 pnorm(log(420),m,s)
 ```
 
-```{r, fig.align='center'}
+También se puede ver gráficamente.
+
+```{r}
 shadeDist(log(420),"dnorm",m,s)
 ```
 
@@ -257,11 +448,6 @@ Se decidió tomar el modelo *log normal*
 
 ```{r}
 Z <- log(datos_4g)
-```
-
-```{r}
-median(Z)
-mean(Z)
 ```
 
 ```{r}
@@ -303,3 +489,36 @@ pnorm(log(10000),m,s)
 ```{r, fig.align='center'}
 shadeDist(log(10000),"dnorm",m,s)
 ```
+
+## Conclusiones: {.smaller}
+
+::: columns
+::: {.column width="50%"}
+-   La mayoría de usuarios no usan internet.
+-   Si usas internet, consumes aproximadamente 7GB al mes.
+-   Llamas más de lo que te llaman.
+-   Probablemente seas Android.
+-   Probablemente usas Samsung.
+-   Llamas y te llaman en una proporción similar.
+-   Tus llamadas duran menos de dos minutos aproximadamente.
+-   Llamas y recibes mas llamadas durante los dias laborables.
+:::
+
+::: {.column width="50%"}
+-   La mayoría de usuarios no usan internet.
+
+-   Si usas internet, consumes aproximadamente 7GB al mes.
+
+-   Llamas más de lo que te llaman.
+
+-   Probablemente seas Android.
+
+-   Probablemente usas Samsung.
+
+-   Llamas y te llaman en una proporción similar.
+
+-   Tus llamadas duran menos de dos minutos aproximadamente.
+
+-   Llamas y recibes mas llamadas durante los dias laborables.
+:::
+:::
