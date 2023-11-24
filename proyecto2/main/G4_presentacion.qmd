@@ -1,5 +1,5 @@
 ---
-title: "Minería de Datos en la Industria de Telefonía Móvil: Análisis de clientes peruanos entre septiembre del 2018 y mayo del 2019"
+title: "<span style='font-size:0.8em;'>Minería de Datos en la Industria de Telefonía Móvil: Análisis de clientes peruanos entre septiembre del 2018 y mayo del 2019</span>"
 fontSize: 0.5
 title-slide-attributes:
     data-background-image: telefono.jpg
@@ -296,7 +296,7 @@ P.E_2
 
 La variable: `DIAS_LLAMADAS_IN_TOT`
 
-Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ como la cantidad de veces que te llaman durante un mes.
+Definimos un experimento $\epsilon_1$ determinado por $\{\Omega_1, \mathcal{F}_1, \mathbb{P}_1\}$ como la cantidad de días del mes en los que recibes una llamada.
 
 Al tratarse de eventos en un tiempo determinado, podemos intuir que se trata de una poisson.
 
@@ -364,81 +364,93 @@ ecdf_datos <- probAcumulada(-5:36)
 
 plot(ecdf_datos, 
      main = "Función de masa de probabilidad acumulada", 
-     xlab = "Cantidad de lenguajes usados", 
+     xlab = "Cantidad de días que recibió llamadas", 
      ylab = "Probabilidad acumulada",
      type = "s",
-     col = "blue",
+     col = "blue"
 )
 ```
-
 :::
 
 ## Variable continua 3: {.smaller}
 
-La variable 3 continua será `TIEMPO_LLAMADAS_IN_TOT`, que es la cantidad de llamadas que un usuario recibe durante un mes.
+La variable: `TIEMPO_LLAMADAS_IN_TOT`
 
-Eligiendo el modelo:
+Definimos un experimento $\epsilon_2$ determinado por $\{\Omega_2, \mathcal{F}_2, \mathbb{P}_2\}$ como la cantidad de minutos que pasas en una llamada entrante en el mes.
+
+**Elección del modelo**
 
 ```{r}
 x <-DF$TIEMPO_LLAMADAS_IN_TOT 
 x <- x[!is.na(x)] 
-x <- x[x > 1] #fit.cont(x) # rriskDistributions 
+x <- x[x > 1] 
+```
+
+:::: {.columns}
+
+::: {.column width="50%" .fragment}
+
++ ¿A qué distribución se parece?
+```{r}
+ggplot(data.frame(x), aes(x = x, fill = ..count..)) + 
+  geom_histogram(color = "black", show.legend = FALSE) +
+  scale_fill_gradient(low = "green", high = "darkgreen") +
+  labs(title = "Histograma de Llamadas Salientes", x = "Tiempo total de las llamadas que recibes al mes", y = "Frecuencia") +
+  theme_minimal()
+```
+:::
+
+::: {.column width="50%" .fragment}
++ Se decidió tomar el modelo *log normal*.
+```{r, results='hide'}
 descdist(x) # fitdistplus
 ```
+:::
 
-Se decidió tomar el modelo *log normal*.
-
-```{r}
-hist(log(DF$TIEMPO_LLAMADAS_IN_TOT))
-```
+::::
 
 ```{r}
 Z_3 <- log(x)
 ```
 
-Para verificar que esto cumple, podemos mirar la centralidad.
++ Para verificar que esto cumple, podemos mirar la centralidad.
 
-```{r}
-median(Z_3) 
-mean(Z_3)
+$$\mu = 5.46865 \quad \text{mediana} = 5.571279$$
+
+```{r, results='hide'}
+m <- median(Z_3) 
+s <- sd(Z_3)
 ```
 
-Aproximadamente son parecidas, esto fue necesario verificarlo más no es suficiente.
 
-Para calcular los parámetros, se hará de dos formas.
-
+::: {.fragment}
 ```{r}
-fitdist(Z_3,"norm")
+ggplot(data.frame(Z_3), aes(x = Z_3)) +
+  geom_histogram(aes(y = ..density..), binwidth = diff(range(Z_3))/50, color = "black", fill = "#B8FFB8") +
+  stat_function(fun = dnorm, args = list(mean = m, sd = s), color = "darkgreen", linewidth = 1) +
+  xlab("Tiempo total de llamadas que recibes al mes (log)") +
+  ylab("Densidad") +
+  theme_minimal()
 ```
 
-y
-
-```{r}
-m <- mean(Z_3) 
-s <- sd(Z_3) 
-m 
-s
-```
-
-Para verificar si es una buena elección, podemos graficarlo.
-
-```{r}
-hist(Z_3,breaks = 50 , prob = TRUE) 
-curve(dnorm(x, mean = m, sd = s), add = TRUE, col = "red", lwd = 2)
-```
-
+:::
 Para el calculo de la esperanza y varianza, como nuestra distribución se distribuye normal con parámetros `m` y `s` :
+
+$$X_2\sim \mathsf{Norm}(5.571279,1.015403)$$
 
 La esperanza y la varianza serían:
 
 ```{r}
 Esperanza_X <- m 
 Varianza_X <- s^2 
-sprintf("E(X_3) =  %f",Esperanza_X) 
-sprintf("Var(X_3) = %f",Varianza_X)
+#sprintf("E(X_3) =  %f",Esperanza_X) 
+#sprintf("Var(X_3) = %f",Varianza_X)
 ```
 
-Al escoger a un usuario de manera aleatoria, se esperaría que haya llamado aproximadamente 237,14 minutos durante el mes.
+$$E(X_2) =5.46865 \quad Var(X_2) = 1.031042$$
+
+
+Al escoger a un usuario de manera aleatoria, se esperaría que el tiempo de llamada sea aproximadamente 237,14 minutos durante el mes ($e^{E(x)}$).
 
 Ya que tenemos un modelo, podemos calcular probabilidades.
 
@@ -458,13 +470,15 @@ shadeDist(log(420),"dnorm",m,s)
 
 ## Variable 4 {.smaller}
 
-`DATOS_4G`: Cantidad de datos 4G que un usuario utiliza durante un mes.
+La variable: `DATOS_4G`
+
+Definimos un experimento $\epsilon_3$ determinado por $\{\Omega_3, \mathcal{F}_3, \mathbb{P}_3\}$ como la cantidad de datos 4G que un usuario utiliza durante un mes.
 
 **Elección de modelo**
 
 ```{r, fig.width=9, fig.height=4.5, fig.align='center'}
-hist(DF$DATOS_4G)
 datos_4g <- DF$DATOS_4G
+hist(DF$DATOS_4G, col = colorRampPalette(c("darkred", "red"))(15), main = "Histograma de datos 4G por mes")
 #descdist(datos_4g)
 ```
 
@@ -479,8 +493,6 @@ datos_4g2 <- ((datos_4g - min(datos_4g)) / (max(datos_4g)-min(datos_4g)))
 ```
 
 Se decidió tomar el modelo *log normal*
-
-## Variable 4 {.smaller}
 
 **Cálculo de parámetros**
 
@@ -504,8 +516,6 @@ s;m
 hist(Z,breaks = 50 , prob = TRUE)
 curve(dnorm(x, mean = m, sd = s), add = TRUE, col = "red", lwd = 2)
 ```
-
-## Variable 4 {.smaller}
 
 **Cálculo de la esperanza y varianza**
 
@@ -532,24 +542,20 @@ shadeDist(log(10000),"dnorm",m,s)
 
 ::: columns
 ::: {.column width="50%"}
--   La mayoría de usuarios no usan internet.
+-   La mayoría de usuarios no usan internet móvil.
 -   Si usas internet, consumes aproximadamente 7GB al mes.
 -   Llamas más de lo que te llaman.
+-   Hay una correlación fuerte entre las llamadas que haces y recibes.
 -   Probablemente seas Android.
 -   Probablemente usas Samsung.
--   Llamas y te llaman en una proporción similar.
 -   Tus llamadas duran menos de dos minutos aproximadamente.
 -   Llamas y recibes mas llamadas durante los dias laborables.
 :::
 
 ::: {.column width="50%"}
--   La mayoría de usuarios no usan internet.
--   Si usas internet, consumes aproximadamente 7GB al mes.
--   Llamas más de lo que te llaman.
--   Probablemente seas Android.
--   Probablemente usas Samsung.
--   Llamas y te llaman en una proporción similar.
--   Tus llamadas duran menos de dos minutos aproximadamente.
--   Llamas y recibes mas llamadas durante los dias laborables.
+-   El estudio muestra una correlación entre recibir menos de 50 llamadas al mes y que realices llamadas menos de 50 veces al mes.
+-   Al escoger a un usuario de manera aleatoria, se esperaría que haya gastado 5361.5Mbi o 5.361Gbi de datos 4G durante el mes.
+-   Al escoger a un usuario de manera aleatoria, se esperaría que haya llamado aproximadamente 237,14 minutos durante el mes.
+-   Hay un 1% de probabilidad de que te llamen 15 días o menos durante el mes.
 :::
 :::
