@@ -9,8 +9,10 @@ format:
   revealjs:
     transition: slide
     transition-speed: fast
-    incremental: false 
-    theme: black
+    incremental: true 
+    theme: blood
+    scrollable: true
+    smaller: true
 author: "Grupo 4"
 editor: visual
 params:
@@ -20,14 +22,15 @@ params:
 
 ```{r, liberías, message=FALSE}
 if(!require(readr)){install.packages("readr");library(readr)}
-if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
 if(!require(ggplot2)){install.packages("ggplot2");library(ggplot2)}
 if(!require(ggthemes)){install.packages("ggthemes");library(ggthemes)}
 if(!require(ggrepel)){install.packages("ggrepel");library(ggrepel)}
 if(!require(forcats)){install.packages("forcats");library(forcats)}
 if(!require(ggmosaic)){install.packages("ggmosaic");library(ggmosaic)}
+if(!require(fitdistrplus)){install.packages("fitdistrplus");library(fitdistrplus)}
 if(!require(tidyverse)){install.packages("tidyverse");library(tidyverse)}
 if(!require(fastGraph)){install.packages("fastGraph");library(fastGraph)}
+if(!require(dplyr)){install.packages("dplyr");library(dplyr)}
 ```
 
 ```{r}
@@ -79,7 +82,7 @@ ggplot(data = DF) +
   labs(title = "Tabla de Chip vs Sistema Operativo")
 ```
 
-## G**ráfico de variable numérica vs numérica:**
+## **Gráfico de variable numérica vs numérica 1**
 
 ```{r}
 DF %>%
@@ -87,20 +90,103 @@ DF %>%
   summarise(LLAMADAS_IN_TOTAL_PERIODOS=sum(LLAMADAS_IN_TOT,na.rm=TRUE),
             LLAMADAS_OUT_TOTAL_PERIODOS=sum(LLAMADAS_OUT_TOT,na.rm=TRUE)
             ) -> resultado_final
-
-modelo <- lm(LLAMADAS_OUT_TOTAL_PERIODOS  ~ LLAMADAS_IN_TOTAL_PERIODOS, data = resultado_final)
-residuos <- residuals(modelo)
-valores_atipicos <- boxplot.stats(residuos)$out
-DF_LLAMADAS<- resultado_final[!(residuos %in% valores_atipicos), ]
-nuevo_modelo <- lm(LLAMADAS_OUT_TOTAL_PERIODOS  ~ LLAMADAS_IN_TOTAL_PERIODOS, data = DF_LLAMADAS)
-
-ggplot(DF_LLAMADAS, aes(x = DF_LLAMADAS$LLAMADAS_IN_TOTAL_PERIODOS, y = DF_LLAMADAS$LLAMADAS_OUT_TOTAL_PERIODOS)) +
-  geom_point(shape = 16, color = "lightgreen") +
-  geom_smooth(method = "lm", se = FALSE, color = "darkgreen") +
-  labs(x = "Cantidad de llamadas entrantes en total de 9 meses ", y = "Cantidad de llamadas salientes en total de 9 meses",
-       title = "Cantidad total de llamadas entrantes vs salientes") + 
-  theme_economist()
+resultado_final %>%
+  mutate(
+    log_in = ifelse(LLAMADAS_IN_TOTAL_PERIODOS <= 1, NA,log(LLAMADAS_IN_TOTAL_PERIODOS + 1e-6)),
+    log_out = ifelse(LLAMADAS_OUT_TOTAL_PERIODOS <= 1, NA, log(LLAMADAS_OUT_TOTAL_PERIODOS + 1e-6))
+  ) %>%
+  filter(!is.na(log_in) & !is.na(log_out) & !is.infinite(log_in) & !is.infinite(log_out)) %>%
+  select(log_in, log_out) -> final
 ```
+::: {.incremental}
+:::: {.columns}
+
+::: {.column width="50%" .fragment}
++ Antes
+```{r, results='hide'}
+ggplot(resultado_final, aes(x = LLAMADAS_IN_TOTAL_PERIODOS, fill = ..count..)) + 
+  geom_histogram(binwidth = 1, color = "darkorange", show.legend = FALSE) +
+  xlim(NA, 5000) + 
+  scale_fill_gradient(low = "orange", high = "red") +
+  labs(title = "Histograma de Llamadas Entrantes", x = "Llamadas Entrantes en 9 Meses", y = "Frecuencia") +
+  theme_minimal()
+```
+:::
+
+::: {.column width="50%" .fragment}
++ Antes
+```{r, results='hide'}
+ggplot(resultado_final, aes(x = LLAMADAS_OUT_TOTAL_PERIODOS, fill = ..count..)) + 
+  geom_histogram(binwidth = 1, color = "blue", show.legend = FALSE) +
+  scale_fill_gradient(low = "skyblue", high = "blue") +
+  labs(title = "Histograma de Llamadas Salientes", x = "Llamadas Salientes en 9 Meses", y = "Frecuencia") +
+  xlim(NA,5000) +
+  theme_minimal()
+```
+:::
+
+::::
+
+
+::: {.columns}
+
+::: {.column width="50%" .fragment}
++ ¿Distribución?
+```{r, results='hide'}
+descdist(resultado_final$LLAMADAS_IN_TOTAL_PERIODOS, boot = 1000, method = "sample")
+```
+:::
+
+::: {.column width="50%" .fragment}
++ ¿Distribución?
+```{r, results='hide'}
+descdist(resultado_final$LLAMADAS_OUT_TOTAL_PERIODOS, boot = 1000, method = "sample")
+```
+:::
+
+:::
+
+::: {.columns}
+
+::: {.column width="50%" .fragment}
++ Después
+```{r}
+ggplot(final, aes(x = log_out, fill = ..count..)) + 
+  geom_histogram(binwidth = 0.35, color = "black", show.legend = FALSE) +
+  scale_fill_gradient(low = "orange", high = "red") +
+  labs(title = "Histograma de Llamadas Entrantes en Escala Logarítmica", x = "Llamadas Entrantes en 9 Meses", y = "Frecuencia") +
+  theme_minimal()
+```
+:::
+
+::: {.column width="50%" .fragment}
++ Después
+```{r}
+ggplot(final, aes(x = log_in, fill = ..count..)) + 
+  geom_histogram(binwidth = 0.35, color = "black", show.legend = FALSE) +
+  scale_fill_gradient(low = "skyblue", high = "blue") +
+  labs(title = "Histograma de Llamadas Salientes en Escala Logarítmica", x = "Llamadas Salientes Totales en Periodos", y = "Frecuencia") +
+  theme_minimal() 
+```
+:::
+
+:::
+
+:::
+
+## **Gráfico de variable numérica vs numérica 2**
+
+```{r}
+ggplot(final,aes(log_in,log_out)) +
+  geom_point(shape = 16, color = "purple") +
+  geom_smooth(method = "lm", se = FALSE, color = "gold") +
+  labs(x = "Cantidad de llamadas entrantes en total de 9 meses ", y = "Cantidad de llamadas salientes en total de 9 meses",
+       title = "Llamadas entrantes vs salientes en escala log") + 
+  scale_x_continuous(breaks = seq(floor(min(final$log_in)), ceiling(max(final$log_in)), by = 1)) +
+  scale_y_continuous(breaks = seq(floor(min(final$log_out)), ceiling(max(final$log_out)), by = 1)) +
+  theme_economist() 
+```
+
 
 ```{r, results='hide'}
 summary(DF$LLAMADAS_IN_TOT)
@@ -200,7 +286,7 @@ inte / P.E_2
 P.E_1
 ```
 
-```{r}
+```{r, results='hide'}
 inte / P.E_1 == P.E_2
 inte / P.E_1
 P.E_2
@@ -210,28 +296,22 @@ P.E_2
 
 La variable: `DIAS_LLAMADAS_IN_TOT`
 
-Definimos un experimento $\epsilon_3$ determinado por $\{\Omega_3, \mathcal{F}_3, \mathbb{P}_3\}$ .
+Definimos un experimento $\epsilon_3$ determinado por $\{\Omega_3, \mathcal{F}_3, \mathbb{P}_3\}$ como la cantidad de veces que te llaman durante un mes.
+
+Al tratarse de eventos en un tiempo determinado, podemos intuir que se trata de una poisson.
 
 **Elección del modelo**
 
-```{r}
-if(!require(fitdistrplus)){install.packages("fitdistrplus");library(fitdistrplus)}
+```{r, results='hide'}
 X_3 <- DF$DIAS_LLAMADAS_IN_TOT
 X_3 <- X_3[!is.na(X_3)]
-descdist(X_3, discrete = TRUE)
 ```
 
-Observamos que sigue una distribución $\mathsf{Poisson}$, calcularemos sus parámetros. Podemos hacerlo de dos maneras.
+Definimos $\lambda$ como $\bar{X_3}$ que es igual a `r mean(X_3)`
 
-```{r}
-fitdist(X_3, "pois")
-```
+Tomaremos este valor aún sabiendo que `r mean(X_3)` difiere de `r var(X_3)` considerablemente.
 
-y
-
-definimos $\lambda$ como $25.62425$
-
-```{r}
+```{r, results='hide'}
 l = mean(X_3)
 ```
 
@@ -254,13 +334,14 @@ DF %>%
   rename(Frecuencia = n) -> probDias
 probDias <- probDias[-nrow(probDias), ]
 probDias$P <- probDias$Frecuencia / sum(probDias$Frecuencia)
-sum(probDias$P)
+#sum(probDias$P)
 ```
 
+::: {.fragment}
 ```{r}
 plot(probDias$DIAS_LLAMADAS_IN_TOT 
      ,  probDias$P
-     , type = "h", col="red", main = "Comparación de la variable 'DIAS_LLAMADAS_IN_TOT' y Poisson", xlab = "Cantidad de días de llamadas", ylab = "Probabilidad"
+     , type = "h", col="red", main = "Comparación de la variable 'DIAS_LLAMADAS_IN_TOT' y X_3", xlab = "Cantidad de días de llamadas", ylab = "Probabilidad"
      #, ylim = c(0,0.2) 
      )
 
@@ -270,70 +351,7 @@ lines(dpois(0:31, l), col="blue", type="l", lwd = 2, lty = 2)
 
 legend("topleft", legend = c("Función de probabilidad", "Distribución de Poisson"), col = c("red", "blue"), lwd = 2, lty = c(1,2) )
 ```
-
-```{r}
-hist(DF$DIAS_LLAMADAS_IN_TOT, breaks = 31)
-```
-
-```{r}
-P.E_1
-```
-
-Tomaremos la suposición de que cada evento es independiente del anterior, lo cual es probable.
-
-Realizando la grafica de frecuencias para la variable `LLAMADAS_IN_TOT`
-
-Con `P.E_2` probabilidad podemos modelar una variable binomial.
-
-$$ X_1 \sim \mathsf{Binom}(100,0.1063465) $$
-
-Ahora, queremos
-
-$$P(X_1 \geq x)$$
-
-Donde:
-
-$x$: \# de exitos de $E_1$
-
-$n$: \# de veces que se repite el experimento
-
-$p$: probabilidad de éxito de $E_1$
-
-Si se desea hallar la probabilidad de que si al repetir el experimento $\epsilon_1$ 100 veces, por lo menos 10 de ellos hayan recibido menos de 51 llamadas durante el mes podemos usar la función `pbinom` para calcularlo.
-
-```{r}
-pbinom(9,100,P.E_1,lower.tail=FALSE)# = p(X>9) 
-```
-
-Hallando la esperanza y varianza:
-
-```{r}
-#𝑬(𝑿)=𝒏𝒑 
-Es_1<-100*P.E_1 
-Es_1  
-#𝑽(𝑿)=𝒏.𝒑.𝒒  
-V_1<-100*P.E_1*(1-P.E_1) 
-V_1
-```
-
-Se espera que al repetir el experimento $\epsilon_1$ 100 veces, Es_1 de ellos hayan recibido menos de 50 llamadas durante el mes.
-
-```{r, results='hide'}
-P.E_2
-```
-
-```{r, results='hide'}
-pbinom(9,100,P.E_2,lower.tail=FALSE)# = p(X>9)
-```
-
-```{r, results='hide'}
-#𝑬(𝑿)=𝒏𝒑  
-Es_2<-100*P.E_2 
-Es_2 
-#𝑽(𝑿)=𝒏.𝒑.𝒒   
-V_2<-100*P.E_2*(1-P.E_2) 
-V_2
-```
+:::
 
 ## Variable continua 3: {.smaller}
 
@@ -506,19 +524,12 @@ shadeDist(log(10000),"dnorm",m,s)
 
 ::: {.column width="50%"}
 -   La mayoría de usuarios no usan internet.
-
 -   Si usas internet, consumes aproximadamente 7GB al mes.
-
 -   Llamas más de lo que te llaman.
-
 -   Probablemente seas Android.
-
 -   Probablemente usas Samsung.
-
 -   Llamas y te llaman en una proporción similar.
-
 -   Tus llamadas duran menos de dos minutos aproximadamente.
-
 -   Llamas y recibes mas llamadas durante los dias laborables.
 :::
 :::

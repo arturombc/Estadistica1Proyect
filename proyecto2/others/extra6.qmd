@@ -1,0 +1,36 @@
+---
+title: "Habits"
+author: "John Doe"
+format: 
+  revealjs:
+    theme: blood
+
+---
+
+::: {.incremental}
+
+- Eat spaghetti
+- Drink wine
+
+:::
+
+
+::: {.nonincremental}
+
+- Eat spaghetti
+- Drink wine
+
+:::
+
+
+:::: {.columns}
+
+::: {.column width="40%"}
+contents...
+:::
+
+::: {.column width="60%"}
+contents...
+:::
+
+::::
